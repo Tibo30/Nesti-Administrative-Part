@@ -8,3 +8,43 @@
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+#connectionPage button{
+    background-color: #51b1c1;
+    width: 40%;
+}
+
+#mainNav{
+    background-color: #005663;
+}
+
+#mainNav li{
+    background-color:#00838f;
+}
+
+#mainNav ul{
+    display: contents;
+}
+
+#mainNav ul a {
+    color:white;
+}
+
+
+#mainNav .active{
+    background-color: #fac02e;
+    color: #483c32;
+}
+
+#mainNav .active a{
+    color: #483c32;
+}
+
+#recipePage h2{
+    color: #00595a;
+}
+
+#recipePage thead{
+    background-color:#00838f ;
+    color: white;
+}
