@@ -1,0 +1,10 @@
+#connectionForm{
+    max-width: 50%;
+    padding: 5% 15% 5% 15%;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.15);   
+}
+#connectionPage{
+    background-image:url("../pictures/bg-nesti.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
