@@ -1,0 +1,8 @@
+RewriteEngine On
+
+RewriteRule ^recipe$            index.php?url=recipe [L]
+
+RewriteRule ^([a-z]+)$          index.php?url=$1 [L]
+
+
+

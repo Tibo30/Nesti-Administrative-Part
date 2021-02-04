@@ -2,34 +2,33 @@
 class Database
 {
 
+    protected static $_bdd;
     // information of the database
-    private $dbName = 'php_nesti';
-    private $dbHost = 'localhost';
-    private $dbUsername = 'root';
-    private $dbUserPassword = '';
-
-    protected $cont;
-    public $table;
-
-    public function connect()
+    protected static $dbName = 'php_nesti';
+    protected static $dbHost = 'localhost';
+    protected static $dbUsername = 'root';
+    protected static $dbUserPassword = '';
+    // instancing bdd connection
+    private static function setBdd()
     {
-        // we first delete the former connection
-        $this->cont = null;
-        // then we try to connect to the database
-        try {
-            $this->cont = new PDO(
-                "mysql:host=" . $this->dbHost . ";" . "dbname=" . $this->dbName,
-                $this->dbUsername,
-                $this->dbUserPassword
-            );
-        } catch (PDOException $e) {
-            die($e->getMessage());
-        }
-        return $this->cont;
+        self::$_bdd = new PDO(
+            "mysql:host=" . self::$dbHost . ";" . "dbname=" . self::$dbName,
+            self::$dbUsername,
+            self::$dbUserPassword
+        );
+        self::$_bdd->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
     }
 
-    public function disconnect()
+    // get the bdd connection
+    public static function getBdd(){
+        if(self::$_bdd == null){
+            self::setBdd();
+            return self::$_bdd;
+        }
+    }
+
+    public static function disconnect()
     {
-        $this->cont = null;
+        self::$_bdd = null;
     }
 }

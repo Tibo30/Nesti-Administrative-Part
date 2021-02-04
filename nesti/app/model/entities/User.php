@@ -3,10 +3,15 @@ class User{
     protected $idUser;
     protected $lastname;
     protected $firstname;
+    protected $username;
     protected $email;
     protected $password;
     protected $state;
     protected $creationDate;
+    protected $adress1;
+    protected $adress2;
+    protected $postCode;
+    protected $idCity;
 
     /**
      * Get the value of idUser
@@ -144,6 +149,106 @@ class User{
     public function setCreationDate($creationDate)
     {
         $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of username
+     */ 
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set the value of username
+     *
+     * @return  self
+     */ 
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of adress1
+     */ 
+    public function getAdress1()
+    {
+        return $this->adress1;
+    }
+
+    /**
+     * Set the value of adress1
+     *
+     * @return  self
+     */ 
+    public function setAdress1($adress1)
+    {
+        $this->adress1 = $adress1;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of adress2
+     */ 
+    public function getAdress2()
+    {
+        return $this->adress2;
+    }
+
+    /**
+     * Set the value of adress2
+     *
+     * @return  self
+     */ 
+    public function setAdress2($adress2)
+    {
+        $this->adress2 = $adress2;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of postCode
+     */ 
+    public function getPostCode()
+    {
+        return $this->postCode;
+    }
+
+    /**
+     * Set the value of postCode
+     *
+     * @return  self
+     */ 
+    public function setPostCode($postCode)
+    {
+        $this->postCode = $postCode;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idCity
+     */ 
+    public function getIdCity()
+    {
+        return $this->idCity;
+    }
+
+    /**
+     * Set the value of idCity
+     *
+     * @return  self
+     */ 
+    public function setIdCity($idCity)
+    {
+        $this->idCity = $idCity;
 
         return $this;
     }

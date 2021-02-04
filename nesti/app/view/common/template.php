@@ -10,11 +10,20 @@
 
 <body>
     <?php 
-     if ($loc !='connection'){
+     if ($url !='connection'){
         include(PATH_VIEW.'common/header.php');
         include(PATH_VIEW.'common/navigation.php');
     }
-    include(PATH_VIEW.'content/page_content.php'); 
+
+    if (isset($view)){
+        include($view->getFile());
+    } else {
+        //error
+    }
+    
+
+
+    //include(PATH_VIEW.'content/page_content.php'); 
     //   $query->disconnect();?>
   
 

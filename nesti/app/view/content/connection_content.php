@@ -2,7 +2,7 @@
     <div class="container h-100 d-flex" style="max-width:70%">
         <div class="container border my-auto bg-white" id="connectionForm">
             <div class="login-form d-flex justify-content-center">
-                <form action="index.php?loc=recipe" method="POST">
+                <form action="recipe" method="POST">
                     <h2 class="text-center mb-5">Log in</h2>
                     <div class="form-group">
                         <label for="emailConnection">Email</label>

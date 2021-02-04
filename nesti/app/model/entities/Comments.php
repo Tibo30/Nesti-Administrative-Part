@@ -1,6 +1,5 @@
 <?php
 class Comments{
-    private $idComments;
     private $commentTitle;
     private $commentContent;
     private $creationDate;
@@ -9,26 +8,6 @@ class Comments{
     private $idModerator;
     private $idUser;
     
-
-    /**
-     * Get the value of idComments
-     */ 
-    public function getIdComments()
-    {
-        return $this->idComments;
-    }
-
-    /**
-     * Set the value of idComments
-     *
-     * @return  self
-     */ 
-    public function setIdComments($idComments)
-    {
-        $this->idComments = $idComments;
-
-        return $this;
-    }
 
     /**
      * Get the value of commentTitle

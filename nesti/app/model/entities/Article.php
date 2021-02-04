@@ -9,8 +9,27 @@ class Article
     private $idUnitMeasure;
     private $idProduct;
     private $idPictures;
+// constructor
+public function __construct(array $data){
+    $this->idArticle=$data['id_article'];
+    $this->quantityPerUnit=$data['quantity_per_unit'];
+    $this->state=$data['state'];
+    $this->creationDate=$data['creation_date'];
+    $this->updateDate=$data['update_date'];
+    $this->idUnitMeasure=$data['id_unit_measures'];
+    $this->idProduct=$data['id_products'];
+    $this->idPictures=$data['id_pictures'];
+}
 
-
+// // hydration
+// public function hydrate (array $data){
+//     foreach($data as $key => $value){
+//         $method='set'.ucfirst($key);
+//         if(method_exists($this,$method)){
+//             $this->$method($value);
+//         }
+//     }
+// }
 
     /**
      * Get the value of idArticle

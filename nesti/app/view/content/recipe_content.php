@@ -6,6 +6,7 @@
             <button class="btn btn-outline-success my-1 my-sm-0" type="submit">Search</button>
         </form>        
     </nav>
+    <h1>Recipes</h1>
     <a href="index.php? loc=add" class="btn mb-1 border align-self-end">+ Add Recipe</a>
     <table class="table table-hover text-center">
         <thead>

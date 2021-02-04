@@ -3,9 +3,9 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>NESTI</title>
+  <title><?= $title ?></title>
     <!-- CSS -->
-    <link href="public/css/style.css" rel="stylesheet">
+    <link href="<?php BASE_URL ?>public/css/style.css" rel="stylesheet">
 
     <!-- Font Awesomme -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"

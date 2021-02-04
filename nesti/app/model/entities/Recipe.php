@@ -10,6 +10,19 @@ class Recipe{
     private $idPicture;
     private $idChief;
 
+// constructor
+public function __construct(array $data){
+    $this->idRecipe=$data['id_recipes'];
+    $this->creationDate=$data['creation_date'];
+    $this->recipeName=$data['recipe_name'];
+    $this->difficulty=$data['difficulty'];
+    $this->numberOfPeople=$data['number_of_people'];
+    $this->state=$data['state'];
+    $this->time=$data['time'];
+    $this->idPicture=$data['id_pictures'];
+    $this->idChief=$data['id_chief'];
+}
+
     /**
      * Get the value of idRecipe
      */ 

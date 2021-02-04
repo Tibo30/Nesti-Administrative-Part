@@ -6,20 +6,20 @@
   </button>
   <div class="collapse navbar-collapse justify-content-around" id="navbarResponsive">
     <ul class="navbar-nav">
-      <li class="nav-item <?= ($loc == 'recipe') ? 'active' : ''; ?> px-lg-4">
-        <a class="nav-link" href="http://<?= BASE_URL ?>index.php?loc=recipe">Recipes</a>
+      <li class="nav-item <?= ($url == 'recipe') ? 'active' : ''; ?> px-lg-4">
+        <a class="nav-link" href="recipe">Recipes</a>
       </li>
-      <li class="nav-item <?= ($loc == 'article') ? 'active' : ''; ?> px-lg-4">
-        <a class="nav-link" href="http://<?= BASE_URL ?>index.php?loc=article">Articles</a>
+      <li class="nav-item <?= ($url == 'article') ? 'active' : ''; ?> px-lg-4">
+        <a class="nav-link" href="article">Articles</a>
       </li>
-      <li class="nav-item <?= ($loc == 'user') ? 'active' : ''; ?> px-lg-4">
-        <a class="nav-link" href="http://<?= BASE_URL ?>index.php?loc=user">Users</a>
+      <li class="nav-item <?= ($url == 'user') ? 'active' : ''; ?> px-lg-4">
+        <a class="nav-link" href="user">Users</a>
       </li>
-      <li class="nav-item <?= ($loc == 'statistic') ? 'active' : ''; ?> px-lg-4">
-        <a class="nav-link" href="http://<?= BASE_URL ?>index.php?loc=statistic">Statistics</a>
+      <li class="nav-item <?= ($url == 'statistic') ? 'active' : ''; ?> px-lg-4">
+        <a class="nav-link" href="statistic">Statistics</a>
       </li>
-      <li class="nav-item <?= ($loc == 'logOut') ? 'active' : ''; ?> px-lg-4">
-        <a class="nav-link" href="http://<?= BASE_URL ?>index.php?loc=logOut">Log Out</a>
+      <li class="nav-item <?= ($url == 'logOut') ? 'active' : ''; ?> px-lg-4">
+        <a class="nav-link" href="logOut">Log Out</a>
       </li>
     </ul>
   </div>
