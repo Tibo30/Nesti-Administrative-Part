@@ -1,3 +1,27 @@
+
+
+:root{
+    --primaryColor: #00838F;
+    --primaryLightColor: #4FB3BF;
+    --primaryDarkColor: #005662;
+
+    --secondaryColor: #FBC02D;
+    --secondaryLightColor: #FFF263;
+    --secondaryDarkColor: #C49000;
+
+    --classicColor: #414141;
+    --classicColor2: #606267;
+    --classicColor3: #ECECEC;
+    --classicColor4: #FFFFFF;
+
+    --colorButtonDisabled:#ececec;
+    --colorButtonInformation:#4FB3BF;
+    --colorButtonDanger:#fb3939;
+    --colorButtonAlert:#fac02e;
+    --colorButtonValidate:#b0d41c;
+
+}
+
 #connectionForm{
     max-width: 50%;
     padding: 5% 15% 5% 15%;
@@ -6,6 +30,31 @@
 
 h1{
     color:red;
+}
+
+#mainNav li>a{
+    color:white;
+}
+
+.active{
+    background-color: var(--secondaryColor);
+}
+.active>a{
+    color:var(--classicColor2) !important;
+}
+
+.navnesti{
+    color:var(--classicColor4);
+    background-color:var(--primaryDarkColor);
+    width: 65%;
+}
+
+.logOut{
+    width : 35%;
+}
+
+#mainNav form>a{
+color: var(--classicColor2);
 }
 
 #connectionPage{
@@ -19,35 +68,6 @@ h1{
     width: 40%;
 }
 
-#mainNav{
-    background-color: #005663;
-}
-
-#mainNav li{
-    background-color:#00838f;
-}
-
-#mainNav ul{
-    display: contents;
-}
-
-#mainNav ul a {
-    color:white;
-}
-
-.whiteNav{
-    background-color: white;
-}
-
-
-#mainNav .active{
-    background-color: #fac02e;
-    color: #483c32;
-}
-
-#mainNav .active a{
-    color: #483c32;
-}
 
 #recipePage h2{
     color: #00595a;
@@ -56,4 +76,28 @@ h1{
 #recipePage thead{
     background-color:#00838f ;
     color: white;
+}
+
+#searchRecipe{
+    position: absolute;
+    width: 10%;
+    left : 2%;
+}
+
+#customSearch{
+    margin: 0;
+    padding-left: 50px;
+}
+
+#addRecipe{
+    position: absolute;
+    left: 2%;
+    width: 20%;
+    z-index: 2;
+}
+
+#btnAddRecipe{
+    position: relative;
+    margin: 0;
+    padding-left: 50px;
 }
