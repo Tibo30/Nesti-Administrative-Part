@@ -1,8 +1,9 @@
-RewriteEngine On
+RewriteEngine ON
 
-RewriteRule ^recipe$            index.php?url=recipe [L]
+RewriteRule ^recipe$                              index.php?url=recipe [L]
 
-RewriteRule ^([a-z]+)$          index.php?url=$1 [L]
+RewriteRule ^([a-z]+)$                            index.php?url=$1 [L]
 
+RewriteRule ^([a-z]+)/([a-z]+)$                   index.php?url=$1/$2 [L]
 
-
+RewriteRule ^([a-z]+)/([a-z]+)/([0-9]+)$          index.php?url=$1/$2&id=$3 [L]

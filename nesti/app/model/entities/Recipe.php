@@ -8,10 +8,12 @@ class Recipe{
     private $state;
     private $time;
     private $idPicture;
-    private $idChief;
+    private $chiefName;
 
 // constructor
-public function __construct(array $data){
+
+
+public function hydration($data){
     $this->idRecipe=$data['id_recipes'];
     $this->creationDate=$data['creation_date'];
     $this->recipeName=$data['recipe_name'];
@@ -20,7 +22,8 @@ public function __construct(array $data){
     $this->state=$data['state'];
     $this->time=$data['time'];
     $this->idPicture=$data['id_pictures'];
-    $this->idChief=$data['id_chief'];
+    $this->chiefName=$data['lastname'];
+    return $this;
 }
 
     /**
@@ -184,21 +187,21 @@ public function __construct(array $data){
     }
 
     /**
-     * Get the value of idChief
+     * Get the value of chiefName
      */ 
-    public function getIdChief()
+    public function getChiefName()
     {
-        return $this->idChief;
+        return $this->chiefName;
     }
 
     /**
-     * Set the value of idChief
+     * Set the value of chiefName
      *
      * @return  self
      */ 
-    public function setIdChief($idChief)
+    public function setChiefName($chiefName)
     {
-        $this->idChief = $idChief;
+        $this->chiefName = $chiefName;
 
         return $this;
     }

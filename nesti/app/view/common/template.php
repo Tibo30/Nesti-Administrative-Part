@@ -1,27 +1,25 @@
-<html>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <?php include(PATH_VIEW.'common/head.php'); ?>
-
-</head>
-
+<?php include(PATH_VIEW.'common/head.php'); ?>
 <body>
     <?php 
+//echo "template / ";
+
      if ($url !='connection'){
         include(PATH_VIEW.'common/header.php');
         include(PATH_VIEW.'common/navigation.php');
     }
-
+if ($url=="recipe_edit"||$url=="recipe_add"||$url=="recipe_delete"){
+   // echo "temp^late ";
+}    
+//echo "template2 / ";
     if (isset($view)){
+       // echo " view la / ".$view->getFile()."/";
         include($view->getFile());
+        //echo "view OK : ";
     } else {
         //error
     }
     
-
+//echo "template3 / ";
 
     //include(PATH_VIEW.'content/page_content.php'); 
     //   $query->disconnect();?>
