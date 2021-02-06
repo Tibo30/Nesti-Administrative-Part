@@ -9,10 +9,10 @@
     --secondaryLightColor: #FFF263;
     --secondaryDarkColor: #C49000;
 
-    --classicColor: #414141;
-    --classicColor2: #606267;
-    --classicColor3: #ECECEC;
-    --classicColor4: #FFFFFF;
+    --classicColorDark: #414141;
+    --classicColorGrey: #606267;
+    --classicColorLight: #ECECEC;
+    --classicColorWhite: #FFFFFF;
 
     --colorButtonDisabled:#ececec;
     --colorButtonInformation:#4FB3BF;
@@ -22,29 +22,43 @@
 
 }
 
+body{
+    font-family:"Nunito",sans-serif !important;
+}
+
 #connectionForm{
     max-width: 50%;
     padding: 5% 15% 5% 15%;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.15);   
 }
 
-h1{
-    color:red;
+h2{
+    font-weight: bolder;
+    color: #00595a;
+}
+
+h3{
+    font-weight: bold;
+    color: #00595a;
 }
 
 #mainNav li>a{
     color:white;
 }
 
-.active{
+#mainNav li{
+    background-color: var(--primaryColor);
+}
+
+#mainNav .active{
     background-color: var(--secondaryColor);
 }
 .active>a{
-    color:var(--classicColor2) !important;
+    color:var(--classicColorGrey) !important;
 }
 
 .navnesti{
-    color:var(--classicColor4);
+    color:var(--classicColorWhite);
     background-color:var(--primaryDarkColor);
     width: 65%;
 }
@@ -54,7 +68,7 @@ h1{
 }
 
 #mainNav form>a{
-color: var(--classicColor2);
+color: var(--classicColorGrey);
 }
 
 #connectionPage{
@@ -64,18 +78,13 @@ color: var(--classicColor2);
 }
 
 #connectionPage button{
-    background-color: #51b1c1;
+    background-color: var(--colorButtonInformation);
     width: 40%;
 }
 
-
-#recipePage h2{
-    color: #00595a;
-}
-
 #recipePage thead{
-    background-color:#00838f ;
-    color: white;
+    background-color:var(--primaryColor) ;
+    color: var(--classicColorWhite);
 }
 
 #searchRecipe{
@@ -101,3 +110,35 @@ color: var(--classicColor2);
     margin: 0;
     padding-left: 50px;
 }
+
+.underLink>a,.underLink>p{
+    color:var(--primaryLightColor);
+}
+
+#submitRecipe, #okRecipe{
+    background-color:var( --colorButtonValidate);
+}
+
+#cancelRecipe{
+    background-color:var( --colorButtonInformation);
+    color: var(--classicColorWhite);
+}
+
+#addParagraph>div{
+    color: var(--primaryLightColor);
+    font-size: 50px;
+}
+#addParagraph{
+    width: 100%;
+    background-color: var(--classicColorWhite) ;
+    border:1px dashed rgb(184, 183, 183);
+}
+
+textarea[readonly]{
+    background-color:red;
+    box-shadow: none;
+  }
+ 
+  textarea{
+      resize: none;
+  }

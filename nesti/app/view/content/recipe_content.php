@@ -17,7 +17,19 @@
         
     </div>
 
-    <table class="table-borderless table-striped" id="table" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearch" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="right">
+    <table class="table-borderless table-striped" 
+    id="table" 
+    data-toggle="table" 
+    data-sortable="true" 
+    data-pagination="true" 
+    data-pagination-pre-text="Previous" 
+    data-pagination-next-text="Next" 
+    data-search="true" 
+    data-search-align="left" 
+    data-search-selector="#customSearch" 
+    data-locale="eu-EU" 
+    data-toolbar="#toolbar" 
+    data-toolbar-align="left">
         <thead>
             <th>ID</th>
 

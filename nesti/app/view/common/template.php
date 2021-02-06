@@ -22,8 +22,7 @@
 
     //echo "template3 / ";
 
-    //include(PATH_VIEW.'content/page_content.php'); 
-    //   $query->disconnect();
+    //include(PATH_VIEW.'content/page_content.php');
     ?>
 
 

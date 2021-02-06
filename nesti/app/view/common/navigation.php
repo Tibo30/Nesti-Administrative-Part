@@ -6,7 +6,7 @@
 
   <div class="collapse navbar-collapse" id="navbarResponsive">
     <ul class="navbar-nav mr-auto navnesti justify-content-around">
-      <li class="nav-item m-xl-3 <?= ($url == 'recipe') ? 'active' : ''; ?>">
+      <li class="nav-item m-xl-3 <?= ($url == 'recipe'||$url == 'recipe_add'||$url == 'recipe_edit'||$url == 'recipe_delete') ? 'active' : ''; ?>">
       <!--<button class="btnnav"></button> -->
         <a class="nav-link " href="<?= BASE_URL ?>recipe">
           <i class="fas fa-clipboard-list mr-2"></i>
