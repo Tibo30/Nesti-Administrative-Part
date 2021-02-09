@@ -7,10 +7,10 @@ abstract class BaseController{
     protected $_data=[];
 
     public function __construct($url){
-        if (isset($_GET["url"]) && ($url[0]!="recipe" && count($url)>1)){
+        if (isset($_GET["url"]) && (($url[0]!="recipe" && count($url)>1)&&($url[0]!="article" && count($url)>1)&&($url[0]!="user" && count($url)>1))){
             throw new Exception ('Page introuvable');
         } else {
-            if ($url[0]=="recipe" && count($url)>1){
+            if (($url[0]=="recipe"|| $url[0]=="article"|| $url[0]=="user") && count($url)>1){
                 $this->_url=$url[0]."_".$url[1];
                // echo "url : ".$this->_url;
             } else {
@@ -28,7 +28,7 @@ abstract class BaseController{
     }
 
     public function getData(){
-        if (isset($this->_data)){
+        if (isset($this->_data) &&!empty($this->_data)){
             return $this->_data;
         }
     }

@@ -3,6 +3,12 @@ class Product{
     private $idProduct;
     private $productName;
 
+    public function hydration($data){
+        $this->idProduct=$data['id_products'];
+        $this->productName=$data['product_name'];
+        return $this;
+    }
+
     /**
      * Get the value of idProduct
      */ 

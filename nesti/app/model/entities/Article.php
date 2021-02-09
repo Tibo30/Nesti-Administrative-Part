@@ -9,8 +9,8 @@ class Article
     private $idUnitMeasure;
     private $idProduct;
     private $idPictures;
-// constructor
-public function __construct(array $data){
+
+public function hydration($data){
     $this->idArticle=$data['id_article'];
     $this->quantityPerUnit=$data['quantity_per_unit'];
     $this->state=$data['state'];

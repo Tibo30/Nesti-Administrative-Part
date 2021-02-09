@@ -7,8 +7,8 @@ class Recipe{
     private $numberOfPeople;
     private $state;
     private $time;
-    private $idPicture;
-    private $chiefName;
+    private Chief $chief;
+    private Picture $picture;
 
 // constructor
 
@@ -21,8 +21,8 @@ public function hydration($data){
     $this->numberOfPeople=$data['number_of_people'];
     $this->state=$data['state'];
     $this->time=$data['time'];
-    $this->idPicture=$data['id_pictures'];
-    $this->chiefName=$data['lastname'];
+    $this->picture=$data['picture'];
+    $this->chief=$data['chief'];
     return $this;
 }
 
@@ -167,41 +167,41 @@ public function hydration($data){
     }
 
     /**
-     * Get the value of idPicture
+     * Get the value of chief
      */ 
-    public function getIdPicture()
+    public function getChief()
     {
-        return $this->idPicture;
+        return $this->chief;
     }
 
     /**
-     * Set the value of idPicture
+     * Set the value of chief
      *
      * @return  self
      */ 
-    public function setIdPicture($idPicture)
+    public function setChief($chief)
     {
-        $this->idPicture = $idPicture;
+        $this->chief = $chief;
 
         return $this;
     }
 
     /**
-     * Get the value of chiefName
+     * Get the value of picture
      */ 
-    public function getChiefName()
+    public function getPicture()
     {
-        return $this->chiefName;
+        return $this->picture;
     }
 
     /**
-     * Set the value of chiefName
+     * Set the value of picture
      *
      * @return  self
      */ 
-    public function setChiefName($chiefName)
+    public function setPicture($picture)
     {
-        $this->chiefName = $chiefName;
+        $this->picture = $picture;
 
         return $this;
     }

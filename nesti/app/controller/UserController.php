@@ -1,5 +1,6 @@
 <?php
 require_once(PATH_VIEW.'View.php');
+require_once(PATH_MODEL.'entities/user.php');
 
 class UserController extends BaseController{
     private $userDAO;
@@ -13,8 +14,8 @@ class UserController extends BaseController{
 
         $users = $this->userDAO->getUsers();
         
-        $this->_view = new View('User');
-        $this->_data = ['user'=>$users,'url'=>$this->_url,"title"=>"User"];
+        $this->_view = new View($this->_url);
+        $this->_data = ['users'=>$users,'url'=>$this->_url,"title"=>"User"];
   
     }
 }

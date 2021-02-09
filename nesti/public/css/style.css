@@ -87,25 +87,30 @@ color: var(--classicColorGrey);
     color: var(--classicColorWhite);
 }
 
-#searchRecipe{
+#searchRecipe,#searchArticle{
     position: absolute;
     width: 10%;
     left : 2%;
 }
 
-#customSearch{
+
+#customSearchRecipe,#customSearchArticle{
     margin: 0;
     padding-left: 50px;
 }
 
-#addRecipe{
+#addRecipe, #addArticle, #addUser{
     position: absolute;
     left: 2%;
     width: 20%;
     z-index: 2;
 }
 
-#btnAddRecipe{
+#btnSeeOrders{
+    background-color: var(--secondaryColor);
+}
+
+#btnAddRecipe, #btnAddArticle, #btnAddUser{
     position: relative;
     margin: 0;
     padding-left: 50px;

@@ -3,6 +3,14 @@ class UnitMeasure{
     private $idUnitMeasure;
     private $name;
 
+
+    public function hydration($data){
+        $this->idUnitMeasure=$data['id_unit_measures'];
+        $this->name=$data['name'];
+        return $this;
+    }
+
+
     /**
      * Get the value of idUnitMeasure
      */ 

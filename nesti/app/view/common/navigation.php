@@ -12,7 +12,7 @@
           <i class="fas fa-clipboard-list mr-2"></i>
           Recipes</a>
       </li>
-      <li class="nav-item m-xl-3 <?= ($url == 'article') ? 'active' : ''; ?>">
+      <li class="nav-item m-xl-3 <?= ($url == 'article'||$url == 'article_add'||$url == 'article_orders') ? 'active' : ''; ?>">
         <a class="nav-link" href="<?= BASE_URL ?>article">
           <i class="fas fa-utensils mr-2"></i>
           Articles</a>

@@ -25,7 +25,7 @@ if (!isset($url)) {
 //echo "url :".$url." / ";
 //echo "index / ";
 
-$action = filter_input(INPUT_GET, "action", FILTER_SANITIZE_STRING) .
+//$action = filter_input(INPUT_GET, "action", FILTER_SANITIZE_STRING) .
 
     $_SESSION["email"] = "tiboJoy@hotmail.fr";
 $_SESSION["password"] = "test";

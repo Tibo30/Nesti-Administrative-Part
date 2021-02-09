@@ -6,7 +6,7 @@
     <div class="d-flex flex-row justify-content-between">
         <nav class="navbar navbar-white bg-white pl-0">
             <form class="form-inline">
-                <input class="form-control mr-sm-2" id="customSearch" type="search" placeholder="Search" aria-label="Search">
+                <input class="form-control mr-sm-2" id="customSearchRecipe" type="search" placeholder="Search" aria-label="Search">
                 <img id="searchRecipe" src="<?php BASE_URL ?>public/pictures/search-svg.svg" alt="">
             </form>
         </nav>
@@ -26,7 +26,7 @@
     data-pagination-next-text="Next" 
     data-search="true" 
     data-search-align="left" 
-    data-search-selector="#customSearch" 
+    data-search-selector="#customSearchRecipe" 
     data-locale="eu-EU" 
     data-toolbar="#toolbar" 
     data-toolbar-align="left">
@@ -47,14 +47,13 @@
         </thead>
         <tbody>
             <?php foreach ($recipes as $recipe) {
-
                 echo '<tr>';
                 echo '<td>' . $recipe->getIdRecipe() . '</td>';
                 echo '<td>' . $recipe->getRecipeName() . '</td>';
                 echo '<td>' . $recipe->getDifficulty() . '</td>';
                 echo '<td>' . $recipe->getNumberOfPeople() . '</td>';
                 echo '<td>' . $recipe->getTime() . '</td>';
-                echo '<td>' . $recipe->getChiefName() . '</td>';
+                echo '<td>' . $recipe->getChief()->getLastName() . '</td>';
                 echo '<td>';
                 echo '<a href="' . BASE_URL . 'recipe/edit/' . $recipe->getIdRecipe() . '">Modify</br></a>';
                 echo '<a href="' . BASE_URL . 'recipe/delete/' . $recipe->getIdRecipe() . '">Delete</a>';

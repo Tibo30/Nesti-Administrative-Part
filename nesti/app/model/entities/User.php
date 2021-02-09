@@ -10,8 +10,29 @@ class User{
     protected $creationDate;
     protected $adress1;
     protected $adress2;
-    protected $postCode;
+    protected $postcode;
     protected $idCity;
+
+// constructor
+
+public function __construct(){  
+}
+
+    public function hydration($data){
+        $this->idUser=$data['id_users'];
+        $this->lastname=$data['lastname'];
+        $this->firstname=$data['firstname'];
+        $this->username=$data['username'];
+        $this->email=$data['email'];
+        $this->password=$data['password'];
+        $this->state=$data['state'];
+        $this->creationDate=$data['creation_date'];
+        $this->adress1=$data['adress1'];
+        $this->adress2=$data['adress2'];
+        $this->postcode=$data['postcode'];
+        $this->idCity=$data['id_city'];
+        return $this;
+    }
 
     /**
      * Get the value of idUser
@@ -218,7 +239,7 @@ class User{
      */ 
     public function getPostCode()
     {
-        return $this->postCode;
+        return $this->postcode;
     }
 
     /**
@@ -226,9 +247,9 @@ class User{
      *
      * @return  self
      */ 
-    public function setPostCode($postCode)
+    public function setPostCode($postcode)
     {
-        $this->postCode = $postCode;
+        $this->postcode = $postcode;
 
         return $this;
     }

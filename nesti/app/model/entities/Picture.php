@@ -5,6 +5,15 @@ class Picture{
     private $name;
     private $extension;
 
+    public function hydration($data){
+        $this->idPicture=$data['id_pictures'];
+        $this->creationDate=$data['creation_date'];
+        $this->name=$data['name'];
+        $this->extension=$data['extension'];
+        return $this;
+    }
+
+
     /**
      * Get the value of idPicture
      */ 
