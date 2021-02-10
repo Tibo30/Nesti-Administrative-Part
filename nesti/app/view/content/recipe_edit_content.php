@@ -4,7 +4,7 @@
         </a>
         <p> &nbsp > create</p>
     </div>
-    <div class="d-flex flex-row justify-content-between">
+    <div class="d-flex flex-row justify-content-around">
         <div class="d-flex flex-column">
             <h2 class="mb-2 mt-2">Recipe Edit</h2>
             <form>
@@ -26,13 +26,14 @@
                     <div class="col-2 p-0"><input type="text" class="form-control" id="inputPreparationTime" value="<?= $recipe->getTime() ?>"></div>
                 </div>
                 <div class="d-flex flex-row">
-                    <button id="submitRecipe" type="submit" class="btn mr-5">Submit</button>
-                    <button id="cancelRecipe" type="submit" class="btn">Cancel</button>
+                    <button id="submitEditRecipe" type="submit" class="btn mr-5">Submit</button>
+                    <button id="cancelEditRecipe" type="submit" class="btn">Cancel</button>
                 </div>
 
             </form>
         </div>
         <div>
+        <div id="pictureEdit" class="bg-light border mb-2"></div>
             <label class="form-label" for="customFile">Download a new picture</label>
             <div class="custom-file">
                 <input type="file" class="custom-file-input" id="InputFile">
@@ -50,7 +51,7 @@
                     echo '<textarea class="form-control mb-2" id="paragraph1" rows="5" style="resize: none;">' . $paragraph->getContent() . '</textarea>';
                 }
                 ?>
-                <button id="addParagraph" class="btn">
+                <button id="addParagraphEditRecipe" class="btn">
                     <div class="fas fa-plus"></div>
                 </button>
             </div>
@@ -60,13 +61,20 @@
             <div class="form-group">
                 <textarea class="form-control mb-2" id="list" rows="15" readonly style="resize: none;">
                 <?php foreach ($ingredients as $ingredient) {
-                    echo '<p>' . $ingredient->getQuantity() . "" . $ingredient->getUnitMeasure()->getName()." de " . $ingredient->getIngredient()->getProductName() . '</tp>';
+                    echo strip_tags(' <p> ' . $ingredient->getQuantity() . " " . $ingredient->getUnitMeasure()->getName()." de " . $ingredient->getIngredient()->getProductName() . ' </p><br>');
                 }
                 ?>
                 </textarea>
                 <div class="col-12 p-0 mb-3">
-                    <label for="inputIngredientName">Add an ingredient</label>
-                    <input type="text" class="form-control p-0" id="inputIngredientName">
+                <label for="inputIngredientNameEditRecipe">Add an ingredient</label>
+                <input list="ingredientsEdit" type="text" class="form-control p-0" id="inputIngredientNameEditRecipe">
+                <datalist id="ingredientsEdit">
+                <?php 
+                foreach($listAllIngredients as $ingredients){
+                    echo '<option value="'.($ingredients->getProductName()).'">' ;
+                }
+                ?>
+                </datalist>
                 </div>
                 <div class="mx-0 p-0 form-group row justify-content-between">
                     <div class="col-4 p-0"><input type="text" class="form-control" placeholder="Quantity"></div>

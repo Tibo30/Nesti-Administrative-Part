@@ -13,7 +13,7 @@ class RecipeIngredients
         $this->order = $data['order'];
         $this->unitMeasure = $data['unitMeasure'];
         $this->idRecipe = $data['id_recipes'];
-        $this->ingredient = $data['ingredients'];
+        $this->ingredient = $data['ingredient'];
         return $this;
     }
 

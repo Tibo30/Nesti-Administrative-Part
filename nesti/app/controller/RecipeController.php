@@ -8,12 +8,15 @@ class RecipeController extends BaseController
 
     public function initialize()
     {
-        if (($this->_url) == "recipe" || ($this->_url) == "recipe_add") {
+       
+        if (($this->_url) == "recipe") {
             $this->recipes();
-        } else {
+        } else if (($this->_url) == "recipe_add") {
+            $this->addRecipe();
+        } else if (($this->_url) == "recipe_edit") {
             $idRecipe = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
             if (isset($idRecipe)) {
-                $this->recipe($idRecipe);
+                $this->modifyRecipe($idRecipe);
             }
         }
     }
@@ -25,16 +28,23 @@ class RecipeController extends BaseController
         $this->_view = new View($this->_url);
         $this->_data = ['recipes' => $recipes, 'url' => $this->_url, "title" => "Recipes"];
     }
-    private function recipe($idRecipe)
+
+
+    private function modifyRecipe($idRecipe)
     {
         $this->recipeDAO = new RecipeDAO();
         $recipe = $this->recipeDAO->getRecipe($idRecipe);
         $paragraphs = $this->recipeDAO->getParagraphs($idRecipe);
         $ingredients = $this->recipeDAO->getIngredients($idRecipe);
-        echo sizeof($ingredients);
+        $listAllIngredients = $this->recipeDAO->getAllIngredients();
         $this->_view = new View($this->_url);
-        $this->_data = ['recipe' => $recipe, 'paragraphs' => $paragraphs,'ingredients' => $ingredients, 'url' => $this->_url, "title" => "Recipes"];
+        $this->_data = ['recipe' => $recipe, 'paragraphs' => $paragraphs, 'ingredients' => $ingredients, 'listAllIngredients' => $listAllIngredients, 'url' => $this->_url, "title" => "Recipes"];
     }
 
-    
+    private function addRecipe(){
+        $this->recipeDAO = new RecipeDAO();
+        $listAllIngredients = $this->recipeDAO->getAllIngredients();
+        $this->_view = new View($this->_url);
+        $this->_data = ['listAllIngredients' => $listAllIngredients, 'url' => $this->_url, "title" => "Recipes"];
+    }
 }

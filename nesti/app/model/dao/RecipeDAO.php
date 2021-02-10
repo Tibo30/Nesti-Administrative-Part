@@ -65,21 +65,37 @@ class RecipeDAO extends ModelDAO
     public function getIngredients($idRecipe)
     {
         $var = [];
-        $req = self::$_bdd->prepare('SELECT r.quantity, r.order, r.id_unit_measures, p.id_products, p.product_name FROM recipe_ingredients r JOIN ingredients i ON r.id_ingredients = i.id_ingredients JOIN products p ON p.id_products = i.id_ingredients WHERE r.id_recipes=:id');
+        $req = self::$_bdd->prepare('SELECT r.quantity, r.order, r.id_unit_measures,r.id_recipes, p.id_products, p.product_name FROM recipe_ingredients r JOIN ingredients i ON r.id_ingredients = i.id_ingredients JOIN products p ON p.id_products = i.id_ingredients WHERE r.id_recipes=:id');
         $req->execute(array("id" => $idRecipe));
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($data as $row) {
-                $recipeIngredient=new RecipeIngredients();
+                $recipeIngredient = new RecipeIngredients();
                 // create the object ingredient
                 $ing = new Ingredients();
-                $dataIng = $ing->hydration(['id_products', 'product_name']);
+                $ingHyd = array('id_products' => $row['id_products'], 'product_name' => $row['product_name']);
+                $dataIng = $ing->hydration($ingHyd);
                 // create the object unit measure
                 $modelDAO = new ModelDAO();
                 $unit = $modelDAO->getUnitMeasure($row['id_unit_measures']);
                 // add ingredient and unit measure to the data $row
-                $row['ingredient']=$dataIng;
-                $row['unitMeasure']=$unit;
-                $var[]=$recipeIngredient->hydration($row);
+                $row['ingredient'] = $dataIng;
+                $row['unitMeasure'] = $unit;
+                $var[] = $recipeIngredient->hydration($row);
+            }
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $var;
+    }
+
+    public function getAllIngredients()
+    {
+        $var = [];
+        $req = self::$_bdd->prepare('SELECT p.id_products, p.product_name FROM products p JOIN ingredients i ON p.id_products = i.id_ingredients');
+        $req->execute();
+        if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($data as $row) {
+               $ingredients= new Ingredients();
+                $var[] = $ingredients->hydration($row);
             }
         }
         $req->closeCursor(); // release the server connection so it's possible to do other query
