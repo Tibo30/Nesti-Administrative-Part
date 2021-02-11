@@ -34,7 +34,7 @@
         <i class="fas fa-user mr-2"></i>
         <?php echo $_SESSION["lastname"] . " " . $_SESSION["firstname"] ?>
       </a>
-      <a class="nav-link" href="<?= BASE_URL ?>logOut">
+      <a class="nav-link" href="<?= BASE_URL ?>disconnection">
         <i class="fas fa-sign-out-alt mr-2"></i>
         Log Out</a>
     </form>

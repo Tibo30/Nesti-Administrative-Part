@@ -136,7 +136,7 @@ color: var(--classicColorGrey);
     color:var(--primaryLightColor);
 }
 
-#submitNewRecipe,#submitEditRecipe, #okRecipe{
+#submitNewRecipe,#submitEditRecipe, #okRecipe,#submitEditArticle{
     background-color:var( --colorButtonValidate);
 }
 
@@ -149,6 +149,12 @@ color: var(--classicColorGrey);
     color: var(--primaryLightColor);
     font-size: 50px;
 }
+
+#deleteEditArticle{
+    background-color:var(    --colorButtonDanger);
+    color: var(--classicColorWhite);
+}
+
 #addParagraphNewRecipe,#addParagraphEditRecipe{
     width: 100%;
     background-color: var(--classicColorWhite) ;
@@ -163,3 +169,18 @@ textarea[readonly]{
   textarea{
       resize: none;
   }
+
+  .btn-remove-ingredients{
+      color:var(--colorButtonInformation);
+    cursor: pointer;
+  }
+
+  .custom-file-input ~ .custom-file-label::after {
+    content: "choisir";
+}
+
+#importArticle{
+    background-color: var(--colorButtonValidate);
+    color: var(--primaryDarkColor);
+    width: 30%;
+}
