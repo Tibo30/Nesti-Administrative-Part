@@ -17,9 +17,8 @@ class UserController extends BaseController
     {
         $this->userDAO = new UserDAO();
 
-        $users = $this->userDAO->getUsers();
-
+        $data = $this->userDAO->getUsers();
         $this->_view = new View($this->_url);
-        $this->_data = ['users' => $users, 'url' => $this->_url, "title" => "User"];
+        $this->_data = ['data'=>$data,'users' => $data['users'],'logs'=>$data['log'], 'url' => $this->_url, "title" => "User"];
     }
 }

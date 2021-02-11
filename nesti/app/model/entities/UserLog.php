@@ -4,6 +4,15 @@ class UserLog{
     private $connectionDate;
     private $idUser;
 
+    public function hydration($data){
+        $this->idUserLog=$data['id_user_logs'];
+        $this->connectionDate=$data['connection_date'];
+        $this->idUser=$data['id_users'];
+        return $this;
+    }
+
+
+
     /**
      * Get the value of idUserLog
      */ 

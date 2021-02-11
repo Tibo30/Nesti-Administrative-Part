@@ -139,6 +139,18 @@ public function __construct(){
      */ 
     public function getState()
     {
+        switch($this->state){
+            case 'a':
+                $this->state="Accepted";
+                break;
+            case 'b':
+                $this->state="Blocked";
+                break;
+            case 'w':
+                $this->state="Waiting";
+                break;
+        }
+
         return $this->state;
     }
 

@@ -33,19 +33,20 @@
 
         </thead>
         <tbody>
-            <?php foreach ($users as $user) {
-
+            <?php $index=0;
+            foreach ($users as $user) {
                 echo '<tr>';
                 echo '<td>' . $user->getIdUser() . '</td>';
                 echo '<td>' . $user->getLastname() . ' ' .  $user->getFirstname() . '</td>';
-                echo '<td> Role </td>';
-                echo '<td> Last Connection </td>';
-                echo '<td> State </td>';
+                echo '<td>' . get_class($user) . '</td>';
+                echo '<td>'. $logs[$index]->getConnectionDate().' </td>';
+                echo '<td>' . $user->getState() . '</td>';
                 echo '<td>';
                 echo '<a href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . '">Modify</br></a>';
                 echo '<a href="' . BASE_URL . 'user/delete/' . $user->getIdUser() . '">Delete</a>';
                 echo '</td>';
                 echo '</tr>';
+                $index+=1;
             } ?>
         </tbody>
         </tbody>
