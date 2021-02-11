@@ -1,10 +1,4 @@
-<!-- <h1>Articles</h1> -->
-<!-- <?php
 
-        foreach ($articles as $article) : ?>
-<h2><?= $article->getIdProduct() ?></h2>
-<time><?= $article->getCreationDate() ?> </time>
-<?php endforeach; ?> -->
 
 <div class="container bg-light border d-flex flex-column align-items-left" id="recipePage">
     <h2 class="mb-5 mt-5">Article</h2>
@@ -20,7 +14,7 @@
             <a id="btnSeeOrders" href="article/orders" class="btn mb-1 border align-self-end"> <i class="fa fa-eye mr-2"></i>
                 Orders</a>
             <a id="btnAddArticle" href="article/add" class="btn mb-1 border align-self-end"> <img id="addArticle" src="<?php BASE_URL ?>public/pictures/create-svg.svg" alt="svg plus">
-                Add Article</a>
+               Import</a>
         </div>
 
     </div>

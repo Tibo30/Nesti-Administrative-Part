@@ -1,8 +1,8 @@
 <div class="container bg-white align-items-left" id="recipePage">
     <div class="d-flex flex-row underLink">
-        <a href="<?= BASE_URL ?>recipe"><u>recipes</u>
+        <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>
         </a>
-        <p> &nbsp > create</p>
+        <p> &nbsp > Create</p>
     </div>
     <div class="d-flex flex-row justify-content-around">
         <div class="d-flex flex-column">
@@ -27,10 +27,10 @@
                 </div>
                 <div class="d-flex flex-row">
                     <button id="submitNewRecipe" type="submit" class="btn mr-5">Submit</button>
-                    <button id="cancelNewRecipe" type="submit" class="btn">Cancel</button>
+                    <button id="cancelNewRecipe" type="reset" class="btn">Cancel</button>
                 </div>
             </form>
-           
+
         </div>
         <div>
             <div id="pictureAdd" class="bg-light border mb-2"></div>
@@ -43,7 +43,7 @@
         </div>
     </div>
 
-    <div class="container px-0 mx-0 mt-3 bg-light d-flex flex-row justify-content-between <?= (isset($_POST)&&!empty($_POST)) ? 'visible' : 'invisible'; ?>" id="hiddenContentAddRecipe">
+    <div class="container px-0 mx-0 mt-3 bg-light d-flex flex-row justify-content-between <?= (isset($_POST) && !empty($_POST)) ? 'visible' : 'invisible'; ?>" id="hiddenContentAddRecipe">
         <div class="col-7">
             <h3 class="mb-2 mt-2">Preparation</h3>
             <div class="form-group">
@@ -56,7 +56,8 @@
         <div class="col-4">
             <h3 class="mb-2 mt-2">Ingredient List</h3>
             <div class="form-group">
-                <textarea class="form-control mb-2" id="list" rows="15" readonly style="resize: none;"></textarea>
+                <div id="addIngredientList" class="d-flex flex-column justify-content-between w-100 p-2 bg-white border">
+                </div>
                 <div class="col-12 p-0 mb-3">
                     <label for="inputIngredientNameAddRecipe">Add an ingredient</label>
                     <input list="ingredientsAdd" type="text" class="form-control p-0" id="inputIngredientNameAddRecipe">
@@ -71,7 +72,7 @@
                 <div class="mx-0 p-0 form-group row justify-content-between">
                     <div class="col-4 p-0"><input type="text" class="form-control" placeholder="Quantity"></div>
                     <div class="col-2 p-0"><input type="text" class="form-control" placeholder="Unit of Measure"></div>
-                    <button id="okRecipe" type="submit" class="btn mr-5">ok</button>
+                    <button id="okRecipeAdd" type="submit" class="btn mr-5">ok</button>
                 </div>
             </div>
         </div>

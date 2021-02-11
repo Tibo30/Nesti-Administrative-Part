@@ -19,6 +19,14 @@ document.addEventListener("DOMContentLoaded", function () {
             paragraph.innerHTML+='<textarea class="form-control mb-2" id="paragraph1" rows="5" style="resize: none;"></textarea>';
         });
     }
-  
+
+    var deleteIngredient = document.querySelectorAll(".btn-remove-ingredients");
+    deleteIngredient.forEach(element=>{
+        element.addEventListener('click',function(){
+            var parent = element.parentNode.parentNode;
+            parent.remove();
+        })
+    })
+
 
 });
