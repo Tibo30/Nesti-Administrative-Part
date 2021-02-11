@@ -12,6 +12,7 @@ class User{
     protected $adress2;
     protected $postcode;
     protected $idCity;
+    protected $roles=[];
 
 // constructor
 
@@ -31,6 +32,7 @@ public function __construct(){
         $this->adress2=$data['adress2'];
         $this->postcode=$data['postcode'];
         $this->idCity=$data['id_city'];
+        $this->roles=$data['roles'];
         return $this;
     }
 
@@ -282,6 +284,26 @@ public function __construct(){
     public function setIdCity($idCity)
     {
         $this->idCity = $idCity;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of roles
+     */ 
+    public function getRoles()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Set the value of roles
+     *
+     * @return  self
+     */ 
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
 
         return $this;
     }

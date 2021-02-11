@@ -1,27 +1,6 @@
 <?php
 class UserDAO extends ModelDAO
 {
-
-    // public function getUsers()
-    // {
-    //     return $this->getAll('users', 'User');
-    // }
-
-    // public function getUsers()
-    // {
-    //     $var = [];
-    //     $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.adress1, u.adress2, u.postcode,u.id_city FROM users u');
-    //     $req->execute();
-    //     if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
-    //         foreach ($data as $row) {
-    //             $user = new User();
-    //             $var[]=$user->hydration($row);
-    //         }
-    //     }
-    //     $req->closeCursor(); // release the server connection so it's possible to do other query
-    //     return $var;
-    // }
-
     public function getUsers()
     {
         $var = [];
@@ -31,20 +10,10 @@ class UserDAO extends ModelDAO
         $req->execute();
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($data as $row) {
-
                 // know the role
-                $role = $this->getRoles($row['id_users']);
-                switch ($role) {
-                    case "Chief":
-                        $user = new Chief();
-                        break;
-                    case "Admin":
-                        $user = new Admin();
-                        break;
-                    case "Moderator":
-                        $user = new Moderator();
-                        break;
-                }
+                $roles = $this->getRole($row['id_users']);
+                $user = new User();
+                $row['roles']=$roles;
                 $use[] = $user->hydration($row);
 
                 // create the user log
@@ -68,35 +37,46 @@ class UserDAO extends ModelDAO
         return $userLog;
     }
 
-    public function getRoles($idUser)
+    public function getRole($idUser)
     {
-        $role = "";
+        $role = [];
         $reqChief = self::$_bdd->prepare('SELECT id_users FROM chief WHERE id_users=:id');
         $reqAdmin = self::$_bdd->prepare('SELECT id_users FROM admin WHERE id_users=:id');
         $reqModerator = self::$_bdd->prepare('SELECT id_users FROM moderator WHERE id_users=:id');
         $reqChief->execute(array("id" => $idUser));
         $reqAdmin->execute(array("id" => $idUser));
         $reqModerator->execute(array("id" => $idUser));
-        if ($reqChief->fetch()) {
-            $role = "Chief";
-        } else if ($reqAdmin->fetch()) {
-            $role = "Admin";
-        } else if ($reqModerator->fetch()) {
-            $role = "Moderator";
+        if ($reqChief->rowcount()==1) {
+            $role[] = "Chief";
+        } 
+        if ($reqAdmin->rowcount()==1) {
+            $role[] = "Admin";
+        }
+        if ($reqModerator->rowcount()==1) {
+            $role[] = "Moderator";
+        } 
+        if($reqChief->rowcount()==0&&$reqAdmin->rowcount()==0&&$reqModerator->rowcount()==0) {
+            $role[] = "User";
         }
         return $role;
     }
 
     public function getOneUser($valueId)
     {
+        $var = [];
         $req = self::$_bdd->prepare('SELECT * FROM users WHERE id_users =:id ');
         $req->execute(array("id" => $valueId));
-        $user = new User();
         if ($data = $req->fetch()) {
-            $user->hydration($data);
+            $roles = $this->getRole($data['id_users']);
+            $user = new User();
+            $data['roles'] = $roles;
+            $use = $user->hydration($data);
+            // create the user log
+            $log = $this->getLog($data['id_users']);
+            $var = ['user' => $use, 'log' => $log];
         }
         $req->closeCursor(); // release the server connection so it's possible to do other query
-        return $user;
+        return $var;
     }
 
     // public function getOneUser($valueId)
@@ -119,31 +99,32 @@ class UserDAO extends ModelDAO
         $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.adress1, u.adress2, u.postcode, u.id_city FROM users u JOIN chief ch ON u.id_users = ch.id_users WHERE ch.id_users=:id');
         $req->execute(array("id" => $idChief));
         $chief =  $req->fetch();
-        $chiefUser = new Chief();
+        $chief['roles']="Chief";
+        $chiefUser = new User();
         $chiefUser->hydration($chief);
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $chiefUser;
     }
 
-    public function getAdmin($idAdmin)
-    {
-        $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.adress1, u.adress2, u.postcode, u.id_city FROM users u JOIN admin a ON u.id_users = a.id_users WHERE a.id_users=:id');
-        $req->execute(array("id" => $idAdmin));
-        $admin =  $req->fetch();
-        $adminUser = new Admin();
-        $adminUser->hydration($admin);
-        $req->closeCursor(); // release the server connection so it's possible to do other query
-        return $adminUser;
-    }
+    // public function getAdmin($idAdmin)
+    // {
+    //     $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.adress1, u.adress2, u.postcode, u.id_city FROM users u JOIN admin a ON u.id_users = a.id_users WHERE a.id_users=:id');
+    //     $req->execute(array("id" => $idAdmin));
+    //     $admin =  $req->fetch();
+    //     $adminUser = new User();
+    //     $adminUser->hydration($admin);
+    //     $req->closeCursor(); // release the server connection so it's possible to do other query
+    //     return $adminUser;
+    // }
 
-    public function getModerator($idModerator)
-    {
-        $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.adress1, u.adress2, u.postcode, u.id_city FROM users u JOIN moderator m ON u.id_users = m.id_users WHERE m.id_users=:id');
-        $req->execute(array("id" => $idModerator));
-        $moderator =  $req->fetch();
-        $moderatorUser = new Moderator();
-        $moderatorUser->hydration($moderator);
-        $req->closeCursor(); // release the server connection so it's possible to do other query
-        return $moderatorUser;
-    }
+    // public function getModerator($idModerator)
+    // {
+    //     $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.adress1, u.adress2, u.postcode, u.id_city FROM users u JOIN moderator m ON u.id_users = m.id_users WHERE m.id_users=:id');
+    //     $req->execute(array("id" => $idModerator));
+    //     $moderator =  $req->fetch();
+    //     $moderatorUser = new User();
+    //     $moderatorUser->hydration($moderator);
+    //     $req->closeCursor(); // release the server connection so it's possible to do other query
+    //     return $moderatorUser;
+    // }
 }

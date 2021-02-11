@@ -38,7 +38,7 @@
                 echo '<tr>';
                 echo '<td>' . $user->getIdUser() . '</td>';
                 echo '<td>' . $user->getLastname() . ' ' .  $user->getFirstname() . '</td>';
-                echo '<td>' . get_class($user) . '</td>';
+                echo '<td>' . implode(", ",$user->getRoles()). '</td>';
                 echo '<td>'. $logs[$index]->getConnectionDate().' </td>';
                 echo '<td>' . $user->getState() . '</td>';
                 echo '<td>';
