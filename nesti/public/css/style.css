@@ -98,14 +98,14 @@ color: var(--classicColorGrey);
     color: var(--classicColorWhite);
 }
 
-#searchRecipe,#searchArticle{
+#searchRecipe,#searchArticle,#searchUser{
     position: absolute;
     width: 10%;
     left : 2%;
 }
 
 
-#customSearchRecipe,#customSearchArticle{
+#customSearchRecipe,#customSearchArticle,#customSearchUser{
     margin: 0;
     padding-left: 50px;
 }
