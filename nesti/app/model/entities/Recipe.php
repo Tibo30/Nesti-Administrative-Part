@@ -7,7 +7,7 @@ class Recipe{
     private $numberOfPeople;
     private $state;
     private $time;
-    private Chief $chief;
+    private User $chief;
     private Picture $picture;
 
 // constructor
