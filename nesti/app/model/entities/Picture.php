@@ -13,7 +13,6 @@ class Picture{
         return $this;
     }
 
-
     /**
      * Get the value of idPicture
      */ 

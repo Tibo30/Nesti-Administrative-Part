@@ -8,43 +8,83 @@ class RecipeController extends BaseController
 
     public function initialize()
     {
-       
+        $data[] = null;
+        $this->recipeDAO = new RecipeDAO();
         if (($this->_url) == "recipe") {
-            $this->recipes();
+            $data = $this->recipes();
         } else if (($this->_url) == "recipe_add") {
-            $this->addRecipe();
+            if (isset($_POST) && !empty($_POST)) {
+                $data = $this->addRecipeAllIngredients();
+                $data = array_merge($data,$this->addRecipeDatabase());
+            }
         } else if (($this->_url) == "recipe_edit") {
             $idRecipe = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
             if (isset($idRecipe)) {
-                $this->modifyRecipe($idRecipe);
+                $data =  $this->modifyRecipe($idRecipe);
             }
         }
+        $data["title"] = "Recipes";
+        $data["url"] = $this->_url;
+        $this->_view = new View($this->_url);
+        $this->_data = $data;
     }
 
     private function recipes()
     {
-        $this->recipeDAO = new RecipeDAO();
         $recipes = $this->recipeDAO->getRecipes();
-        $this->_view = new View($this->_url);
-        $this->_data = ['recipes' => $recipes, 'url' => $this->_url, "title" => "Recipes"];
+        $data = ['recipes' => $recipes];
+        return $data;
     }
 
 
     private function modifyRecipe($idRecipe)
     {
-        $this->recipeDAO = new RecipeDAO();
         $recipe = $this->recipeDAO->getRecipe($idRecipe);
         $paragraphs = $this->recipeDAO->getParagraphs($idRecipe);
         $ingredients = $this->recipeDAO->getIngredients($idRecipe);
         $listAllIngredients = $this->recipeDAO->getAllIngredients();
-        $this->_view = new View($this->_url);
-        $this->_data = ['recipe' => $recipe, 'paragraphs' => $paragraphs, 'ingredients' => $ingredients, 'listAllIngredients' => $listAllIngredients, 'url' => $this->_url, "title" => "Recipes"];
+        $data = ['recipe' => $recipe, 'paragraphs' => $paragraphs, 'ingredients' => $ingredients, 'listAllIngredients' => $listAllIngredients];
+        return $data;
     }
 
-    private function addRecipe(){
-        $this->recipeDAO = new RecipeDAO();
+    private function addRecipeAllIngredients()
+    {
         $listAllIngredients = $this->recipeDAO->getAllIngredients();
-        $this->_view = new View($this->_url);
-        $this->_data = ['listAllIngredients' => $listAllIngredients, 'url' => $this->_url, "title" => "Recipes"];
+        $data = ['listAllIngredients' => $listAllIngredients];
+        return $data;
+    }
+
+    public function addRecipeDatabase()
+    {
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            var_dump($_POST);
+            //we initialize the error messages;
+            // $RecipeNameError = '';
+            // $DifficultyError = '';
+            // $NumberOfPeopleError = '';
+            // $PreparationTimeError = '';
+            // we get all the values from the inputs
+            $recipeName = filter_input(INPUT_POST, "recipeName");
+            $difficulty = filter_input(INPUT_POST, "difficulty", FILTER_SANITIZE_NUMBER_INT);
+            $numberOfPeople = filter_input(INPUT_POST, "numberOfPeople", FILTER_SANITIZE_NUMBER_INT);
+            $preparationTime = filter_input(INPUT_POST, "preparationTime", FILTER_SANITIZE_NUMBER_INT);
+
+            $recipeAdd = new Recipe();
+            $RecipeNameError = $recipeAdd->setRecipeName($recipeName);
+            $DifficultyError = $recipeAdd->setDifficulty($difficulty);
+            $NumberOfPeopleError = $recipeAdd->setNumberOfPeople($numberOfPeople);
+            $PreparationTimeError =  $recipeAdd->setTime($preparationTime);
+            $errorMessages=['recipeName'=>$RecipeNameError,'difficulty'=>$DifficultyError,'numberOfPeople'=>$NumberOfPeopleError,'preparationTime'=>$PreparationTimeError];
+            $data['errorMessages']= $errorMessages;
+
+            // if all the datas inputed are correct, we do the query
+            if ($RecipeNameError==null && $DifficultyError==null && $NumberOfPeopleError==null && $PreparationTimeError==null) {
+                $this->recipeDAO->addRecipe($recipeAdd);
+                $data['recipeAdd']=$recipeAdd;
+            }
+        }
+
+        return $data;
     }
 }

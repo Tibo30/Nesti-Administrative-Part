@@ -13,12 +13,13 @@ class RecipeDAO extends ModelDAO
                 // create the Chief Object base on is ID
                 $userDao = new UserDAO();
                 $chief = $userDao->getChief($row["id_chief"]);
-                // create the Picture Object base on is ID
-                $modelDAO = new ModelDAO();
-                $picture = $modelDAO->getPicture($row["id_pictures"]);
-                // add the chief and picture to the data $row
                 $row['chief'] = $chief;
-                $row['picture'] = $picture;
+                // create the Picture Object base on is ID
+                if (isset($row["id_pictures"])){
+                    $modelDAO = new ModelDAO();
+                    $picture = $modelDAO->getPicture($row["id_pictures"]);
+                    $row['picture'] = $picture;
+                }
                 $var[] = $item->hydration($row);
             }
         }
@@ -35,12 +36,13 @@ class RecipeDAO extends ModelDAO
         // create the Chief Object base on is ID
         $userDao = new UserDAO();
         $chief = $userDao->getChief($recipe["id_chief"]);
-        // create the Picture Object base on is ID
-        $modelDAO = new ModelDAO();
-        $picture = $modelDAO->getPicture($recipe["id_pictures"]);
-        // add the chief and picture to the data $row
         $recipe['chief'] = $chief;
-        $recipe['picture'] = $picture;
+        // create the Picture Object base on is ID
+        if (isset($row["id_pictures"])){
+            $modelDAO = new ModelDAO();
+            $picture = $modelDAO->getPicture($row["id_pictures"]);
+            $row['picture'] = $picture;
+        }
         $itemRecipe->hydration($recipe);
 
         $req->closeCursor(); // release the server connection so it's possible to do other query
@@ -100,5 +102,10 @@ class RecipeDAO extends ModelDAO
         }
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $var;
+    }
+
+    public function addRecipe($recipeAdd){
+        $req = self::$_bdd->prepare('INSERT INTO recipes (creation_date, recipe_name, difficulty, number_of_people,state,time,id_chief) VALUES (CURRENT_TIMESTAMP, :name, :difficulty, :number, "a", :time, :chief) ');
+        $req->execute(array("name"=>$recipeAdd->getRecipeName(),"difficulty"=>$recipeAdd->getDifficulty(),"number"=>$recipeAdd->getNumberOfPeople(),"time"=>$recipeAdd->getTimeDatabase(),"chief"=>$_SESSION["idUser"]));
     }
 }

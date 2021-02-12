@@ -61,7 +61,7 @@
             <div class="form-group">
                 <div class="d-flex flex-column justify-content-between w-100 p-2 bg-white border">
                 <?php foreach ($ingredients as $ingredient) {
-                    echo ' <div class="d-flex flex-row justify-content-between"> <p> ' . $ingredient->getQuantity() . " " . $ingredient->getUnitMeasure()->getName()." de " . $ingredient->getIngredient()->getProductName() . ' </p><div><a class="btn-remove-ingredients">Delete</a></div></div>';
+                    echo ' <div class="d-flex flex-row justify-content-between"> <p> ' . $ingredient->getQuantity() . " " . $ingredient->getUnitMeasure()->getName()." de " . $ingredient->getIngredient()->getProductName() . ' </p><div><a class="btn-remove-ingredients" onclick="deleteIngredient()">Delete</a></div></div>';
                 }
                 ?>
                 </div>

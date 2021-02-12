@@ -52,7 +52,7 @@
                 echo '<td>' . $recipe->getRecipeName() . '</td>';
                 echo '<td>' . $recipe->getDifficulty() . '</td>';
                 echo '<td>' . $recipe->getNumberOfPeople() . '</td>';
-                echo '<td>' . $recipe->getTime() . '</td>';
+                echo '<td>' . $recipe->getTime() . ' min </td>';
                 echo '<td>' . $recipe->getChief()->getLastName() . '</td>';
                 echo '<td>';
                 echo '<a href="' . BASE_URL . 'recipe/edit/' . $recipe->getIdRecipe() . '">Modify</br></a>';
