@@ -184,3 +184,15 @@ textarea[readonly]{
     color: var(--primaryDarkColor);
     width: 30%;
 }
+
+#buttonAddRecipePicture{
+    background-color: var(--colorButtonValidate);
+    color:var(--classicColorWhite);
+}
+
+#file-upload-button{
+    content:"chose a file";
+}
+#recipe-img{
+    content:none;
+}
