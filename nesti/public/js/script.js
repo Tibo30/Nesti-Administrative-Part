@@ -20,13 +20,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    var deleteIngredient = document.querySelectorAll(".btn-remove-ingredients");
-    deleteIngredient.forEach(element=>{
-        element.addEventListener('click',function(){
-            var parent = element.parentNode.parentNode;
-            parent.remove();
-        })
-    })
+    // var deleteIngredient = document.querySelectorAll(".btn-remove-ingredients");
+    // deleteIngredient.forEach(element=>{
+    //     element.addEventListener('click',function(){
+    //         var parent = element.parentNode.parentNode;
+    //         parent.remove();
+    //     })
+    // })
+
+   
 
 
 });
+function deleteIngredient(){
+    var parent = event.target.parentNode.parentNode;
+    parent.remove();
+}
