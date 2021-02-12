@@ -30,8 +30,10 @@ require_once(PATH_CONTROLLER . 'Rooter.php');
 $rooter = new Rooter();
 $rooter->rootReq($url);
 //---------------------------------------------------Extract the data---------------------------------------------------------//
+if (($rooter->getController()->getData())!=null){
+    extract($rooter->getController()->getData());
+}
 
-extract($rooter->getController()->getData());
 //------------------------------------------------Get the specific View file--------------------------------------------------//
 $view = $rooter->getController()->getView();
 //-------------------------------------------Go to template with this View file defined---------------------------------------//
