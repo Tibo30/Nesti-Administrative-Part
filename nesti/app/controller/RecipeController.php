@@ -59,16 +59,10 @@ class RecipeController extends BaseController
 
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
             var_dump($_POST);
-            //we initialize the error messages;
-            // $RecipeNameError = '';
-            // $DifficultyError = '';
-            // $NumberOfPeopleError = '';
-            // $PreparationTimeError = '';
-            // we get all the values from the inputs
-            $recipeName = filter_input(INPUT_POST, "recipeName");
-            $difficulty = filter_input(INPUT_POST, "difficulty", FILTER_SANITIZE_NUMBER_INT);
-            $numberOfPeople = filter_input(INPUT_POST, "numberOfPeople", FILTER_SANITIZE_NUMBER_INT);
-            $preparationTime = filter_input(INPUT_POST, "preparationTime", FILTER_SANITIZE_NUMBER_INT);
+            $recipeName = filter_input(INPUT_POST, "recipeName", FILTER_SANITIZE_STRING);
+            $difficulty = filter_input(INPUT_POST, "difficulty", FILTER_SANITIZE_STRING);
+            $numberOfPeople = filter_input(INPUT_POST, "numberOfPeople", FILTER_SANITIZE_STRING);
+            $preparationTime = filter_input(INPUT_POST, "preparationTime", FILTER_SANITIZE_STRING);
 
             $recipeAdd = new Recipe();
             $RecipeNameError = $recipeAdd->setRecipeName($recipeName);

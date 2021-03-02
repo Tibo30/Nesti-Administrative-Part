@@ -114,9 +114,12 @@ class Recipe
 
         if (empty($difficulty)) {
             $DifficultyError = 'Please enter a Number';
+            echo ("test1");
         } else if (!preg_match("/[0-5]{1}/", $difficulty)) {
+            echo ("test3");
             $DifficultyError = "Only one digit between 0 and 5 allowed";
         } else {
+            echo ("test2");
             $this->difficulty = $difficulty;
         }
         return $DifficultyError;

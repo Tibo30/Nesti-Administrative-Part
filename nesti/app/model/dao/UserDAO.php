@@ -1,12 +1,17 @@
 <?php
 class UserDAO extends ModelDAO
 {
+    public function addUser($userAdd){
+        $req = self::$_bdd->prepare('INSERT INTO users (lastname,firstname,username,email,password,state,creation_date,address1,address2,postcode,id_city) VALUES (:lastname, :firstname, :username, :email, :password, :state, CURRENT_TIMESTAMP, :address1, :address2, :postcode, :id_city) ');
+        $req->execute(array("lastname"=>$userAdd->getLastname(),"firstname"=>$userAdd->getFirstname(),"username"=>$userAdd->getUsername(),"email"=>$userAdd->getEmail(),"password"=>$userAdd->getPassword(),"state"=>$userAdd->getState(),"address1"=>$userAdd->getAddress1(),"address2"=>$userAdd->getAddress2(),"postcode"=>$userAdd->getPostCode(),"id_city"=>$userAdd->getIdCity()));
+    }
+    
     public function getUsers()
     {
         $var = [];
         $use = [];
         $log = [];
-        $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.adress1, u.adress2, u.postcode,u.id_city FROM users u');
+        $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.address1, u.address2, u.postcode,u.id_city FROM users u');
         $req->execute();
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($data as $row) {
@@ -79,24 +84,9 @@ class UserDAO extends ModelDAO
         return $var;
     }
 
-    // public function getOneUser($valueId)
-    // {
-    //     $req = self::$_bdd->prepare('SELECT * FROM users WHERE id_users =:id ');
-    //     $req->execute(array("id" => $valueId));
-    //     if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
-    //         foreach ($data as $row) {
-    //             $item = new User();
-    //             $var[] = $item->hydration($row);
-    //         }
-    //         //echo "donnee sql / ";
-    //     }
-    //     $req->closeCursor(); // release the server connection so it's possible to do other query
-    //     return $var;
-    // }
-
     public function getChief($idChief)
     {
-        $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.adress1, u.adress2, u.postcode, u.id_city FROM users u JOIN chief ch ON u.id_users = ch.id_users WHERE ch.id_users=:id');
+        $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.address1, u.address2, u.postcode, u.id_city FROM users u JOIN chief ch ON u.id_users = ch.id_users WHERE ch.id_users=:id');
         $req->execute(array("id" => $idChief));
         $chief =  $req->fetch();
         $chief['roles']="Chief";
@@ -106,25 +96,4 @@ class UserDAO extends ModelDAO
         return $chiefUser;
     }
 
-    // public function getAdmin($idAdmin)
-    // {
-    //     $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.adress1, u.adress2, u.postcode, u.id_city FROM users u JOIN admin a ON u.id_users = a.id_users WHERE a.id_users=:id');
-    //     $req->execute(array("id" => $idAdmin));
-    //     $admin =  $req->fetch();
-    //     $adminUser = new User();
-    //     $adminUser->hydration($admin);
-    //     $req->closeCursor(); // release the server connection so it's possible to do other query
-    //     return $adminUser;
-    // }
-
-    // public function getModerator($idModerator)
-    // {
-    //     $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.adress1, u.adress2, u.postcode, u.id_city FROM users u JOIN moderator m ON u.id_users = m.id_users WHERE m.id_users=:id');
-    //     $req->execute(array("id" => $idModerator));
-    //     $moderator =  $req->fetch();
-    //     $moderatorUser = new User();
-    //     $moderatorUser->hydration($moderator);
-    //     $req->closeCursor(); // release the server connection so it's possible to do other query
-    //     return $moderatorUser;
-    // }
 }
