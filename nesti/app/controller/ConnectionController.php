@@ -9,7 +9,6 @@ class ConnectionController extends BaseController
     {
         $this->connectionDAO = new ConnectionDAO();
         if (empty($_POST)) {
-            
             $this->_view = new View('connection');
             $this->_data = ['url' => $this->_url, "title" => "Connection"];
         } else {

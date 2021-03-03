@@ -2,9 +2,12 @@
 class UserDAO extends ModelDAO
 {
     public function addUser($userAdd){
+        echo($userAdd->getUsername());
         $req = self::$_bdd->prepare('INSERT INTO users (lastname,firstname,username,email,password,state,creation_date,address1,address2,postcode,id_city) VALUES (:lastname, :firstname, :username, :email, :password, :state, CURRENT_TIMESTAMP, :address1, :address2, :postcode, :id_city) ');
         $req->execute(array("lastname"=>$userAdd->getLastname(),"firstname"=>$userAdd->getFirstname(),"username"=>$userAdd->getUsername(),"email"=>$userAdd->getEmail(),"password"=>$userAdd->getPassword(),"state"=>$userAdd->getState(),"address1"=>$userAdd->getAddress1(),"address2"=>$userAdd->getAddress2(),"postcode"=>$userAdd->getPostCode(),"id_city"=>$userAdd->getIdCity()));
-    }
+   
+var_dump(array("lastname"=>$userAdd->getLastname(),"firstname"=>$userAdd->getFirstname(),"username"=>$userAdd->getUsername(),"email"=>$userAdd->getEmail(),"password"=>$userAdd->getPassword(),"state"=>$userAdd->getState(),"address1"=>$userAdd->getAddress1(),"address2"=>$userAdd->getAddress2(),"postcode"=>$userAdd->getPostCode(),"id_city"=>$userAdd->getIdCity()));   
+ }
     
     public function getUsers()
     {

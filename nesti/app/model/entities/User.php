@@ -75,7 +75,11 @@ class User
     public function setLastname($lastname)
     {
         $userLastnameError = "";
-        $this->lastName = $lastname;
+        if (empty($lastname)) {
+            $this->lastname = null;
+        } else {
+        $this->lastname = $lastname;
+        }
         return  $userLastnameError;
     }
 
@@ -95,7 +99,11 @@ class User
     public function setFirstname($firstname)
     {
         $userFirstnameError = "";
+        if (empty($firstname)) {
+            $this->firstname = null;
+        } else {
         $this->firstname = $firstname;
+        }
         return  $userFirstnameError;
     }
 
@@ -156,17 +164,17 @@ class User
      */
     public function getState()
     {
-        switch ($this->state) {
-            case 'a':
-                $this->state = "Accepted";
-                break;
-            case 'b':
-                $this->state = "Blocked";
-                break;
-            case 'w':
-                $this->state = "Waiting";
-                break;
-        }
+        // switch ($this->state) {
+        //     case 'a':
+        //         $this->state = "Accepted";
+        //         break;
+        //     case 'b':
+        //         $this->state = "Blocked";
+        //         break;
+        //     case 'w':
+        //         $this->state = "Waiting";
+        //         break;
+        // }
 
         return $this->state;
     }
@@ -179,7 +187,21 @@ class User
     public function setState($state)
     {
         $userStateError = "";
-        $this->state = $state;
+        if (empty($state)) {
+            $userStateError = 'Please enter a state';
+        } else {
+            switch ($state) {
+                case 'Accepted':
+                    $this->state = "a";
+                    break;
+                case 'Blocked':
+                    $this->state = "b";
+                    break;
+                case 'Waiting':
+                    $this->state = "w";
+                    break;
+            }
+        }
         return  $userStateError;
     }
 
@@ -214,13 +236,17 @@ class User
     /**
      * Set the value of username
      *
-     * @return  self
+     * @return  $userUsernameError
      */
     public function setUsername($username)
     {
-        $this->username = $username;
-
-        return $this;
+        $userUsernameError = "";
+        if (empty($username)) {
+            $userUsernameError = 'Please enter a username';
+        } else {
+            $this->username = $username;
+        }
+        return  $userUsernameError;
     }
 
     /**
@@ -234,13 +260,17 @@ class User
     /**
      * Set the value of address1
      *
-     * @return  self
+     * @return  $userAddress1Error
      */
     public function setAddress1($address1)
     {
+        $userAddress1Error = "";
+        if (empty($address1)) {
+            $this->address1 = null;
+        } else {
         $this->address1 = $address1;
-
-        return $this;
+        }
+        return  $userAddress1Error;
     }
 
     /**
@@ -254,13 +284,17 @@ class User
     /**
      * Set the value of address2
      *
-     * @return  self
+     * @return  $userAddress2Error
      */
     public function setAddress2($address2)
     {
+        $userAddress2Error = "";
+        if (empty($address2)) {
+            $this->address2 = null;
+        } else {
         $this->address2 = $address2;
-
-        return $this;
+        }
+        return  $userAddress2Error;
     }
 
     /**
@@ -274,13 +308,17 @@ class User
     /**
      * Set the value of postCode
      *
-     * @return  self
+     * @return  $userPostCodeError
      */
     public function setPostCode($postcode)
     {
+        $userPostCodeError = "";
+        if (empty($postcode)) {
+            $this->postcode = null;
+        } else {
         $this->postcode = $postcode;
-
-        return $this;
+        }
+        return  $userPostCodeError;
     }
 
     /**
@@ -294,13 +332,17 @@ class User
     /**
      * Set the value of idCity
      *
-     * @return  self
+     * @return  $userCityError
      */
     public function setIdCity($idCity)
     {
+        $userCityError = "";
+        if (empty($idCity)) {
+            $this->idCity = null;
+        } else {
         $this->idCity = $idCity;
-
-        return $this;
+        }
+        return  $userCityError;
     }
 
     /**
@@ -314,12 +356,16 @@ class User
     /**
      * Set the value of roles
      *
-     * @return  self
+     * @return  $userRolesError
      */
     public function setRoles($roles)
     {
+        $userRolesError = "";
+        if (empty($roles)) {
+            $this->roles = null;
+        } else {
         $this->roles = $roles;
-
-        return $this;
+        }
+        return  $userRolesError;
     }
 }

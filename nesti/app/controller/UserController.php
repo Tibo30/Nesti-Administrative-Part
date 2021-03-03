@@ -19,6 +19,9 @@ class UserController extends BaseController
                 $data = $this->modifyUser($idUser);
             }
         } else if ($this->_url == "user_add") {
+            if (isset($_POST) && !empty($_POST)) {
+                $data = $this-> addUserDatabase();
+            }
         }
         $data["title"] = "Users";
         $data["url"] = $this->_url;
@@ -62,17 +65,17 @@ class UserController extends BaseController
 
             $userAdd = new User();
             $userLastnameError = $userAdd->setLastname($userLastname);
-            $userFirstnameError = $userAdd->setLastname($userFirstname);
-            $userUsernameError = $userAdd->setLastname($userUsername);
-            $userEmailError = $userAdd->setLastname($userEmail);
-            $userPasswordError = $userAdd->setLastname($userPassword);
-            $userStateError = $userAdd->setLastname($userState);
-            $userAddress1Error = $userAdd->setLastname($userAddress1);
-            $userAddress2Error = $userAdd->setLastname($userAddress2);
-            $userPostCodeError = $userAdd->setLastname($userPostCode);
-            $userCityError = $userAdd->setLastname($userCity);
-            $userRolesError = $userAdd->setLastname($userRoles);
-            $errorMessages = ['userLastname' => $userLastnameError, 'userFirstname' => $userFirstnameError, 'userUsername' => $userUsernameError, 'userEmail' => $userEmailError, 'userPassword' => $userPasswordError, 'userState' => $userStateError, 'userAdress1' => $userAddress1Error, 'userAdress2' => $userAddress2Error,'userPostCode' => $userPostCodeError, 'userCity' => $userCityError, 'userRoles' => $userRolesError];
+            $userFirstnameError = $userAdd->setFirstname($userFirstname);
+            $userUsernameError = $userAdd->setUsername($userUsername);
+            $userEmailError = $userAdd->setEmail($userEmail);
+            $userPasswordError = $userAdd->setPassword($userPassword);
+            $userStateError = $userAdd->setState($userState);
+            $userAddress1Error = $userAdd->setAddress1($userAddress1);
+            $userAddress2Error = $userAdd->setAddress2($userAddress2);
+            $userPostCodeError = $userAdd->setPostCode($userPostCode);
+            $userCityError = $userAdd->setIdCity($userCity);
+            $userRolesError = $userAdd->setRoles($userRoles);
+            $errorMessages = ['userLastname' => $userLastnameError, 'userFirstname' => $userFirstnameError, 'userUsername' => $userUsernameError, 'userEmail' => $userEmailError, 'userPassword' => $userPasswordError, 'userState' => $userStateError, 'userAddress1' => $userAddress1Error, 'userAddress2' => $userAddress2Error,'userPostCode' => $userPostCodeError, 'userCity' => $userCityError, 'userRoles' => $userRolesError];
             $data['errorMessages'] = $errorMessages;
 
             // if all the datas inputed are correct, we do the query

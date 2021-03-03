@@ -136,11 +136,11 @@ color: var(--classicColorGrey);
     color:var(--primaryLightColor);
 }
 
-#submitNewRecipe,#submitEditRecipe, #okRecipe,#submitEditArticle{
+#submitNewRecipe, #submitNewUser,#submitEditRecipe, #okRecipe,#submitEditArticle{
     background-color:var( --colorButtonValidate);
 }
 
-#cancelNewRecipe,#cancelEditRecipe{
+#cancelNewRecipe, #cancelNewUser ,#cancelEditRecipe{
     background-color:var( --colorButtonInformation);
     color: var(--classicColorWhite);
 }
