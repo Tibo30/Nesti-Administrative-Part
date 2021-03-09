@@ -7,12 +7,14 @@ abstract class BaseController{
     protected $_data=[];
 
     public function __construct($url){
-        if (isset($_GET["url"]) && (($url[0]!="recipe" && count($url)>1)&&($url[0]!="article" && count($url)>1)&&($url[0]!="user" && count($url)>1))){
+        
+        if (isset($_GET["url"]) && ((($url[0]!="recipe")&&($url[0]!="article")&&($url[0]!="user")&&($url[0]!="statistic"))||($url[0]=="statistic" && count($url)>1))){
+           // echo $url;
             throw new Exception ('Page introuvable');
         } else {
             if (($url[0]=="recipe"|| $url[0]=="article"|| $url[0]=="user") && count($url)>1){
                 $this->_url=$url[0]."_".$url[1];
-               // echo "url : ".$this->_url;
+               //echo "url : ".$this->_url;
             } else {
                 $this->_url= $url[0];
             }
@@ -20,7 +22,7 @@ abstract class BaseController{
             $this->initialize();
         }
     }
-
+// return a view from View class
     public function getView():View{
         if(isset($this->_view)){
             return $this->_view;
