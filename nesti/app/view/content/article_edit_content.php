@@ -1,3 +1,9 @@
+<?php
+if (!isset($article)||empty($article)) {
+    $article = new Article();
+}
+?>
+
 <div class="container bg-white align-items-left" id="recipePage">
     <div class="d-flex flex-row underLink">
         <a href="<?= BASE_URL ?>article"><u>Articles</u>
@@ -10,11 +16,11 @@
             <form>
                 <div class="form-group">
                     <label for="articleFactoryName">Article factory name</label>
-                    <input type="text" class="form-control p-0" id="articleFactoryName" value="<?= $article->getArticleName() ?>">
+                    <input type="text" class="form-control p-0" id="articleFactoryName" value="<?= $article->getIdArticle() ?>">
                 </div>
                 <div class="form-group">
                     <label for="articleUserName">Article user name</label>
-                    <input type="text" class="form-control p-0" id="articleUserName" value="<?= $article->getArticleName() ?>">
+                    <input type="text" class="form-control p-0" id="articleUserName" value="<?= $article->getIdArticle() ?>">
                 </div>
                 <div class="mx-0 p-0 form-group row justify-content-between">
                     <label for="idArticle">ID</label>
@@ -22,11 +28,11 @@
                 </div>
                 <div class="mx-0 p-0 form-group row justify-content-between">
                     <label for="sellingPrice">Selling price</label>
-                    <div class="col-2 p-0"><input type="text" class="form-control" id="sellingPrice" value="<?= $article->getSellingPrice() ?>"></div>
+                    <div class="col-2 p-0"><input type="text" class="form-control" id="sellingPrice" value="<?= $article->getIdArticle() ?>"></div>
                 </div>
                 <div class="mx-0 p-0 form-group row justify-content-between">
                     <label for="stock">Stock</label>
-                    <div class="col-2 p-0"><input type="text" class="form-control" id="stock" value="<?= $article->getStock() ?>"></div>
+                    <div class="col-2 p-0"><input type="text" class="form-control" id="stock" value="<?= $article->getIdArticle() ?>"></div>
                 </div>
                 <div class="d-flex flex-row">
                     <button id="submitEditArticle" type="submit" class="btn mr-5">Submit</button>
