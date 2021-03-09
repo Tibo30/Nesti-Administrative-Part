@@ -19,7 +19,7 @@ class UserController extends BaseController
                 $data = $this->modifyUser($idUser);
             }
         } else if ($this->_url == "user_add") {
-            if (isset($_POST) && !empty($_POST)) {
+            if (!empty($_POST)) {
                 $data = $this-> addUserDatabase();
             }
         }
@@ -34,20 +34,20 @@ class UserController extends BaseController
 
         $user = $this->userDAO->getUsers();
 
-        $data = ['users' => $user['users'], 'logs' => $user['log'], 'url' => $this->_url, "title" => "User"];
+        $data = ['users' => $user['users'], 'url' => $this->_url, "title" => "User"];
         return $data;
     }
 
     private function modifyUser($idUser)
     {
         $user = $this->userDAO->getOneUser($idUser);
-        $data = ['user' => $user['user'], 'log' => $user['log'], 'url' => $this->_url, "title" => "User"];
+        $data = ['user' => $user['user'], 'url' => $this->_url, "title" => "User"];
         return $data;
     }
 
     private function addUserDatabase()
     {
-
+        $data=[];
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
             var_dump($_POST);
             $userLastname = filter_input(INPUT_POST, "userLastname", FILTER_SANITIZE_STRING);
