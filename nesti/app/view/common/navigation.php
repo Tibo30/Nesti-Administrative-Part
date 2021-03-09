@@ -1,3 +1,9 @@
+<?php
+if (!isset($url)) {
+    $url="";
+}
+?>
+
 <nav class="navbar navbar-expand-xl bg-light p-0" id="mainNav">
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">

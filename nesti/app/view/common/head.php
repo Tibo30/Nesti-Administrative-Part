@@ -1,3 +1,9 @@
+<?php
+if (!isset($title)) {
+  $title = "";
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

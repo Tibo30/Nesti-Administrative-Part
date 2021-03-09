@@ -1,3 +1,9 @@
+<?php
+if (!isset($url)) {
+    $url="";
+}
+?>
+
 <?php include(PATH_VIEW . 'common/head.php'); ?>
 
 <body>
