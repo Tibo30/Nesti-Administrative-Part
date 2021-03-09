@@ -22,26 +22,26 @@ class ModelDAO extends Database
         return $var;
     }
 
-    protected function getPicture($idPicture)
-    {
-        $req = self::$_bdd->prepare('SELECT * FROM pictures WHERE id_pictures=:id');
-        $req->execute(array("id" => $idPicture));
-        $picture =  $req->fetch();
-        $pictureObject = new Picture();
-        $pictureObject->hydration($picture);
-        $req->closeCursor(); // release the server connection so it's possible to do other query
-        return $pictureObject;
-    }
+    // protected function getPicture($idPicture)
+    // {
+    //     $req = self::$_bdd->prepare('SELECT * FROM pictures WHERE id_pictures=:id');
+    //     $req->execute(array("id" => $idPicture));
+    //     $picture =  $req->fetch();
+    //     $pictureObject = new Picture();
+    //     $pictureObject->hydration($picture);
+    //     $req->closeCursor(); // release the server connection so it's possible to do other query
+    //     return $pictureObject;
+    // }
     
-    public function getUnitMeasure($idUnit){
-        $req = self::$_bdd->prepare('SELECT * FROM unit_measures WHERE id_unit_measures=:id'); 
-        $req->execute(array("id" => $idUnit));
-        $unit =  $req->fetch();
-        $unitObject = new UnitMeasure();
-        $unitObject->hydration($unit);
-        $req->closeCursor(); // release the server connection so it's possible to do other query
-        return $unitObject;
-    }
+    // public function getUnitMeasure($idUnit){
+    //     $req = self::$_bdd->prepare('SELECT * FROM unit_measures WHERE id_unit_measures=:id'); 
+    //     $req->execute(array("id" => $idUnit));
+    //     $unit =  $req->fetch();
+    //     $unitObject = new UnitMeasure();
+    //     $unitObject->hydration($unit);
+    //     $req->closeCursor(); // release the server connection so it's possible to do other query
+    //     return $unitObject;
+    // }
     
 
 
