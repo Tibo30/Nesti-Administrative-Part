@@ -1,3 +1,33 @@
+<?php
+if (!isset($recipe)||empty($recipe)) {
+    $recipe = new Recipe();
+}
+if (!isset($paragraphs)){
+    $paragraphs=[];
+    if (!empty($paragraphs)){
+        foreach ($paragraphs as $paragraph) {
+            $paragraph = new Paragraph();
+        }
+    }
+}
+if (!isset($listAllIngredients)){
+    $listAllIngredients=[];
+    if (!empty($recipes)){
+        foreach ($recipes as $ingredients) {
+            $ingredients = new Ingredients();
+        }
+    }
+}
+if (!isset($ingredients)){
+    $ingredients=[];
+    if (!empty($ingredients)){
+        foreach ($ingredients as $ingredient) {
+            $ingredient = new Ingredients();
+        }
+    }
+}
+?>
+
 <div class="container bg-white align-items-left" id="recipePage">
     <div class="d-flex flex-row underLink">
         <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>

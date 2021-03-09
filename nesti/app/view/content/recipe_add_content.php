@@ -5,6 +5,14 @@ if (!isset($recipeAdd)||empty($recipeAdd)) {
 if (!isset($errorMessages)||empty($errorMessages)){
     $errorMessages=[];
 }
+if (!isset($listAllIngredients)){
+    $listAllIngredients=[];
+    if (!empty($listAllIngredients)){
+        foreach ($listAllIngredients as $ingredients) {
+            $ingredients = new Ingredients();
+        }
+    }
+}
 
 ?>
 <div class="container bg-white align-items-left" id="recipePage">

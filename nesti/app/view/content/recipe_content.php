@@ -1,17 +1,26 @@
 <?php
+if (!isset($recipes)||empty($recipes)) {
+    $recipes=[];
+    if (!empty($recipes)){
+        foreach ($recipes as $recipe) {
+            $recipe = new Recipe();
+        }
+    }
+}
 
 ?>
+
 <div class="container bg-white d-flex flex-column align-items-left" id="recipePage">
 <h2 class="mb-2 mt-2">Recettes</h2>
     <div class="d-flex flex-row justify-content-between">
         <nav class="navbar navbar-white bg-white pl-0">
             <form class="form-inline">
                 <input class="form-control mr-sm-2" id="customSearchRecipe" type="search" placeholder="Search" aria-label="Search">
-                <img id="searchRecipe" src="<?php BASE_URL ?>public/pictures/search-svg.svg" alt="">
+                <img id="searchRecipe" src="<?php echo BASE_URL ?>public/pictures/search-svg.svg" alt="">
             </form>
         </nav>
         <div>
-        <a id="btnAddRecipe" href="recipe/add" class="btn mb-1 border align-self-end"> <img id="addRecipe" src="<?php BASE_URL ?>public/pictures/create-svg.svg" alt="svg plus">
+        <a id="btnAddRecipe" href="recipe/add" class="btn mb-1 border align-self-end"> <img id="addRecipe" src="<?php echo BASE_URL ?>public/pictures/create-svg.svg" alt="svg plus">
             Add Recipe</a>
         </div>
         

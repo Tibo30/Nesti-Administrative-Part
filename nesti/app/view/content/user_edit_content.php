@@ -1,3 +1,9 @@
+<?php
+if (!isset($user)||empty($user)) {
+    $user = new User();
+}
+?>
+
 <div class="container bg-white align-items-left" id="recipePage">
     <div class="d-flex flex-row underLink">
         <a href="<?= BASE_URL ?>user"><u>Users</u>
