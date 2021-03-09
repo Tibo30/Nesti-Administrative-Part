@@ -70,7 +70,7 @@ class User
     /**
      * Set the value of lastname
      *
-     * @return  $userLastnameError
+     * @return  string
      */
     public function setLastname($lastname)
     {
@@ -94,7 +94,7 @@ class User
     /**
      * Set the value of firstname
      *
-     * @return  $userFirstnameError
+     * @return  string
      */
     public function setFirstname($firstname)
     {
@@ -118,7 +118,7 @@ class User
     /**
      * Set the value of email
      *
-     * @return  $userEmailError
+     * @return  string
      */
     public function setEmail($email)
     {
@@ -145,7 +145,7 @@ class User
     /**
      * Set the value of password
      *
-     * @return  $userPasswordError
+     * @return  string
      */
     public function setPassword($password)
     {
@@ -182,7 +182,7 @@ class User
     /**
      * Set the value of state
      *
-     * @return  self
+     * @return  string
      */
     public function setState($state)
     {
@@ -236,7 +236,7 @@ class User
     /**
      * Set the value of username
      *
-     * @return  $userUsernameError
+     * @return  string
      */
     public function setUsername($username)
     {
@@ -260,7 +260,7 @@ class User
     /**
      * Set the value of address1
      *
-     * @return  $userAddress1Error
+     * @return  string
      */
     public function setAddress1($address1)
     {
@@ -284,7 +284,7 @@ class User
     /**
      * Set the value of address2
      *
-     * @return  $userAddress2Error
+     * @return  string
      */
     public function setAddress2($address2)
     {
@@ -308,7 +308,7 @@ class User
     /**
      * Set the value of postCode
      *
-     * @return  $userPostCodeError
+     * @return  string
      */
     public function setPostCode($postcode)
     {
@@ -332,7 +332,7 @@ class User
     /**
      * Set the value of idCity
      *
-     * @return  $userCityError
+     * @return  string
      */
     public function setIdCity($idCity)
     {
@@ -356,7 +356,7 @@ class User
     /**
      * Set the value of roles
      *
-     * @return  $userRolesError
+     * @return  string
      */
     public function setRoles($roles)
     {
@@ -367,5 +367,15 @@ class User
         $this->roles = $roles;
         }
         return  $userRolesError;
+    }
+
+    /**
+     * Get the last log of a user
+     */
+    public function getLog()
+    {
+        $logDAO = new UserDAO();
+        $log = $logDAO -> getLog ($this->idUser);
+        return $log;
     }
 }

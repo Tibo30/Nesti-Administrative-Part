@@ -6,30 +6,23 @@ class Article
     private $state;
     private $creationDate;
     private $updateDate;
-    private $idUnitMeasure;
-    private $idProduct;
-    private $idPictures;
+    private $iDUnitMeasure;
+    private $iDProduct;
+    private $iDPicture;
 
-public function hydration($data){
-    $this->idArticle=$data['id_article'];
-    $this->quantityPerUnit=$data['quantity_per_unit'];
-    $this->state=$data['state'];
-    $this->creationDate=$data['creation_date'];
-    $this->updateDate=$data['update_date'];
-    $this->idUnitMeasure=$data['id_unit_measures'];
-    $this->idProduct=$data['id_products'];
-    $this->idPictures=$data['id_pictures'];
-}
-
-// // hydration
-// public function hydrate (array $data){
-//     foreach($data as $key => $value){
-//         $method='set'.ucfirst($key);
-//         if(method_exists($this,$method)){
-//             $this->$method($value);
-//         }
-//     }
-// }
+    public function hydration($data)
+    {
+        $this->idArticle = $data['id_article'];
+        $this->quantityPerUnit = $data['quantity_per_unit'];
+        $this->state = $data['state'];
+        $this->creationDate = $data['creation_date'];
+        $this->updateDate = $data['update_date'];
+        $this->iDUnitMeasure = $data['id_unit_measures'];
+        $this->iDProduct = $data['id_products'];
+        if (isset($data['id_pictures'])) {
+            $this->iDPicture = $data['id_pictures'];
+        }
+    }
 
     /**
      * Get the value of idArticle
@@ -131,64 +124,119 @@ public function hydration($data){
         return $this;
     }
 
+
+
+
+
     /**
-     * Get the value of idUnitMeasure
+     * Get the value of iDUnitMeasure
      */
-    public function getIdUnitMeasure()
+    public function getIDUnitMeasure()
     {
-        return $this->idUnitMeasure;
+        return $this->iDUnitMeasure;
     }
 
     /**
-     * Set the value of idUnitMeasure
+     * Set the value of iDUnitMeasure
      *
      * @return  self
      */
-    public function setIdUnitMeasure($idUnitMeasure)
+    public function setIDUnitMeasure($iDUnitMeasure)
     {
-        $this->idUnitMeasure = $idUnitMeasure;
-
-        return $this;
-    }
-
-
-    /**
-     * Get the value of idProduct
-     */
-    public function getIdProduct()
-    {
-        return $this->idProduct;
-    }
-
-    /**
-     * Set the value of idProduct
-     *
-     * @return  self
-     */
-    public function setIdProduct($idProduct)
-    {
-        $this->idProduct = $idProduct;
+        $this->iDUnitMeasure = $iDUnitMeasure;
 
         return $this;
     }
 
     /**
-     * Get the value of idPictures
+     * Get the value of iDProduct
      */
-    public function getIdPictures()
+    public function getIDProduct()
     {
-        return $this->idPictures;
+        return $this->iDProduct;
     }
 
     /**
-     * Set the value of idPictures
+     * Set the value of iDProduct
      *
      * @return  self
      */
-    public function setIdPictures($idPictures)
+    public function setIDProduct($iDProduct)
     {
-        $this->idPictures = $idPictures;
+        $this->iDProduct = $iDProduct;
 
         return $this;
     }
+
+    /**
+     * Get the value of iDPicture
+     */
+    public function getIDPicture()
+    {
+        return $this->iDPicture;
+    }
+
+    /**
+     * Set the value of iDPicture
+     *
+     * @return  self
+     */
+    public function setIDPicture($iDPicture)
+    {
+        $this->iDPicture = $iDPicture;
+
+        return $this;
+    }
+
+    /**
+     * Get the UnitMeasure
+     */
+    public function getUnitMeasure()
+    {
+        $unitDAO = new UnitMeasureDAO();
+        $unit = $unitDAO->getUnitMeasure($this->iDUnitMeasure);
+        return $unit;
+    }
+
+     /**
+     * Get the UnitMeasure
+     */
+    public function getProduct()
+    {
+        $productDAO = new ProductDAO();
+        $product = $productDAO->getProduct($this->iDProduct);
+        return $product;
+    }
+
+     /**
+     * Get the UnitMeasure
+     */
+    public function getPicture()
+    {
+        $pictureDAO = new PictureDAO();
+        $picture = $pictureDAO->getPicture($this->idPicture);
+        return $picture;
+    }
+
+     /**
+     * Get the lastImport of article
+     */
+    public function getLastImport()
+    {
+        $importDAO = new ImportDAO();
+        $import = $importDAO->getLastImport($this->idArticle);
+        return $import;
+    }
+
+    
+     /**
+     * Get the article price
+     */
+    public function getPrice()
+    {
+        $priceDAO = new ArticlePriceDAO();
+        $price = $priceDAO->getPrice($this->idArticle);
+        return $price;
+    }
+
 }

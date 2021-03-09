@@ -81,7 +81,7 @@ class Recipe
     /**
      * Set the value of recipeName
      *
-     * @return  $RecipeNameError
+     * @return  string
      */
     public function setRecipeName($recipeName)
     {
@@ -106,7 +106,7 @@ class Recipe
     /**
      * Set the value of difficulty
      *
-     * @return  $DifficultyError
+     * @return  string
      */
     public function setDifficulty($difficulty)
     {
@@ -136,7 +136,7 @@ class Recipe
     /**
      * Set the value of numberOfPeople
      *
-     * @return   $NumberOfPeopleError
+     * @return   string
      */
     public function setNumberOfPeople($numberOfPeople)
     {
@@ -178,7 +178,7 @@ class Recipe
     {
         if ($this->time != null) {
             $troncatedTime = explode(":", $this->time);
-            $convertedTime = $troncatedTime[0] * 60 + $troncatedTime[1] + $troncatedTime[2] / 60;
+            $convertedTime = (double) $troncatedTime[0] * 60 + (double) $troncatedTime[1] + (double) $troncatedTime[2] / 60;
         } else {
             $convertedTime = null;
         }
@@ -197,7 +197,7 @@ class Recipe
     /**
      * Set the value of time
      *
-     * @return  $PreparationTimeError
+     * @return  string
      */
     public function setTime($preparationTime)
     {
@@ -254,4 +254,6 @@ class Recipe
 
         return $this;
     }
+
+    
 }
