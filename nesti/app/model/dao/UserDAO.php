@@ -13,7 +13,6 @@ var_dump(array("lastname"=>$userAdd->getLastname(),"firstname"=>$userAdd->getFir
     {
         $var = [];
         $use = [];
-        $log = [];
         $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.address1, u.address2, u.postcode,u.id_city FROM users u');
         $req->execute();
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
@@ -23,12 +22,10 @@ var_dump(array("lastname"=>$userAdd->getLastname(),"firstname"=>$userAdd->getFir
                 $user = new User();
                 $row['roles']=$roles;
                 $use[] = $user->hydration($row);
-
-                // create the user log
-                $log[] = $this->getLog($row['id_users']);
             }
-            $var = ['users' => $use, 'log' => $log];
+            $var = ['users' => $use];
         }
+        
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $var;
     }
@@ -79,9 +76,7 @@ var_dump(array("lastname"=>$userAdd->getLastname(),"firstname"=>$userAdd->getFir
             $user = new User();
             $data['roles'] = $roles;
             $use = $user->hydration($data);
-            // create the user log
-            $log = $this->getLog($data['id_users']);
-            $var = ['user' => $use, 'log' => $log];
+            $var = ['user' => $use];
         }
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $var;
