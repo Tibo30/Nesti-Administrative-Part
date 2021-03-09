@@ -1,21 +1,43 @@
 <?php
-require_once(PATH_VIEW.'View.php');
-require_once(PATH_MODEL.'entities/article.php');
+require_once(PATH_VIEW . 'View.php');
+require_once(PATH_MODEL . 'entities/article.php');
 
-class ArticleController extends BaseController{
+class ArticleController extends BaseController
+{
     private $articleDAO;
-    
-    public function initialize(){
-        $this->articles();
-    }
 
-    private function articles(){
+    public function initialize()
+    {
+        $data[] = null;
         $this->articleDAO = new ArticleDAO();
-        $articles = $this->articleDAO->getArticles();
+        if (($this->_url) == "article") {
+            $data =  $this->articles();
+        } else if (($this->_url) == "article_import") {
+            $data =  $this->importedArticles();
+        }
+        $data["title"] = "Articles";
+        $data["url"] = $this->_url;
         $this->_view = new View($this->_url);
-        $this->_data = ['articles'=>$articles,'url'=>$this->_url,"title"=>"Articles"];
-  
+        $this->_data = $data;
     }
 
-    
+    private function articles()
+    {
+        // $import=[];
+        // $price=[];
+        // $articles = $this->articleDAO->getArticles();
+        // foreach($articles as $article){
+        //     $import[]=
+        // }
+        $articles = $this->articleDAO->getArticles();
+        $data = ['articles' => $articles];
+        return $data;
+    }
+
+    private function importedArticles()
+    {
+        $articles = $this->articleDAO->getimportedArticles();
+        $data = ['articles' => $articles];
+        return $data;
+    }
 }
