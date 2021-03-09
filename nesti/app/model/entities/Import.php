@@ -3,7 +3,15 @@ class Import{
     private $refOrder;
     private $idAdmin;
     private $importDate;
+    private $iDArticle;
 
+    public function hydration($data){
+        $this->refOrder=$data['ref_order'];
+        $this->idAdmin=$data['id_admin'];
+        $this->importDate=$data['import_date'];
+        $this->iDArticle=$data['id_article'];
+        return $this;
+    }
 
     /**
      * Get the value of refOrder
@@ -61,6 +69,26 @@ class Import{
     public function setImportDate($importDate)
     {
         $this->importDate = $importDate;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of iDArticle
+     */ 
+    public function getIDArticle()
+    {
+        return $this->iDArticle;
+    }
+
+    /**
+     * Set the value of iDArticle
+     *
+     * @return  self
+     */ 
+    public function setIDArticle($iDArticle)
+    {
+        $this->iDArticle = $iDArticle;
 
         return $this;
     }

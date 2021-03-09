@@ -3,9 +3,15 @@ class ArticlePrice{
     private $idArticlePrice;
     private $applicationDate;
     private $price;
-    private $idArticle;
+    private $iDArticle;
 
-    
+    public function hydration($data){
+        $this->idArticlePrice=$data['id_article_price'];
+        $this->applicationDate=$data['application_date'];
+        $this->price=$data['price'];
+        $this->iDArticle=$data['id_article'];
+        return $this;
+    }
 
     /**
      * Get the value of idArticlePrice
@@ -67,22 +73,24 @@ class ArticlePrice{
         return $this;
     }
 
+   
+
     /**
-     * Get the value of idArticle
+     * Get the value of iDArticle
      */ 
-    public function getIdArticle()
+    public function getIDArticle()
     {
-        return $this->idArticle;
+        return $this->iDArticle;
     }
 
     /**
-     * Set the value of idArticle
+     * Set the value of iDArticle
      *
      * @return  self
      */ 
-    public function setIdArticle($idArticle)
+    public function setIDArticle($iDArticle)
     {
-        $this->idArticle = $idArticle;
+        $this->iDArticle = $iDArticle;
 
         return $this;
     }
