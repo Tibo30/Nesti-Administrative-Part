@@ -16,8 +16,8 @@ class RecipeDAO extends ModelDAO
                 $row['chief'] = $chief;
                 // create the Picture Object base on is ID
                 if (isset($row["id_pictures"])){
-                    $modelDAO = new ModelDAO();
-                    $picture = $modelDAO->getPicture($row["id_pictures"]);
+                    $pictureDAO = new PictureDAO();
+                    $picture = $pictureDAO->getPicture($row["id_pictures"]);
                     $row['picture'] = $picture;
                 }
                 $var[] = $item->hydration($row);
@@ -38,10 +38,10 @@ class RecipeDAO extends ModelDAO
         $chief = $userDao->getChief($recipe["id_chief"]);
         $recipe['chief'] = $chief;
         // create the Picture Object base on is ID
-        if (isset($row["id_pictures"])){
-            $modelDAO = new ModelDAO();
-            $picture = $modelDAO->getPicture($row["id_pictures"]);
-            $row['picture'] = $picture;
+        if (isset($recipe["id_pictures"])){
+            $pictureDAO = new PictureDAO();
+            $picture = $pictureDAO->getPicture($recipe["id_pictures"]);
+            $recipe['picture'] = $picture;
         }
         $itemRecipe->hydration($recipe);
 
@@ -77,8 +77,8 @@ class RecipeDAO extends ModelDAO
                 $ingHyd = array('id_products' => $row['id_products'], 'product_name' => $row['product_name']);
                 $dataIng = $ing->hydration($ingHyd);
                 // create the object unit measure
-                $modelDAO = new ModelDAO();
-                $unit = $modelDAO->getUnitMeasure($row['id_unit_measures']);
+                $unitDAO = new UnitMeasureDAO();
+                $unit = $unitDAO->getUnitMeasure($row['id_unit_measures']);
                 // add ingredient and unit measure to the data $row
                 $row['ingredient'] = $dataIng;
                 $row['unitMeasure'] = $unit;
