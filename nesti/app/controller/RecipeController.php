@@ -13,7 +13,7 @@ class RecipeController extends BaseController
         if (($this->_url) == "recipe") {
             $data = $this->recipes();
         } else if (($this->_url) == "recipe_add") {
-            if (isset($_POST) && !empty($_POST)) {
+            if (!empty($_POST)) {
                 $data = $this->addRecipeAllIngredients();
                 $data = array_merge($data,$this->addRecipeDatabase());
             }
@@ -56,7 +56,7 @@ class RecipeController extends BaseController
 
     public function addRecipeDatabase()
     {
-
+        $data=[];
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
             var_dump($_POST);
             $recipeName = filter_input(INPUT_POST, "recipeName", FILTER_SANITIZE_STRING);
@@ -78,7 +78,6 @@ class RecipeController extends BaseController
                 $data['recipeAdd']=$recipeAdd;
             }
         }
-
         return $data;
     }
 }
