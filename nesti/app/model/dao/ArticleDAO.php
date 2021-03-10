@@ -23,7 +23,6 @@ class ArticleDAO extends ModelDAO
         $article = new Article();
         if ($data = $req->fetch()) {
             $article->hydration($data);
-            //var_dump($article->getIdArticle());
         }
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $article;
