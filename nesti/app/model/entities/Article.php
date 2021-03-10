@@ -214,7 +214,7 @@ class Article
     public function getPicture()
     {
         $pictureDAO = new PictureDAO();
-        $picture = $pictureDAO->getPicture($this->idPicture);
+        $picture = $pictureDAO->getPicture($this->iDPicture);
         return $picture;
     }
 
