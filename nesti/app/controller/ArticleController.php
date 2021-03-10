@@ -15,6 +15,9 @@ class ArticleController extends BaseController
         } else if (($this->_url) == "article_import") {
             $data =  $this->importedArticles();
         }
+        else if (($this->_url) == "article_edit") {
+            $data =  $this->importedArticles();
+        }
         $data["title"] = "Articles";
         $data["url"] = $this->_url;
         $this->_view = new View($this->_url);
