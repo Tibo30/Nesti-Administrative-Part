@@ -196,3 +196,18 @@ textarea[readonly]{
 #recipe-img{
     content:none;
 }
+
+/*------------------------------------ article -------------------------------*/
+.pictureBin{
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: center;
+}
+.pictureBin img{
+    width: 20px;
+    height: 20px;
+    background-color: red;
+}
