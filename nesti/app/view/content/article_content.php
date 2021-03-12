@@ -50,13 +50,13 @@ if (!isset($articles)) {
                 echo '<tr>';
                 echo '<td>' . $article->getIdArticle() . '</td>';
                 echo '<td>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " de " .  $article->getProduct()->getProductName() . '</td>';
-                echo '<td>' . $article->getPrice()->getPrice() . '</td>';
-                echo '<td>' . "type" . '</td>';
+                echo '<td>' . round(($article->getPrice()->getPrice()), 2) . '</td>';
+                echo '<td>' . $article->getType() . '</td>';
                 echo '<td>' . $article->getLastImport()->getImportDate() . '</td>';
                 echo '<td>' . "Stock" . '</td>';
                 echo '<td>';
-                echo '<a href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' data-id='.$article->getIdArticle().'">Modify</br></a>';
-                echo '<a href="' . BASE_URL . 'article/delete/' .  $article->getIdArticle() . ' data-id='.$article->getIdArticle().'">Delete</a>';
+                echo '<a href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id='.$article->getIdArticle().'>Modify</br></a>';
+                echo '<a href="' . BASE_URL . 'article/delete/' .  $article->getIdArticle() . ' "data-id='.$article->getIdArticle().'>Delete</a>';
                 echo '</td>';
                 echo '</tr>';
             } ?>
