@@ -69,10 +69,10 @@ if (!isset($logs)) {
                 echo '<td>' . $user->getLastname() . ' ' .  $user->getFirstname() . '</td>';
                 echo '<td>' . implode(", ",$user->getRoles()). '</td>';
                 echo '<td>'.   $user->getLog()->getConnectionDate().' </td>';
-                echo '<td>' . $user->getState() . '</td>';
+                echo '<td>' . $user->getCity() ->getCityName() . '</td>';
                 echo '<td>';
-                echo '<a href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . ' data-id='.$user->getIdUser().'">Modify</br></a>';
-                echo '<a href="' . BASE_URL . 'user/delete/' . $user->getIdUser() . ' data-id='.$user->getIdUser().'">Delete</a>';
+                echo '<a href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . ' "data-id='.$user->getIdUser().'>Modify</br></a>';
+                echo '<a href="' . BASE_URL . 'user/delete/' . $user->getIdUser() . ' "data-id='.$user->getIdUser().'>Delete</a>';
                 echo '</td>';
                 echo '</tr>';
             } ?>
