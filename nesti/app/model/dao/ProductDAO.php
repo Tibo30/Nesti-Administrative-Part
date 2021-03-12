@@ -11,4 +11,18 @@ class ProductDAO extends ModelDAO
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $productObject;
     }
+
+    public function getType($idProduct)
+    {
+        $type="";
+        $req = self::$_bdd->prepare('SELECT * FROM ingredients WHERE id_ingredients=:id');
+        $req->execute(array("id" => $idProduct));
+        if ($req->rowcount()==1) {
+            $type = "Ingredient";
+        } else {
+            $type="Utensile";
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $type;
+    }
 }
