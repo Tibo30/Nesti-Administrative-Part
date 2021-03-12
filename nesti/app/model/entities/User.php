@@ -378,4 +378,12 @@ class User
         $log = $logDAO -> getLog ($this->idUser);
         return $log;
     }
+
+    public function getCity()
+    {
+        $cityDAO = new UserDAO();
+        $city = $cityDAO->getCity($this->idCity);
+        echo $city->getCityName();
+        return $city;
+    }
 }
