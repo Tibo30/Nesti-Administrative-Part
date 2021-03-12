@@ -9,6 +9,7 @@ class Article
     private $iDUnitMeasure;
     private $iDProduct;
     private $iDPicture;
+    private $userArticleName;
 
     public function hydration($data)
     {
@@ -22,6 +23,7 @@ class Article
         if (isset($data['id_pictures'])) {
             $this->iDPicture = $data['id_pictures'];
         }
+        $this->userArticleName = $data['user_article_name'];
     }
 
     /**
@@ -198,7 +200,7 @@ class Article
         return $unit;
     }
 
-     /**
+    /**
      * Get the UnitMeasure
      */
     public function getProduct()
@@ -208,7 +210,7 @@ class Article
         return $product;
     }
 
-     /**
+    /**
      * Get the UnitMeasure
      */
     public function getPicture()
@@ -218,7 +220,7 @@ class Article
         return $picture;
     }
 
-     /**
+    /**
      * Get the lastImport of article
      */
     public function getLastImport()
@@ -228,8 +230,8 @@ class Article
         return $import;
     }
 
-    
-     /**
+
+    /**
      * Get the article price
      */
     public function getPrice()
@@ -239,4 +241,36 @@ class Article
         return $price;
     }
 
+
+    /**
+     * Get the value of userArticleName
+     */
+    public function getUserArticleName()
+    {
+        return $this->userArticleName;
+    }
+
+    /**
+     * Set the value of userArticleName
+     *
+     * @return  self
+     */
+    public function setUserArticleName($userArticleName)
+    {
+        $articleUserNameError = "";
+        if (empty($userArticleName)) {
+            $this->userArticleName = "";
+            // $articleUserNameError = "Veuillez entrer un nom";
+        } else {
+            $this->userArticleName = $userArticleName;
+        }
+        return  $articleUserNameError;
+    }
+
+    public function getType()
+    {
+        $productDAO = new ProductDAO();
+        $type = $productDAO->getType($this->iDProduct);
+        return $type;
+    }
 }
