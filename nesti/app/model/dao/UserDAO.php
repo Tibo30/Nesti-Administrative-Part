@@ -94,4 +94,16 @@ var_dump(array("lastname"=>$userAdd->getLastname(),"firstname"=>$userAdd->getFir
         return $chiefUser;
     }
 
+    public function getCity($idCity)
+    {
+        $req = self::$_bdd->prepare('SELECT id_city, city_name FROM city WHERE id_city=:id');
+        $req->execute(array("id" => $idCity));
+        $city = new City();
+        if ($data = $req->fetch()) {
+            $city->hydration($data);
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $city;
+    }
+
 }
