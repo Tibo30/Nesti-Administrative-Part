@@ -61,7 +61,7 @@ class UserController extends BaseController
             $userAddress2 = filter_input(INPUT_POST, "userAddress2", FILTER_SANITIZE_STRING);
             $userPostCode = filter_input(INPUT_POST, "userPostCode", FILTER_SANITIZE_STRING);
             $userCity = filter_input(INPUT_POST, "userCity", FILTER_SANITIZE_STRING);
-            $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_SANITIZE_STRING);
+            $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_SANITIZE_STRING); // vérifier array list
 
             $userAdd = new User();
             $userLastnameError = $userAdd->setLastname($userLastname);
@@ -74,7 +74,7 @@ class UserController extends BaseController
             $userAddress2Error = $userAdd->setAddress2($userAddress2);
             $userPostCodeError = $userAdd->setPostCode($userPostCode);
             $userCityError = $userAdd->setIdCity($userCity);
-            $userRolesError = $userAdd->setRoles($userRoles);
+            $userRolesError = $userAdd->setRoles($userRoles); // changer facon de set avec array list
             $errorMessages = ['userLastname' => $userLastnameError, 'userFirstname' => $userFirstnameError, 'userUsername' => $userUsernameError, 'userEmail' => $userEmailError, 'userPassword' => $userPasswordError, 'userState' => $userStateError, 'userAddress1' => $userAddress1Error, 'userAddress2' => $userAddress2Error,'userPostCode' => $userPostCodeError, 'userCity' => $userCityError, 'userRoles' => $userRolesError];
             $data['errorMessages'] = $errorMessages;
 
