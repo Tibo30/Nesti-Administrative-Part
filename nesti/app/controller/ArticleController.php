@@ -14,9 +14,14 @@ class ArticleController extends BaseController
             $data =  $this->articles();
         } else if (($this->_url) == "article_import") {
             $data =  $this->importedArticles();
-        }
-        else if (($this->_url) == "article_edit") {
-            $data =  $this->importedArticles();
+        } else if (($this->_url) == "article_edit") {
+            $idArticle = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
+            if (!empty($_POST)) {
+                $this->editArticle($idArticle);
+            }
+            if (isset($idArticle)) {
+                $data =  $this->article($idArticle);
+            }
         }
         $data["title"] = "Articles";
         $data["url"] = $this->_url;
@@ -26,14 +31,15 @@ class ArticleController extends BaseController
 
     private function articles()
     {
-        // $import=[];
-        // $price=[];
-        // $articles = $this->articleDAO->getArticles();
-        // foreach($articles as $article){
-        //     $import[]=
-        // }
         $articles = $this->articleDAO->getArticles();
         $data = ['articles' => $articles];
+        return $data;
+    }
+
+    private function article($idArticle)
+    {
+        $article = $this->articleDAO->getArticle($idArticle);
+        $data = ['article' => $article];
         return $data;
     }
 
@@ -42,5 +48,22 @@ class ArticleController extends BaseController
         $articles = $this->articleDAO->getimportedArticles();
         $data = ['articles' => $articles];
         return $data;
+    }
+
+    private function editArticle($idArticle)
+    {
+        $data = [];
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $articleUserName = filter_input(INPUT_POST, "articleUserName", FILTER_SANITIZE_STRING);
+            $articleEdit = $this->articleDAO->getArticle($idArticle);
+            $articleUserNameError = $articleEdit->setUserArticleName($articleUserName);
+            $errorMessages = ['articleUserName' => $articleUserNameError];
+            $data['errorMessages'] = $errorMessages;
+            if ($articleUserNameError == null) {
+                $this->articleDAO->editArticle($articleEdit);
+                // $data['articleEdit'] = $articleEdit;
+            }
+        }
+        // return $data;
     }
 }
