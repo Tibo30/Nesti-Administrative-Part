@@ -207,8 +207,8 @@ class Recipe
         } else if (!preg_match("/^[0-9]/", $preparationTime)) {
             $PreparationTimeError = 'Please enter a time in minutes';
         } else {
-            $convertedTimeHour = intdiv($preparationTime, 60);
-            $convertedTimeMinutes = fmod($preparationTime, 60);
+            $convertedTimeHour = intdiv($preparationTime, 60); // retourne le quotient entier de la division
+            $convertedTimeMinutes = fmod($preparationTime, 60); // retourne le reste de la division
             $convertedTime = $convertedTimeHour . ":" . $convertedTimeMinutes . ":00";
             $this->time = $convertedTime;
         }
