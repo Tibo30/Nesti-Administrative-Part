@@ -51,18 +51,100 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 
             <div class=" d-flex flex-row justify-content-between urlPictureEditArticle">
                 <?= $article->getPicture()->getName() . $article->getPicture()->getExtension() ?>
-                <a href=""> <div class="pictureBin"><img src="<?php echo BASE_URL ?>public/pictures/delete-svg.svg" alt="svg bin"></div></a>
+                <a href="">
+                    <div class="pictureBin"><img src="<?php echo BASE_URL . PATH_ICONS ?>delete-svg.svg" alt="svg bin"></div>
+                </a>
             </div>
             <label class="form-label" for="customFile">Download a new picture</label>
-            <form id="formImage" action="" enctype="multipart/form-data" onsubmit="editArticlePicture()" method="post">
+
             <div class="custom-file">
-                <input type="file" class="custom-file-input" id="InputFile" name="image">  
-                <!-- le name dans le input se retrouve dans le $_FILES['image'] -->
-                <label class="custom-file-label" for="InputFile" data-browse="Browse"></label>
-                <button type="submit">OK</button>
+                <form id="formEditImage" action="" enctype="multipart/form-data" method="post">
+                    <input type="file" class="custom-file-input" id="InputFileEditArticle" name="image">
+                    <!-- le name dans le input se retrouve dans le $_FILES['image'] -->
+                    <label class="custom-file-label" for="InputFileEditArticle" data-browse="Browse"></label>
+                    <button type="submit">OK</button>
+                </form>
             </div>
-            </form>
+
 
         </div>
     </div>
 </div>
+
+<script>
+    // const ROOT = '<?= BASE_URL . PATH_AJAX ?>';
+    const ROOT = '<?= BASE_URL ?>';
+    const ROOTImage = '<?= BASE_URL . PATH_PICTURES ?>';
+
+    const form = document.querySelector("#formEditImage");
+    form.addEventListener('submit', (function(e) {
+        event.preventDefault();
+        console.log("test");
+        const img = document.querySelector("#InputFileEditArticle")
+        const id = document.querySelector("#idArticle").value;
+        console.log(ROOT);
+        if (img.value != "") {
+            editPicture(id, this).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        console.log(response);
+                        alert('edition picture ok');
+                    }
+                }
+            });
+        }
+
+    }))
+    // function editArticlePicture(obj) {
+    //     console.log(obj)
+    //     event.preventDefault();
+    //     const img = document.querySelector("#InputFileEditArticle")
+    //     const id = document.querySelector("#idArticle").value;
+    //     console.log(ROOT);
+    //     if (img.value != "") {
+    //         editPicture(id, img.value).then((response) => {
+    //             if (response) {
+    //                 if (response.success) {
+    //                     console.log(response);
+    //                     alert('edition picture ok');
+    //                 }
+    //             }
+    //         });
+    //     }
+
+    // }
+
+    /**
+     * Requete Ajax pour supprimer un tag d'une recette
+     * @param {int} id_article
+     * @returns mixed
+     */
+    async function editPicture(id_article, obj) {
+        // Requete
+        var myHeaders = new Headers();
+
+        let formData = new FormData();
+        console.log(obj);
+        formData.append('image', obj);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'article/picture', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+
+
+    }
+</script>
