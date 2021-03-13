@@ -28,9 +28,15 @@ class ArticleDAO extends ModelDAO
         return $article;
     }
 
-    public function editArticle($articleEdit){
-        $req = self::$_bdd->prepare('UPDATE articles SET user_article_name=:name, update_date=CURRENT_TIMESTAMP WHERE id_article=:id');
-        $req->execute(array("name" => ($articleEdit->getUserArticleName()),"id" => ($articleEdit->getIdArticle())));
+    public function editArticle($articleEdit,$change){
+        if ($change=="articleUserName"){
+            $req = self::$_bdd->prepare('UPDATE articles SET user_article_name=:name, update_date=CURRENT_TIMESTAMP WHERE id_article=:id');
+            $req->execute(array("name" => ($articleEdit->getUserArticleName()),"id" => ($articleEdit->getIdArticle())));
+        } else if ($change=="state"){
+            $req = self::$_bdd->prepare('UPDATE articles SET state=:state, update_date=CURRENT_TIMESTAMP WHERE id_article=:id');
+            $req->execute(array("state" => ($articleEdit->getState()),"id" => ($articleEdit->getIdArticle())));
+        }
+        
     }
 
     public function getimportedArticles()
