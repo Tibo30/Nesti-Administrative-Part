@@ -1,6 +1,6 @@
 <div id="connectionPage">
     <div id="logoNesti" class="position-absolute">
-        <img src="<?= BASE_URL ?>public/pictures/Nesti-logo.png" alt="Nesti logo">
+        <img src="<?= BASE_URL.PATH_ICONS ?>Nesti-logo.png" alt="Nesti logo">
     </div>
     <div class="container h-100 d-flex" style="max-width:70%">
         <div class="container border my-auto bg-white" id="connectionForm">
