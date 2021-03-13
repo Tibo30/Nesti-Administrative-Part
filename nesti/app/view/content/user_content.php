@@ -7,14 +7,14 @@ if (!isset($users)) {
         }
     }
 }
-if (!isset($logs)) {
-    $logs =[];
-    if (!empty($logs)){
-        foreach ($logs as $log) {
-            $log = new UserLog();
-        }
-    }
-}
+// if (!isset($logs)) {
+//     $logs =[];
+//     if (!empty($logs)){
+//         foreach ($logs as $log) {
+//             $log = new UserLog();
+//         }
+//     }
+// }
 
 ?>
 
@@ -24,11 +24,11 @@ if (!isset($logs)) {
         <nav class="navbar navbar-white bg-white pl-0">
             <form class="form-inline">
                 <input class="form-control mr-sm-2" id="customSearchUser" type="search" placeholder="Search" aria-label="Search">
-                <img id="searchUser" src="<?php echo BASE_URL ?>public/pictures/search-svg.svg" alt="">
+                <img id="searchUser" src="<?php echo BASE_URL.PATH_ICONS ?>search-svg.svg" alt="">
             </form>
         </nav>
         <div>
-            <a id="btnAddUser" href="user/add" class="btn mb-1 border align-self-end"> <img id="addUser" src="<?php echo BASE_URL ?>public/pictures/create-svg.svg" alt="svg plus">
+            <a id="btnAddUser" href="user/add" class="btn mb-1 border align-self-end"> <img id="addUser" src="<?php echo BASE_URL.PATH_ICONS ?>create-svg.svg" alt="svg plus">
                 Add User</a>
         </div>
 
