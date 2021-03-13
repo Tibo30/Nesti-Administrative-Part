@@ -72,7 +72,7 @@ color: var(--classicColorGrey);
 }
 
 #connectionPage{
-    background-image:url("../pictures/bg-nesti.png");
+    background-image:url("../pictures/icons/bg-nesti.png");
     background-repeat: no-repeat;
     background-size: cover;
     position:absolute;
@@ -210,4 +210,9 @@ textarea[readonly]{
     width: 20px;
     height: 20px;
     background-color: red;
+}
+
+.btn-delete-article{
+    color:var(--colorButtonInformation);
+    cursor: pointer;
 }
