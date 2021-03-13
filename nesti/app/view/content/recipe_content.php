@@ -16,11 +16,11 @@ if (!isset($recipes)||empty($recipes)) {
         <nav class="navbar navbar-white bg-white pl-0">
             <form class="form-inline">
                 <input class="form-control mr-sm-2" id="customSearchRecipe" type="search" placeholder="Search" aria-label="Search">
-                <img id="searchRecipe" src="<?php echo BASE_URL ?>public/pictures/search-svg.svg" alt="">
+                <img id="searchRecipe" src="<?php echo BASE_URL.PATH_ICONS ?>search-svg.svg" alt="">
             </form>
         </nav>
         <div>
-        <a id="btnAddRecipe" href="recipe/add" class="btn mb-1 border align-self-end"> <img id="addRecipe" src="<?php echo BASE_URL ?>public/pictures/create-svg.svg" alt="svg plus">
+        <a id="btnAddRecipe" href="recipe/add" class="btn mb-1 border align-self-end"> <img id="addRecipe" src="<?php echo BASE_URL.PATH_ICONS ?>create-svg.svg" alt="svg plus">
             Add Recipe</a>
         </div>
         
@@ -64,8 +64,8 @@ if (!isset($recipes)||empty($recipes)) {
                 echo '<td>' . $recipe->getTime() . ' min </td>';
                 echo '<td>' . $recipe->getChief()->getLastName() . '</td>';
                 echo '<td>';
-                echo '<a href="' . BASE_URL . 'recipe/edit/' . $recipe->getIdRecipe() . ' data-id='.$recipe->getIdRecipe().'">Modify</br></a>';
-                echo '<a href="' . BASE_URL . 'recipe/delete/' . $recipe->getIdRecipe() . ' data-id='.$recipe->getIdRecipe().'">Delete</a>';
+                echo '<a href="' . BASE_URL . 'recipe/edit/' . $recipe->getIdRecipe() . ' "data-id='.$recipe->getIdRecipe().'>Modify</br></a>';
+                echo '<a href="' . BASE_URL . 'recipe/delete/' . $recipe->getIdRecipe() . ' "data-id='.$recipe->getIdRecipe().'>Delete</a>';
                 echo '</td>';
                 echo '</tr>';
             } ?>
