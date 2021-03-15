@@ -47,10 +47,10 @@ if (!isset($errorMessages) || empty($errorMessages)) {
             </form>
         </div>
         <div>
-            <div id="pictureEdit" class="bg-light border mb-2"></div>
+            <div id="pictureEdit" class="bg-light border mb-2" style='background-image:url("<?= $article->getIdPicture()!=null ? BASE_DIR."/public/pictures/pictures/".$article->getPicture()->getName().".". $article->getPicture()->getExtension() :""?>")'></div>
 
             <div class=" d-flex flex-row justify-content-between urlPictureEditArticle">
-                <?= $article->getPicture()->getName() . $article->getPicture()->getExtension() ?>
+                <?= $article->getIdPicture()!=null ? ($article->getPicture()->getName().".". $article->getPicture()->getExtension()) : "" ?>
                 <a href="">
                     <div class="pictureBin"><img src="<?php echo BASE_URL . PATH_ICONS ?>delete-svg.svg" alt="svg bin"></div>
                 </a>
@@ -62,6 +62,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                     <input type="file" class="custom-file-input" id="InputFileEditArticle" name="image">
                     <!-- le name dans le input se retrouve dans le $_FILES['image'] -->
                     <label class="custom-file-label" for="InputFileEditArticle" data-browse="Browse"></label>
+                    <input type="text" class="form-control" name="idArticlePicture" id="idArticlePicture" value="<?= $article->getIdArticle() ?>" hidden>
                     <button type="submit">OK</button>
                 </form>
             </div>
@@ -123,9 +124,9 @@ if (!isset($errorMessages) || empty($errorMessages)) {
         // Requete
         var myHeaders = new Headers();
 
-        let formData = new FormData();
+        let formData = new FormData(obj);
         console.log(obj);
-        formData.append('image', obj);
+        // formData.append('image', obj);
 
         var myInit = {
             method: 'POST',
