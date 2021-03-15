@@ -22,10 +22,9 @@ class ArticleController extends BaseController
             if (isset($idArticle)) {
                 $data =  $this->article($idArticle);
             }
-        }else if (($this->_url) == "article_picture") {
+        } else if (($this->_url) == "article_picture") {
             $this->editPicture(); // this is the method called by the fetch API with the article/delete ROOT.
-        } 
-        else if (($this->_url) == "article_delete") {
+        } else if (($this->_url) == "article_delete") {
             $this->deleteArticle(); // this is the method called by the fetch API with the article/delete ROOT.
         }
         $data["title"] = "Articles";
@@ -103,14 +102,51 @@ class ArticleController extends BaseController
         die;
     }
 
-    private function editPicture(){
+    private function editPicture()
+    {
         $data = [];
-        $data['success'] = false;
-        // $data['name']=$_FILES['image']['name'];
-        if (isset($_FILES) && !empty($_FILES)){
-            $data['success'] = true;
+
+        if (isset($_FILES) && !empty($_FILES)) {
+            $data = [];
+            $data['success'] = false;
+
+            $pictureDAO = new PictureDAO;
+
+            $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // we define the accepted extensions
+            
+
+            $img = $_FILES['image']['name']; // this is the file name
+            $tmp = $_FILES['image']['tmp_name']; // this is the file temporary name
+            // $path = $_SERVER['DOCUMENT_ROOT']."/www/nesti/public/pictures/pictures/". strtolower($img);
+            $path = BASE_DIR."/public/pictures/pictures/". strtolower($img);
+            $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION)); // get the extension name of the file
+            $position = strrpos($img, "."); // get the position of the "." in the file name
+           
+            $data['download']=is_uploaded_file($tmp = $_FILES['image']['tmp_name']);
+
+            if (in_array($ext, $valid_extensions)) { // if the extension is valid              
+                
+                if (move_uploaded_file($tmp, $path)) { // move the file form temporary folder to right folder (according to path)
+                    $iD = $_POST['idArticlePicture'];
+                    $data['success'] = true;
+                    $picture = new Picture();
+                    $picture->setExtension($ext);
+                    $picture->setName(substr($img, 0, $position));
+                    $idPicture =$pictureDAO->insertPicture($picture, $iD); // insert the picture in the DAO et get the ID back
+                    $picture->setIdPicture($idPicture);
+                    $article=$this->articleDAO->getArticle($iD); // get the article from the DAO
+                    $article->setIDPicture($idPicture); // set the idPicture to the object
+                    $this->articleDAO->editArticle($article,"picture"); // edit in the database
+                    
+                 } 
+            } 
+
+            $data['test'] = $_FILES;
+            $data['tmp'] = $tmp;
+            $data['temp']=$_FILES['image']['tmp_name'];
+            $data['Path'] = $path;
         }
-       
+
         // $data['name']=$_FILES['image']['name'];
         // $data['tmp']=$_FILES['image']['tmp_name'];
         echo json_encode($data);
