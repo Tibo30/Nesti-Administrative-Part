@@ -35,6 +35,9 @@ class ArticleDAO extends ModelDAO
         } else if ($change=="state"){
             $req = self::$_bdd->prepare('UPDATE articles SET state=:state, update_date=CURRENT_TIMESTAMP WHERE id_article=:id');
             $req->execute(array("state" => ($articleEdit->getState()),"id" => ($articleEdit->getIdArticle())));
+        } else if ($change=="picture"){
+            $req = self::$_bdd->prepare('UPDATE articles SET id_pictures=:idPicture, update_date=CURRENT_TIMESTAMP WHERE id_article=:id');
+            $req->execute(array("idPicture" => ($articleEdit->getIDPicture()),"id" => ($articleEdit->getIdArticle())));
         }
         
     }
