@@ -5,6 +5,17 @@ class Order{
     private $creationDate;
     private $idUser;
 
+    public function hydration($data)
+    {
+        $this->idOrder = $data['id_order'];
+        $this->state = $data['state'];
+        $this->creationDate = $data['creation_date'];
+        $this->idUser = $data['id_users'];
+      
+        return $this;
+    }
+
+
     /**
      * Get the value of idOrder
      */ 
@@ -83,5 +94,23 @@ class Order{
         $this->idUser = $idUser;
 
         return $this;
+    }
+
+    public function getUser(){
+        $userDAO = new UserDAO();
+        $user = $userDAO->getOneUser($this->idUser);
+        return $user;
+    }
+
+    public function getAmount(){
+        $amount=0;
+        $orderDAO = new OrderDAO();
+        $articlePriceDAO = new ArticlePriceDAO();
+        $orderLines = $orderDAO->getOrderLines($this->idOrder); // get all the order lines for an order
+        foreach($orderLines as $orderLine){
+            $price=$articlePriceDAO -> getPrice($orderLine->getIdArticle()); // get the articlePrice object
+            $amount+=($orderLine->getQuantityOrdered())*($price->getPrice());
+        }
+        return $amount;
     }
 }
