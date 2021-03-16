@@ -5,6 +5,16 @@ class OrderLine{
     private $quantityOrdered;
     
 
+    public function hydration($data)
+    {
+        $this->idOrder = $data['id_order'];
+        $this->idArticle = $data['id_article'];
+        $this->quantityOrdered = $data['quantity_ordered'];
+      
+        return $this;
+    }
+
+
     /**
      * Get the value of idOrder
      */ 
