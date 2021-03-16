@@ -26,7 +26,9 @@ class ArticleController extends BaseController
             $this->editPicture(); // this is the method called by the fetch API with the article/delete ROOT.
         } else if (($this->_url) == "article_delete") {
             $this->deleteArticle(); // this is the method called by the fetch API with the article/delete ROOT.
-        }
+        } else if (($this->_url) == "article_orders") {
+            $data=$this->orders(); 
+        } 
         $data["title"] = "Articles";
         $data["url"] = $this->_url;
         $this->_view = new View($this->_url);
@@ -54,6 +56,13 @@ class ArticleController extends BaseController
         return $data;
     }
 
+    private function orders(){
+        $ordersDAO = new OrderDAO();
+        $orders=$ordersDAO->getOrders();
+        $data=['orders'=>$orders];
+        return $data;
+    }
+
     private function editArticle($idArticle)
     {
         $data = [];
@@ -71,6 +80,7 @@ class ArticleController extends BaseController
         // return $data;
     }
 
+    // this is the Ajax method to delete an Article (change state to Blocked)
     private function deleteArticle()
     {
         $data = [];
@@ -102,6 +112,7 @@ class ArticleController extends BaseController
         die;
     }
 
+    // this is the Ajax method to edit Picture of an article
     private function editPicture()
     {
         $data = [];
@@ -113,42 +124,45 @@ class ArticleController extends BaseController
             $pictureDAO = new PictureDAO;
 
             $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // we define the accepted extensions
-            
+
 
             $img = $_FILES['image']['name']; // this is the file name
             $tmp = $_FILES['image']['tmp_name']; // this is the file temporary name
-            // $path = $_SERVER['DOCUMENT_ROOT']."/www/nesti/public/pictures/pictures/". strtolower($img);
-            $path = BASE_DIR."/public/pictures/pictures/". strtolower($img);
+
+            $path = BASE_DIR . "/public/pictures/pictures/" . strtolower($img); // this is the path that we want for the picture
             $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION)); // get the extension name of the file
             $position = strrpos($img, "."); // get the position of the "." in the file name
-           
-            $data['download']=is_uploaded_file($tmp = $_FILES['image']['tmp_name']);
 
-            if (in_array($ext, $valid_extensions)) { // if the extension is valid              
-                
-                if (move_uploaded_file($tmp, $path)) { // move the file form temporary folder to right folder (according to path)
-                    $iD = $_POST['idArticlePicture'];
+            $data['download'] = is_uploaded_file($tmp = $_FILES['image']['tmp_name']);
+
+            if (in_array($ext, $valid_extensions)) { // if the extension is valid    
+                $iD = $_POST['idArticlePicture'];
+                $picture = new Picture();
+                $picture->setExtension($ext);
+                $picture->setName(substr($img, 0, $position));
+                if (($pictureDAO->doesPictureExist($picture->getName(), $picture->getExtension())) == false) { // check if the picture/name is not already in the table
+                    if (move_uploaded_file($tmp, $path)) { // move the file form temporary folder to right folder (according to path)
+                        $data['success'] = true;
+                        $idPicture = $pictureDAO->insertPicture($picture, $iD); // insert the picture in the DAO et get the ID back
+                        $picture->setIdPicture($idPicture);
+                        $article = $this->articleDAO->getArticle($iD); // get the article from the DAO
+                        $article->setIDPicture($idPicture); // set the idPicture to the object
+                        $this->articleDAO->editArticle($article, "picture"); // edit the article in the database with the new picture
+                    } else {
+                        $data['errorMove'] = "The picture has not been added"; 
+                    }
+                } else { // the name is already in the database
                     $data['success'] = true;
-                    $picture = new Picture();
-                    $picture->setExtension($ext);
-                    $picture->setName(substr($img, 0, $position));
-                    $idPicture =$pictureDAO->insertPicture($picture, $iD); // insert the picture in the DAO et get the ID back
-                    $picture->setIdPicture($idPicture);
-                    $article=$this->articleDAO->getArticle($iD); // get the article from the DAO
-                    $article->setIDPicture($idPicture); // set the idPicture to the object
-                    $this->articleDAO->editArticle($article,"picture"); // edit in the database
-                    
-                 } 
-            } 
+                    $picture = $pictureDAO-> getPictureByName($picture->getName(), $picture->getExtension()); // get the picture from the database
+                    $article = $this->articleDAO->getArticle($iD); // get the article from the DAO
+                    $this->articleDAO->editArticle($article, "picture"); // edit the article in the database with this picture
+                    $data['MessageDb'] = "The name is already taken in the database. The picture added is the one from the database. Change the name of your picture if you want this one to be added";
+                }
 
-            $data['test'] = $_FILES;
-            $data['tmp'] = $tmp;
-            $data['temp']=$_FILES['image']['tmp_name'];
-            $data['Path'] = $path;
+                $data["picture"]=$picture->getName().".".$picture->getExtension();
+                $data["urlPicture"]=BASE_URL.PATH_PICTURES.$data["picture"];
+            }
         }
-
-        // $data['name']=$_FILES['image']['name'];
-        // $data['tmp']=$_FILES['image']['tmp_name'];
         echo json_encode($data);
         die;
     }
