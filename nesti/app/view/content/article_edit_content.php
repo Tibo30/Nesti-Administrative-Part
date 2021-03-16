@@ -47,10 +47,10 @@ if (!isset($errorMessages) || empty($errorMessages)) {
             </form>
         </div>
         <div>
-            <div id="pictureEdit" class="bg-light border mb-2" style='background-image:url("<?= $article->getIdPicture()!=null ? BASE_DIR."/public/pictures/pictures/".$article->getPicture()->getName().".". $article->getPicture()->getExtension() :""?>")'></div>
-
+            <div id="pictureEdit" class="bg-light border mb-2" style='background-image:url("<?= $article->getIdPicture()!=null ? BASE_URL.PATH_PICTURES.$article->getPicture()->getName().".". $article->getPicture()->getExtension() :""?>")'></div>
+    
             <div class=" d-flex flex-row justify-content-between urlPictureEditArticle">
-                <?= $article->getIdPicture()!=null ? ($article->getPicture()->getName().".". $article->getPicture()->getExtension()) : "" ?>
+                <p class="pictureEditName"><?= $article->getIdPicture()!=null ? ($article->getPicture()->getName().".". $article->getPicture()->getExtension()) : "" ?></p>
                 <a href="">
                     <div class="pictureBin"><img src="<?php echo BASE_URL . PATH_ICONS ?>delete-svg.svg" alt="svg bin"></div>
                 </a>
@@ -73,60 +73,47 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 </div>
 
 <script>
-    // const ROOT = '<?= BASE_URL . PATH_AJAX ?>';
     const ROOT = '<?= BASE_URL ?>';
-    const ROOTImage = '<?= BASE_URL . PATH_PICTURES ?>';
 
-    const form = document.querySelector("#formEditImage");
+    const form = document.querySelector("#formEditImage"); // get the form used to edit the picture
+    // Event listener on the form
     form.addEventListener('submit', (function(e) {
-        event.preventDefault();
-        console.log("test");
+        event.preventDefault(); // stop the default action of the form
         const img = document.querySelector("#InputFileEditArticle")
-        const id = document.querySelector("#idArticle").value;
-        console.log(ROOT);
         if (img.value != "") {
-            editPicture(id, this).then((response) => {
+            editPicture(this).then((response) => {
                 if (response) {
                     if (response.success) {
-                        console.log(response);
-                        alert('edition picture ok');
+                        const namePicture=document.querySelector(".pictureEditName"); // get the paragraph where the name of the picture is written
+                        const divPicture = document.querySelector("#pictureEdit"); // get the div where the picture is displayed
+                        namePicture.innerHTML=response["picture"]; // change the name of the picture
+                        divPicture.style.backgroundImage ="url("+response["urlPicture"]+")"; // change the background image of the div with the new picture
+                        if (response.MessageDb !=null){ // if there is a message from the Db (if the name of the picture is already taken)
+                            alert(response.MessageDb);
+                        } else {
+                            alert('Picture changed');
+                        }
+                    } else {
+                        if (response.errorMove !=null){ // if the picture has not been moved
+                            alert(response.errorMove);
+                        }
                     }
                 }
             });
         }
 
     }))
-    // function editArticlePicture(obj) {
-    //     console.log(obj)
-    //     event.preventDefault();
-    //     const img = document.querySelector("#InputFileEditArticle")
-    //     const id = document.querySelector("#idArticle").value;
-    //     console.log(ROOT);
-    //     if (img.value != "") {
-    //         editPicture(id, img.value).then((response) => {
-    //             if (response) {
-    //                 if (response.success) {
-    //                     console.log(response);
-    //                     alert('edition picture ok');
-    //                 }
-    //             }
-    //         });
-    //     }
-
-    // }
-
+  
     /**
-     * Requete Ajax pour supprimer un tag d'une recette
-     * @param {int} id_article
+     * Ajax Request to edit the article picture
+     * @param {form} obj
      * @returns mixed
      */
-    async function editPicture(id_article, obj) {
+    async function editPicture(obj) {
         // Requete
         var myHeaders = new Headers();
 
         let formData = new FormData(obj);
-        console.log(obj);
-        // formData.append('image', obj);
 
         var myInit = {
             method: 'POST',
