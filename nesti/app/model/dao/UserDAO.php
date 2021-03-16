@@ -68,18 +68,17 @@ var_dump(array("lastname"=>$userAdd->getLastname(),"firstname"=>$userAdd->getFir
 
     public function getOneUser($valueId)
     {
-        $var = [];
+    
         $req = self::$_bdd->prepare('SELECT * FROM users WHERE id_users =:id ');
         $req->execute(array("id" => $valueId));
+        $user = new User();
         if ($data = $req->fetch()) {
             $roles = $this->getRole($data['id_users']);
-            $user = new User();
-            $data['roles'] = $roles;
+            $data['roles']=$roles;
             $use = $user->hydration($data);
-            $var = ['user' => $use];
         }
         $req->closeCursor(); // release the server connection so it's possible to do other query
-        return $var;
+        return $use;
     }
 
     public function getChief($idChief)
