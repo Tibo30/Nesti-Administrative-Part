@@ -12,6 +12,30 @@ class PictureDAO extends ModelDAO
         return $pictureObject;
     }
 
+    public function doesPictureExist($pictureName, $pictureExtension)
+    {
+        $exist=false;
+        $req = self::$_bdd->prepare('SELECT * FROM pictures WHERE name=:name AND extension=:extension');
+        $req->execute(array("name" => $pictureName,"extension" => $pictureExtension));
+        if ($req->rowcount()==1) {
+            $exist = true;
+        } 
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $exist;
+    }
+
+    public function getPictureByName($pictureName, $pictureExtension)
+    {
+        $exist=false;
+        $req = self::$_bdd->prepare('SELECT * FROM pictures WHERE name=:name AND extension=:extension');
+        $req->execute(array("name" => $pictureName,"extension" => $pictureExtension));
+        $picture =  $req->fetch();
+        $pictureObject = new Picture();
+        $pictureObject->hydration($picture);
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $pictureObject;
+    }
+
     public function insertPicture($picture)
     {
 
