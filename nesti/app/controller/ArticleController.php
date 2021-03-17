@@ -28,6 +28,8 @@ class ArticleController extends BaseController
             $this->deleteArticle(); // this is the method called by the fetch API with the article/delete ROOT.
         } else if (($this->_url) == "article_orders") {
             $data=$this->orders(); 
+        } else if (($this->_url) == "article_order") {
+            $data=$this->order(); // this is the method called by the fetch API with the article/order ROOT.
         } 
         $data["title"] = "Articles";
         $data["url"] = $this->_url;
@@ -107,6 +109,37 @@ class ArticleController extends BaseController
                 $index++;
             }
             $data['success'] = true;
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    private function order()
+    {
+        $data = [];
+        $data['success'] = false;
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idOrder = $_POST["id_order"]; // first we get the id of the order
+            $data["id"]=$idOrder;
+            $ordersDAO = new OrderDAO();
+            $orderLines=$ordersDAO->getOrderLines($idOrder); // we get all the orderLines for this order
+            if (count($orderLines)>0){ // if there is at least one orderLine
+                $data['success'] = true;
+                $articles=[];
+                foreach($orderLines as $orderLine){ // we get all the articles of the orderLines
+                    $articles[]=$this->articleDAO->getArticle($orderLine->getIdArticle());
+                }
+                $index = 0;
+                // in this loop we prepare the return data from the fetch
+                foreach($articles as $article){
+                    $data['articles'][$index]['quantity'] = $article->getQuantityPerUnit();
+                    $data['articles'][$index]['unitMeasure'] = $article->getUnitMeasure()->getName();
+                    $data['articles'][$index]['product'] = $article->getProduct()->getProductName();
+                    $data['articles'][$index]["see"]='<a id="seeArticle" class="btn-delete-article" onclick="" data-id='. $article->getIdArticle() . '>See</a>';
+                    $index++;
+                }
+            }
         }
         echo json_encode($data);
         die;
