@@ -41,7 +41,7 @@ class UserController extends BaseController
     private function modifyUser($idUser)
     {
         $user = $this->userDAO->getOneUser($idUser);
-        $data = ['user' => $user['user'], 'url' => $this->_url, "title" => "User"];
+        $data = ['user' => $user, 'url' => $this->_url, "title" => "User"];
         return $data;
     }
 
