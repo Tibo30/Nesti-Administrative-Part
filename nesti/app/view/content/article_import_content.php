@@ -1,4 +1,4 @@
-<div class="container bg-white align-items-left" id="recipePage">
+<div class="container bg-white align-items-left" id="importArticlePage">
     <div class="d-flex flex-row underLink">
         <a href="<?= BASE_URL ?>article"><u>Articles</u>
         </a>
