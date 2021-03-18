@@ -16,7 +16,7 @@ class ArticleController extends BaseController
             $data =  $this->importedArticles();
         } else if (($this->_url) == "article_edit") {
             $idArticle = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
-            if (!empty($_POST)) {
+            if (!empty($_POST)) { // if the article user name has been change (post method)
                 $this->editArticle($idArticle);
             }
             if (isset($idArticle)) {
@@ -26,17 +26,22 @@ class ArticleController extends BaseController
             $this->editPicture(); // this is the method called by the fetch API with the article/delete ROOT.
         } else if (($this->_url) == "article_delete") {
             $this->deleteArticle(); // this is the method called by the fetch API with the article/delete ROOT.
+        } else if (($this->_url) == "article_deletepicture") {
+            $this->deletePictureArticle(); // this is the method called by the fetch API with the article/delete ROOT.
         } else if (($this->_url) == "article_orders") {
-            $data=$this->orders(); 
+            $data = $this->orders();
         } else if (($this->_url) == "article_order") {
-            $data=$this->order(); // this is the method called by the fetch API with the article/order ROOT.
-        } 
+            $data = $this->order(); // this is the method called by the fetch API with the article/order ROOT.
+        }
         $data["title"] = "Articles";
         $data["url"] = $this->_url;
         $this->_view = new View($this->_url);
         $this->_data = $data;
     }
 
+    /**
+     * This method is used to display all the articles
+     */
     private function articles()
     {
         $articles = $this->articleDAO->getArticles();
@@ -44,6 +49,9 @@ class ArticleController extends BaseController
         return $data;
     }
 
+    /**
+     * This method is used to display an article (edit page)
+     */
     private function article($idArticle)
     {
         $article = $this->articleDAO->getArticle($idArticle);
@@ -51,6 +59,9 @@ class ArticleController extends BaseController
         return $data;
     }
 
+    /**
+     * This method is used to display all the imported Articles
+     */
     private function importedArticles()
     {
         $articles = $this->articleDAO->getimportedArticles();
@@ -58,13 +69,20 @@ class ArticleController extends BaseController
         return $data;
     }
 
-    private function orders(){
+    /**
+     * This method is used to display all the orders
+     */
+    private function orders()
+    {
         $ordersDAO = new OrderDAO();
-        $orders=$ordersDAO->getOrders();
-        $data=['orders'=>$orders];
+        $orders = $ordersDAO->getOrders();
+        $data = ['orders' => $orders];
         return $data;
     }
 
+    /**
+     * This method is used to edit the article user name
+     */
     private function editArticle($idArticle)
     {
         $data = [];
@@ -82,7 +100,10 @@ class ArticleController extends BaseController
         // return $data;
     }
 
-    // this is the Ajax method to delete an Article (change state to Blocked)
+
+    /**
+     * this is the Ajax method to delete an Article (change state to Blocked)
+     */
     private function deleteArticle()
     {
         $data = [];
@@ -103,9 +124,9 @@ class ArticleController extends BaseController
                 $data['articles'][$index]['type'] = $article->getType();
                 $data['articles'][$index]['last_import'] = $article->getLastImport()->getImportDate();
                 $data['articles'][$index]['state'] = $article->getState();
-                $data['articles'][$index]['stock'] = "";
+                $data['articles'][$index]['stock'] = $article->getStock();
                 $data['articles'][$index]['action'] = '<a href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id=' . $article->getIdArticle() . '>Modify</br></a>
-                <a id="allArticleDelete" class="btn-delete-article" onclick="allArticleDelete()" data-id=' . $article->getIdArticle() . '>Delete</a>';
+                <a id="allArticlesDelete" class="btn-delete-article" onclick="allArticlesDelete()" data-id=' . $article->getIdArticle() . '>Delete</a>';
                 $index++;
             }
             $data['success'] = true;
@@ -114,6 +135,9 @@ class ArticleController extends BaseController
         die;
     }
 
+    /**
+     * this is the method called by the fetch API with the article/order ROOT.
+     */
     private function order()
     {
         $data = [];
@@ -121,22 +145,23 @@ class ArticleController extends BaseController
 
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
             $idOrder = $_POST["id_order"]; // first we get the id of the order
-            $data["id"]=$idOrder;
+            $data["id"] = $idOrder;
             $ordersDAO = new OrderDAO();
-            $orderLines=$ordersDAO->getOrderLines($idOrder); // we get all the orderLines for this order
-            if (count($orderLines)>0){ // if there is at least one orderLine
+            $orderLines = $ordersDAO->getOrderLines($idOrder); // we get all the orderLines for this order
+            if (count($orderLines) > 0) { // if there is at least one orderLine
                 $data['success'] = true;
-                $articles=[];
-                foreach($orderLines as $orderLine){ // we get all the articles of the orderLines
-                    $articles[]=$this->articleDAO->getArticle($orderLine->getIdArticle());
+                $articles = [];
+                foreach ($orderLines as $orderLine) { // we get all the articles of the orderLines
+                    $articles[] = $this->articleDAO->getArticle($orderLine->getIdArticle());
                 }
                 $index = 0;
                 // in this loop we prepare the return data from the fetch
-                foreach($articles as $article){
+                foreach ($articles as $article) {
                     $data['articles'][$index]['quantity'] = $article->getQuantityPerUnit();
                     $data['articles'][$index]['unitMeasure'] = $article->getUnitMeasure()->getName();
                     $data['articles'][$index]['product'] = $article->getProduct()->getProductName();
-                    $data['articles'][$index]["see"]='<a id="seeArticle" class="btn-delete-article" onclick="" data-id='. $article->getIdArticle() . '>See</a>';
+                    $data['articles'][$index]["see"] = '<a id="orderSeeArticle" onclick="" data-id=' . $article->getIdArticle() . '>See</a>';
+                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . '</div>' . '<a id="seeArticle" class="btn-delete-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
                     $index++;
                 }
             }
@@ -145,7 +170,9 @@ class ArticleController extends BaseController
         die;
     }
 
-    // this is the Ajax method to edit Picture of an article
+    /**
+     * this is the Ajax method to edit Picture of an article
+     */
     private function editPicture()
     {
         $data = [];
@@ -182,19 +209,39 @@ class ArticleController extends BaseController
                         $article->setIDPicture($idPicture); // set the idPicture to the object
                         $this->articleDAO->editArticle($article, "picture"); // edit the article in the database with the new picture
                     } else {
-                        $data['errorMove'] = "The picture has not been added"; 
+                        $data['errorMove'] = "The picture has not been added";
                     }
                 } else { // the name is already in the database
                     $data['success'] = true;
-                    $picture = $pictureDAO-> getPictureByName($picture->getName(), $picture->getExtension()); // get the picture from the database
+                    $picture = $pictureDAO->getPictureByName($picture->getName(), $picture->getExtension()); // get the picture from the database
                     $article = $this->articleDAO->getArticle($iD); // get the article from the DAO
+                    $article->setIDPicture($picture->getIdPicture()); // set the id picture of the article
                     $this->articleDAO->editArticle($article, "picture"); // edit the article in the database with this picture
                     $data['MessageDb'] = "The name is already taken in the database. The picture added is the one from the database. Change the name of your picture if you want this one to be added";
                 }
 
-                $data["picture"]=$picture->getName().".".$picture->getExtension();
-                $data["urlPicture"]=BASE_URL.PATH_PICTURES.$data["picture"];
+                $data["picture"] = $picture->getName() . "." . $picture->getExtension();
+                $data["urlPicture"] = BASE_URL . PATH_PICTURES . $data["picture"];
             }
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the Ajax method to delete the Picture of an article
+     */
+    private function deletePictureArticle()
+    {
+        $data = [];
+        $data['success'] = false;
+
+        if (isset($_POST) && !empty($_POST)) {
+            $idArticle = $_POST["id_article"]; // first we get the id of the article
+            $article = $this->articleDAO->getArticle($idArticle); // the we get the object article from the database.
+            $article->setIDPicture(null);
+            $this->articleDAO->editArticle($article, "picture"); // set the picture to null in the database for this article
+            $data['success'] = true;
         }
         echo json_encode($data);
         die;
