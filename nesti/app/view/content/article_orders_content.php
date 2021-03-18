@@ -9,7 +9,7 @@ if (!isset($orders)) {
 }
 ?>
 
-<div class="container bg-light border d-flex flex-column align-items-left" id="recipePage">
+<div class="container bg-light border d-flex flex-column align-items-left" id="ordersPage">
     <div class="d-flex flex-row underLink">
         <a href="<?= BASE_URL ?>article"><u>Articles</u>
         </a>
@@ -18,18 +18,18 @@ if (!isset($orders)) {
     <h2 class="mb-5 mt-5">Orders</h2>
 
 
-    <div class="d-flex flex-row justify-content-between">
+    <div class="d-flex flex-row justify-content-between flex-wrap">
         <div>
             <div class="d-flex flex-row justify-content-between">
                 <nav class="navbar navbar-white bg-white pl-0">
                     <form class="form-inline">
-                        <input class="form-control mr-sm-2" id="customSearchArticle" type="search" placeholder="Search" aria-label="Search">
-                        <img id="searchArticle" src="<?php echo BASE_URL . PATH_ICONS ?>search-svg.svg" alt="">
+                        <input class="form-control mr-sm-2" id="customSearchOrder" type="search" placeholder="Search" aria-label="Search">
+                        <img id="searchOrder" src="<?php echo BASE_URL . PATH_ICONS ?>search-svg.svg" alt="">
                     </form>
                 </nav>
 
             </div>
-            <table class="table-borderless table-striped tableOrder" rowEvents="" id="allArticleTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchArticle" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
+            <table class="table-borderless table-striped" rowEvents="" id="allOrdersTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchOrder" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
                 <thead>
                     <th>ID</th>
 
@@ -42,10 +42,10 @@ if (!isset($orders)) {
                     <th>State</th>
 
                 </thead>
-                <tbody id="allArticleTbody">
+                <tbody id="allOrdersTbody">
                     <?php
                     foreach ($orders as $order) {
-                        echo '<tr class="orders" data-id="'. $order->getIdOrder().'">';
+                        echo '<tr class="orders" data-id="' . $order->getIdOrder() . '">';
                         echo '<td>' . $order->getIdOrder() . '</td>';
                         echo '<td>' . $order->getUser()->getFirstName() . " " . $order->getUser()->getLastName() . '</td>';
                         echo '<td>' . round(($order->getAmount()), 2) . '</td>';
@@ -58,10 +58,13 @@ if (!isset($orders)) {
             </table>
         </div>
 
-        <div>
+        <div class="d-flex flex-column">
+            <div class="d-flex flex-row flex-wrap">
+                <h3>Details</h3>
+                <h4 id = "idOrder"></h4>
+            </div>
 
-            <h3>Details</h3>
-            <div class="listOrderLines d-flex flex-column justify-content-between w-100 p-2 bg-white border">
+            <div id="listOrderLines" class="d-flex flex-column justify-content-start w-100 p-2 bg-white border">
 
             </div>
 
@@ -71,63 +74,64 @@ if (!isset($orders)) {
 </div>
 
 <script>
-const ROOT = '<?= BASE_URL ?>';
+    const ROOT = '<?= BASE_URL ?>';
     document.addEventListener("DOMContentLoaded", function() {
 
-        const myTable=document.querySelector(".tableOrder"); // get the table
-        myTable.addEventListener('click',function(){ // add event listener
-            const orderId=event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
+        const myTable = document.querySelector("#allOrdersTable"); // get the table
+        myTable.addEventListener('click', function() { // add event listener
+            const orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
             getOrderLines(orderId).then((response) => {
                 if (response) {
-                    const divList = document.querySelector(".listOrderLines")
+                    const divList = document.querySelector("#listOrderLines")
+                    divList.innerHTML = "";
                     if (response.success) {
                         response['articles'].forEach(element => {
                             const div = document.createElement("div");
-                            div.innerHTML = element.quantity + " " + element.unitMeasure + " " + element.product + element.see;
-                            divList.appendChild(div);
+                            div.innerHTML = element.all;
+                            divList.appendChild(div); // add the articles lines to the divList
                         })
                     } else {
                         const div = document.createElement("div");
-                        div.innerHTML ="";
-                        divList.appendChild(div);
+                        div.innerHTML = "";
+                        divList.appendChild(div); // if no response, empty the divList.
                     }
-                   
+                    document.querySelector("#idOrder").innerHTML = "N°: " + orderId;
+
                 }
             });
         });
 
-         /**
-     * Ajax Request to edit the article picture
-     * @param int orderId
-     * @returns mixed
-     */
-    async function getOrderLines(orderId) {
-        // Requete
-        var myHeaders = new Headers();
+        /**
+         * Ajax Request to get the articles from the orderLines according to the order
+         * @param int orderId
+         * @returns mixed
+         */
+        async function getOrderLines(orderId) {
+            var myHeaders = new Headers();
 
-        let formData = new FormData();
-        formData.append('id_order',orderId);
+            let formData = new FormData();
+            formData.append('id_order', orderId);
 
-        var myInit = {
-            method: 'POST',
-            headers: myHeaders,
-            mode: 'cors',
-            cache: 'default',
-            body: formData
-        };
-        let response = await fetch(ROOT + 'article/order', myInit);
-        try {
-            if (response.ok) {
-                return await response.json();
-            } else {
-                return false;
+            var myInit = {
+                method: 'POST',
+                headers: myHeaders,
+                mode: 'cors',
+                cache: 'default',
+                body: formData
+            };
+            let response = await fetch(ROOT + 'article/order', myInit);
+            try {
+                if (response.ok) {
+                    return await response.json();
+                } else {
+                    return false;
+                }
+            } catch (e) {
+                console.error(e.message);
             }
-        } catch (e) {
-            console.error(e.message);
+
+
         }
-
-
-    }
 
     });
 </script>
