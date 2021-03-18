@@ -6,6 +6,17 @@ class Lot{
     private $receivedDate;
     private $idArticle;
     
+    public function hydration($data)
+    {
+        $this->refOrder = $data['ref_order'];
+        $this->unitCost = $data['id_article'];
+        $this->boughtQuantity = $data['bought_quantity'];
+        $this->receivedDate = $data['received_date'];
+        $this->idArticle = $data['id_article'];
+       
+        return $this;
+    }
+
 
     /**
      * Get the value of refOrder
