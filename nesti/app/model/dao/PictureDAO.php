@@ -26,7 +26,6 @@ class PictureDAO extends ModelDAO
 
     public function getPictureByName($pictureName, $pictureExtension)
     {
-        $exist=false;
         $req = self::$_bdd->prepare('SELECT * FROM pictures WHERE name=:name AND extension=:extension');
         $req->execute(array("name" => $pictureName,"extension" => $pictureExtension));
         $picture =  $req->fetch();
