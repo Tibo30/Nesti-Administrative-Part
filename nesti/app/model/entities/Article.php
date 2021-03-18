@@ -273,4 +273,22 @@ class Article
         $type = $productDAO->getType($this->iDProduct);
         return $type;
     }
+
+    public function getStock()
+    {
+        $lotDAO = new LotDAO();
+        $orderDAO = new OrderDAO();
+        $orderLines = $orderDAO->getOrderLinesArticle($this->idArticle); // get all the order lines for an article
+        $lots = $lotDAO->getLots($this->idArticle); // get all the lots for an article
+        $quantityOrdered = 0;
+        $quantityBought=0;
+        foreach ($orderLines as $orderLine) {
+            $quantityOrdered += $orderLine->getQuantityOrdered();
+        }
+        foreach($lots as $lot){
+            $quantityBought += $lot->getBoughtQuantity();
+        }
+        $stock=$quantityBought-$quantityOrdered;
+        return $stock;
+    }
 }
