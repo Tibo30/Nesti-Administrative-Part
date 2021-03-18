@@ -56,4 +56,5 @@ class ArticleDAO extends ModelDAO
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $var;
     }
+
 }
