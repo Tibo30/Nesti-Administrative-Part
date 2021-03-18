@@ -34,4 +34,19 @@ class OrderDAO extends ModelDAO
         return $var;
     }
 
+    public function getOrderLinesArticle($idArticle)
+    {
+        $var = [];
+        $req = self::$_bdd->prepare('SELECT * FROM order_line WHERE id_article=:id');
+        $req->execute(array("id" => $idArticle));
+        if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($data as $row) {
+                $orderLine=new OrderLine();
+                $var[] = $orderLine->hydration($row);;
+            }
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $var;
+    }
+
 }
