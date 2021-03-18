@@ -9,7 +9,7 @@ if (!isset($articles)) {
 }
 ?>
 
-<div class="container bg-light border d-flex flex-column align-items-left" id="recipePage">
+<div class="container bg-light border d-flex flex-column align-items-left" id="allArticlesPage">
     <h2 class="mb-5 mt-5">Article</h2>
 
     <div class="d-flex flex-row justify-content-between">
@@ -22,13 +22,13 @@ if (!isset($articles)) {
         <div>
             <a id="btnSeeOrders" href="article/orders" class="btn mb-1 border align-self-end"> <i class="fa fa-eye mr-2"></i>
                 Orders</a>
-            <a id="btnAddArticle" href="article/import" class="btn mb-1 border align-self-end"> <img id="addArticle" src="<?php echo BASE_URL . PATH_ICONS ?>create-svg.svg" alt="svg plus">
+            <a id="btnImportArticle" href="article/import" class="btn mb-1 border align-self-end"> <img id="svgImportArticle" src="<?php echo BASE_URL . PATH_ICONS ?>create-svg.svg" alt="svg plus">
                 Import</a>
         </div>
 
     </div>
 
-    <table class="table-borderless table-striped" id="allArticleTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchArticle" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
+    <table class="table-borderless table-striped" id="allArticlesTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchArticle" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
         <thead>
             <th>ID</th>
 
@@ -46,7 +46,7 @@ if (!isset($articles)) {
 
             <th>Actions</th>
         </thead>
-        <tbody id="allArticleTbody">
+        <tbody id="allArticlesTbody">
             <?php
             foreach ($articles as $article) {
                 echo '<tr>';
@@ -56,10 +56,10 @@ if (!isset($articles)) {
                 echo '<td>' . $article->getType() . '</td>';
                 echo '<td>' . $article->getLastImport()->getImportDate() . '</td>';
                 echo '<td>' . $article->getState() . '</td>';
-                echo '<td>' . "Stock" . '</td>';
+                echo '<td>' . $article->getStock() . '</td>';
                 echo '<td>';
-                echo '<a href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id=' . $article->getIdArticle() . '>Modify</br></a>';
-                echo '<a id="allArticleDelete" class="btn-delete-article" onclick="allArticleDelete()" data-id=' . $article->getIdArticle() . '>Delete</a>';
+                echo '<a id="allArticlesModify" class="btn-modify-article" href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id=' . $article->getIdArticle() . '>Modify</br></a>';
+                echo '<a id="allArticlesDelete" class="btn-delete-article" onclick="allArticlesDelete()" data-id=' . $article->getIdArticle() . '>Delete</a>';
                 echo '</td>';
                 echo '</tr>';
             } ?>
@@ -71,31 +71,35 @@ if (!isset($articles)) {
 <script>
     const ROOT = '<?= BASE_URL ?>';
 
-    function allArticleDelete() {
+    function allArticlesDelete() {
         let idArticle = event.target.getAttribute('data-id');
         if (confirm('Are you sure you want to delete this article ?')) {
-            // Save it!
             deleteArticle(idArticle).then((response) => {
                 if (response) {
                     if (response.success) {
-                        const tbody = document.querySelector("#allArticleTbody");
+                        const tbody = document.querySelector("#allArticlesTbody");
                         tbody.innerHTML=""; // we empty the tbody
                         // then we fill it with the new articles got from the fetch
                         response['articles'].forEach(element => {
                             const tr = document.createElement("tr");
                             tr.innerHTML = "<td>" + element.id + "</td><td>" + element.name + "</td><td>" + element.selling_price + "</td><td>" + element.type + "</td><td>" + element.last_import + "</td><td>" + element.state + "</td><td>" + element.stock + "</td><td>" + element.action + "</td>";
-                            tbody.appendChild(tr);
+                            tbody.appendChild(tr); // We add the new lines to the tbody
                         })
                         alert('This article has been deleted from the database !');
                     }
                 }
             })
         } else {
-            // Do nothing!
             alert('The article has not been deleted from the database !');
         }
     }
 
+
+     /**
+     * Ajax Request to delete the Article (change the status to blocked)
+     * @param int idArticle
+     * @returns mixed
+     */
     async function deleteArticle(idArticle) {
 
         var myHeaders = new Headers();
