@@ -64,7 +64,6 @@ if (!isset($articles)) {
                 echo '</tr>';
             } ?>
         </tbody>
-        </tbody>
     </table>
 </div>
 
