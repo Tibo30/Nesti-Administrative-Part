@@ -59,9 +59,9 @@ if (!isset($orders)) {
         </div>
 
         <div class="d-flex flex-column">
-            <div class="d-flex flex-row flex-wrap">
+            <div class="d-flex flex-row flex-wrap justify-content-between">
                 <h3>Details</h3>
-                <h4 id = "idOrder"></h4>
+                <h4 id = "idOrder" className="mr-5">N°:</h4>
             </div>
 
             <div id="listOrderLines" class="d-flex flex-column justify-content-start w-100 p-2 bg-white border">
