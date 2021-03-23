@@ -77,7 +77,6 @@ if (!isset($users)) {
                 echo '</tr>';
             } ?>
         </tbody>
-        </tbody>
     </table>
 
 </div>
