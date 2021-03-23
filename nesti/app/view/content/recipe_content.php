@@ -10,7 +10,7 @@ if (!isset($recipes)||empty($recipes)) {
 
 ?>
 
-<div class="container bg-white d-flex flex-column align-items-left" id="recipePage">
+<div class="container bg-white d-flex flex-column align-items-left" id="allRecipePage">
 <h2 class="mb-2 mt-2">Recettes</h2>
     <div class="d-flex flex-row justify-content-between">
         <nav class="navbar navbar-white bg-white pl-0">
@@ -20,14 +20,14 @@ if (!isset($recipes)||empty($recipes)) {
             </form>
         </nav>
         <div>
-        <a id="btnAddRecipe" href="recipe/add" class="btn mb-1 border align-self-end"> <img id="addRecipe" src="<?php echo BASE_URL.PATH_ICONS ?>create-svg.svg" alt="svg plus">
+        <a id="btnAddRecipe" href="recipe/add" class="btn mb-1 border align-self-end"> <img id="svgAddRecipe" src="<?php echo BASE_URL.PATH_ICONS ?>create-svg.svg" alt="svg plus">
             Add Recipe</a>
         </div>
         
     </div>
 
     <table class="table-borderless table-striped" 
-    id="table" 
+    id="allRecipesTable" 
     data-toggle="table" 
     data-sortable="true" 
     data-pagination="true" 
@@ -69,7 +69,6 @@ if (!isset($recipes)||empty($recipes)) {
                 echo '</td>';
                 echo '</tr>';
             } ?>
-        </tbody>
         </tbody>
     </table>
 
