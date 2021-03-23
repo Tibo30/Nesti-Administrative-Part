@@ -97,42 +97,32 @@ color: var(--classicColorGrey);
     width: 40%;
 }
 
-#recipePage thead{
-    background-color:var(--primaryColor) ;
-    color: var(--classicColorWhite);
-}
 
-#searchRecipe,#searchUser{
+
+#searchUser{
     position: absolute;
     width: 10%;
     left : 2%;
 }
 
 
-#customSearchRecipe,#customSearchUser{
+#customSearchUser{
     margin: 0;
     padding-left: 50px;
 }
 
-#addRecipe, #addUser{
+#addUser{
     position: absolute;
     left: 2%;
     width: 20%;
     z-index: 2;
 }
 
-#pictureAdd{
-    width: 100%;
-    height: 70%;
-    min-height: 300px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-}
 
 
 
-#btnAddRecipe, #btnAddUser{
+
+#btnAddUser{
     position: relative;
     margin: 0;
     padding-left: 50px;
@@ -142,16 +132,16 @@ color: var(--classicColorGrey);
     color:var(--primaryLightColor);
 }
 
-#submitNewRecipe, #submitNewUser,#submitEditRecipe, #okRecipe{
+#submitNewUser,#submitEditRecipe, #okRecipe{
     background-color:var( --colorButtonValidate);
 }
 
-#cancelNewRecipe, #cancelNewUser ,#cancelEditRecipe{
+#cancelNewUser ,#cancelEditRecipe{
     background-color:var( --colorButtonInformation);
     color: var(--classicColorWhite);
 }
 
-#addParagraphNewRecipe>div,#addParagraphEditRecipe>div{
+#addParagraphEditRecipe>div{
     color: var(--primaryLightColor);
     font-size: 50px;
 }
@@ -161,20 +151,13 @@ color: var(--classicColorGrey);
     color: var(--classicColorWhite);
 }
 
-#addParagraphNewRecipe,#addParagraphEditRecipe{
+#addParagraphEditRecipe{
     width: 100%;
     background-color: var(--classicColorWhite) ;
     border:1px dashed rgb(184, 183, 183);
 }
 
-textarea[readonly]{
-    background-color:red;
-    box-shadow: none;
-  }
- 
-  textarea{
-      resize: none;
-  }
+
 
   .btn-remove-ingredients{
       color:var(--colorButtonInformation);
@@ -194,9 +177,7 @@ textarea[readonly]{
 #file-upload-button{
     content:"chose a file";
 }
-#recipe-img{
-    content:none;
-}
+
 
 /*------------------------------------ articles content -------------------------------*/
 
@@ -329,3 +310,114 @@ textarea[readonly]{
 #submitEditArticle, #btn-edit-article-picture{
     background-color:var( --colorButtonValidate);
 }
+
+/*------------------------------------ recipes content -------------------------------*/
+
+#allRecipePage thead{
+    background-color:var(--primaryColor) ;
+    color: var(--classicColorWhite);
+}
+
+#searchRecipe{
+    position: absolute;
+    width: 10%;
+    left : 2%;
+}
+
+#btnAddRecipe{
+    position: relative;
+    margin: 0;
+    padding-left: 50px;
+}
+
+#svgAddRecipe{
+    position: absolute;
+    left: 2%;
+    width: 20%;
+    z-index: 2;
+}
+
+
+#customSearchRecipe{
+    margin: 0;
+    padding-left: 50px;
+}
+
+/*------------------------------------ recipe add content -------------------------------*/
+
+#recipeAddPage .underLink>a,#recipeAddPage .underLink>p{
+    color:var(--primaryLightColor);
+}
+
+#submitNewRecipe{
+    background-color:var( --colorButtonValidate);
+}
+
+#cancelNewRecipe{
+    background-color:var( --colorButtonInformation);
+    color: var(--classicColorWhite);
+}
+
+#pictureAddRecipe{
+    width: 100%;
+    height: 70%;
+    min-height: 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+#recipeImgUpload{
+    content:none;
+}
+
+#addParagraphNewRecipe{
+    width: 100%;
+    background-color: var(--classicColorWhite) ;
+    border:1px dashed rgb(184, 183, 183);
+}
+
+#addParagraphNewRecipe>div{
+    color: var(--primaryLightColor);
+    font-size: 50px;
+}
+
+#recipeAddPage .paragraphAddRecipe[readonly]{
+    background-color:red;
+    box-shadow: none;
+  }
+ 
+  #recipeAddPage .paragraphAddRecipe{
+      resize: none;
+  }
+
+  #recipeAddPage .paragraphIcons{
+      width: 20px;
+      display:flex;
+      flex-direction:column;
+      justify-content: center;
+  }
+
+  #recipeAddPage .paragraphIcons img{
+      margin-bottom: 5px;
+  }
+
+  #recipeAddPage textarea{
+      width: 90%;
+  }
+
+  #recipeAddPage .deleteSvg{
+    padding: 2px;
+    background-color: red;
+  }
+
+  #recipeAddPage .upSvg{
+    padding: 2px;
+    background-color: var(--secondaryColor);
+  }
+
+  #recipeAddPage .downSvg{
+    padding: 2px;
+    background-color: var(--secondaryColor);
+  }
+
