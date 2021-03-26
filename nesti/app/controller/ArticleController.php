@@ -23,11 +23,11 @@ class ArticleController extends BaseController
                 $data =  $this->article($idArticle);
             }
         } else if (($this->_url) == "article_picture") {
-            $this->editPicture(); // this is the method called by the fetch API with the article/delete ROOT.
+            $this->editPicture(); // this is the method called by the fetch API with the article/picture ROOT.
         } else if (($this->_url) == "article_delete") {
             $this->deleteArticle(); // this is the method called by the fetch API with the article/delete ROOT.
         } else if (($this->_url) == "article_deletepicture") {
-            $this->deletePictureArticle(); // this is the method called by the fetch API with the article/delete ROOT.
+            $this->deletePictureArticle(); // this is the method called by the fetch API with the article/deletepicture ROOT.
         } else if (($this->_url) == "article_orders") {
             $data = $this->orders();
         } else if (($this->_url) == "article_order") {
@@ -92,7 +92,8 @@ class ArticleController extends BaseController
             $articleUserNameError = $articleEdit->setUserArticleName($articleUserName);
             $errorMessages = ['articleUserName' => $articleUserNameError];
             $data['errorMessages'] = $errorMessages;
-            if ($articleUserNameError == null) {
+            // si bug, remettre null à la place de ""
+            if ($articleUserNameError == "") {
                 $this->articleDAO->editArticle($articleEdit, "articleUserName");
                 // $data['articleEdit'] = $articleEdit;
             }
