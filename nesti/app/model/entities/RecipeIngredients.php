@@ -3,17 +3,17 @@ class RecipeIngredients
 {
     private $quantity;
     private $order;
-    private UnitMeasure $unitMeasure;
+    private $iDUnitMeasure;
     private $idRecipe;
-    private Ingredients $ingredient;
+    private $iDIngredient;
 
     public function hydration($data)
     {
         $this->quantity = $data['quantity'];
-        $this->order = $data['order'];
-        $this->unitMeasure = $data['unitMeasure'];
+        $this->order = $data['order_ingredient'];
+        $this->iDUnitMeasure = $data['id_unit_measures'];
         $this->idRecipe = $data['id_recipes'];
-        $this->ingredient = $data['ingredient'];
+        $this->iDIngredient = $data['id_ingredients'];
         return $this;
     }
 
@@ -30,11 +30,17 @@ class RecipeIngredients
      *
      * @return  self
      */
-    public function setQuantity($quantity)
+    public function setQuantity($quantity) // only int ? or decimals allowed ?????
     {
-        $this->quantity = $quantity;
-
-        return $this;
+        $quantityError = "";
+        if (empty($quantity)) {
+            $quantityError = 'Please enter a Number';
+        } else if (!preg_match("/^[0-9]/", $quantity)) {
+            $quantityError = "Only numbers allowed";
+        } else {
+            $this->quantity = $quantity;
+        }
+        return  $quantityError;
     }
 
     /**
@@ -77,25 +83,14 @@ class RecipeIngredients
         return $this;
     }
 
-
     /**
      * Get the value of unitMeasure
      */
     public function getUnitMeasure()
     {
-        return $this->unitMeasure;
-    }
-
-    /**
-     * Set the value of unitMeasure
-     *
-     * @return  self
-     */
-    public function setUnitMeasure($unitMeasure)
-    {
-        $this->unitMeasure = $unitMeasure;
-
-        return $this;
+        $unitDAO = new UnitMeasureDAO();
+        $unit = $unitDAO->getUnitMeasure($this->iDUnitMeasure);
+        return $unit;
     }
 
     /**
@@ -103,17 +98,47 @@ class RecipeIngredients
      */
     public function getIngredient()
     {
-        return $this->ingredient;
+        $productDAO = new ProductDAO();
+        $ingredient = $productDAO->getProduct($this->iDIngredient);
+        return $ingredient;
+    }
+    
+    /**
+     * Get the value of iDUnitMeasure
+     */ 
+    public function getIDUnitMeasure()
+    {
+        return $this->iDUnitMeasure;
     }
 
     /**
-     * Set the value of ingredient
+     * Set the value of iDUnitMeasure
      *
      * @return  self
-     */
-    public function setIngredient($ingredient)
+     */ 
+    public function setIDUnitMeasure($iDUnitMeasure)
     {
-        $this->ingredient = $ingredient;
+        $this->iDUnitMeasure = $iDUnitMeasure;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of iDIngredient
+     */ 
+    public function getIDIngredient()
+    {
+        return $this->iDIngredient;
+    }
+
+    /**
+     * Set the value of iDIngredient
+     *
+     * @return  self
+     */ 
+    public function setIDIngredient($iDIngredient)
+    {
+        $this->iDIngredient = $iDIngredient;
 
         return $this;
     }
