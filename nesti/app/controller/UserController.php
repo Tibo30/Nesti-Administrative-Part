@@ -79,7 +79,8 @@ class UserController extends BaseController
             $data['errorMessages'] = $errorMessages;
 
             // if all the datas inputed are correct, we do the query
-            if ($userLastnameError == null && $userFirstnameError == null && $userUsernameError == null && $userEmailError == null&& $userPasswordError == null && $userStateError == null && $userAddress1Error == null&& $userAddress2Error == null && $userPostCodeError == null && $userCityError == null && $userRolesError == null) {
+            // si bug, remettre null à la place de ""
+            if ($userLastnameError == "" && $userFirstnameError == "" && $userUsernameError == "" && $userEmailError == ""&& $userPasswordError == "" && $userStateError == "" && $userAddress1Error == "" && $userAddress2Error == "" && $userPostCodeError == "" && $userCityError == "" && $userRolesError == "") {
                 $this->userDAO->addUser($userAdd);
                 $data['userAdd'] = $userAdd;
             }
