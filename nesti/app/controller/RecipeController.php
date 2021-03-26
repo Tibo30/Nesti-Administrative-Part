@@ -15,13 +15,15 @@ class RecipeController extends BaseController
         } else if (($this->_url) == "recipe_add") {
             if (!empty($_POST)) {
                 $data = $this->addRecipeAllIngredients();
-                $data = array_merge($data,$this->addRecipeDatabase());
+                $data = array_merge($data, $this->addRecipeDatabase());
             }
         } else if (($this->_url) == "recipe_edit") {
             $idRecipe = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
             if (isset($idRecipe)) {
                 $data =  $this->modifyRecipe($idRecipe);
             }
+        } else if (($this->_url) == "recipe_addingredient") {
+            $this->addIngredient(); // this is the method called by the fetch API with the recipe/addingredient ROOT.
         }
         $data["title"] = "Recipes";
         $data["url"] = $this->_url;
@@ -56,7 +58,7 @@ class RecipeController extends BaseController
 
     public function addRecipeDatabase()
     {
-        $data=[];
+        $data = [];
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
             var_dump($_POST);
             $recipeName = filter_input(INPUT_POST, "recipeName", FILTER_SANITIZE_STRING);
@@ -69,15 +71,88 @@ class RecipeController extends BaseController
             $DifficultyError = $recipeAdd->setDifficulty($difficulty);
             $NumberOfPeopleError = $recipeAdd->setNumberOfPeople($numberOfPeople);
             $PreparationTimeError =  $recipeAdd->setTime($preparationTime);
-            $errorMessages=['recipeName'=>$RecipeNameError,'difficulty'=>$DifficultyError,'numberOfPeople'=>$NumberOfPeopleError,'preparationTime'=>$PreparationTimeError];
-            $data['errorMessages']= $errorMessages;
+            $errorMessages = ['recipeName' => $RecipeNameError, 'difficulty' => $DifficultyError, 'numberOfPeople' => $NumberOfPeopleError, 'preparationTime' => $PreparationTimeError];
+            $data['errorMessages'] = $errorMessages;
 
             // if all the datas inputed are correct, we do the query
-            if ($RecipeNameError==null && $DifficultyError==null && $NumberOfPeopleError==null && $PreparationTimeError==null) {
-                $this->recipeDAO->addRecipe($recipeAdd);
-                $data['recipeAdd']=$recipeAdd;
+            if ($RecipeNameError == null && $DifficultyError == null && $NumberOfPeopleError == null && $PreparationTimeError == null) {
+                $idRecipe = $this->recipeDAO->addRecipe($recipeAdd);
+                $recipeAdd->setIdRecipe($idRecipe);
+                $data['recipeAdd'] = $recipeAdd;
             }
         }
         return $data;
+    }
+
+    /**
+     * this is the Ajax method to add an ingredient to a recipe
+     */
+    private function addIngredient()
+    {
+        $data = [];
+        $data['success'] = false;
+
+        if (isset($_POST) && !empty($_POST)) {
+            $idRecipe = filter_input(INPUT_POST, "id_recipe", FILTER_SANITIZE_STRING); // first we get the id of the recipe
+            $recipe = $this->recipeDAO->getRecipe($idRecipe);
+
+            $recipeIngredientDAO = new RecipeIngredientsDAO();
+            $recipeIngredients = $recipeIngredientDAO->getRecipeIngredients($idRecipe); // we get all the recipe ingredients for this recipe
+            if ($recipeIngredients!=null){
+                $lastOrder = $recipeIngredients[count($recipeIngredients) - 1]->getOrder(); // we get the last order of the recipe ingredient for this recipe
+            } else {
+                $lastOrder=0;
+            }
+
+            $ingredientDAO = new IngredientDAO();
+            $ingredient = new Product();
+            $nameIngredient = filter_input(INPUT_POST, "name_ingredient", FILTER_SANITIZE_STRING); // we get the name of the ingredient
+            $ingredient = $ingredientDAO->getIngredientByName($nameIngredient); // we check if the ingredient already exist
+            $productNameError="";
+            if ($ingredient->getIdProduct() == null) { // if not we create it
+                $productNameError = $ingredient->setProductName($nameIngredient);
+                if ($productNameError==""){
+                    $ingredientId = $ingredientDAO->createProductIngredient($nameIngredient);
+                }
+                $ingredient->setIdProduct($ingredientId);
+            }
+
+            $unitDAO = new UnitMeasureDAO();
+            $unit = new UnitMeasure();
+            $unitName = filter_input(INPUT_POST, "unit_ingredient", FILTER_SANITIZE_STRING); // we get the name of the unit measure
+            $unit = $unitDAO->getUnitMeasureByName($unitName); // we check if the unit measure already exist
+            $unitNameError="";
+            if ($unit->getIdUnitMeasure() == null) { // if the unit measure doesn't exist in the database, we create it
+                $unitNameError = $unit->setName($unitName);
+                if ($unitNameError==""){
+                    $unitId = $unitDAO->createUnitMeasure($unitName);
+                }
+                $unit->setIdUnitMeasure($unitId);
+            }
+
+            $quantity = filter_input(INPUT_POST, "quantity_ingredient", FILTER_SANITIZE_STRING); // we get the quantity
+            // we create the new object recipe ingredients
+            $recipeIngredient = new RecipeIngredients();
+            $quantityError = $recipeIngredient->setQuantity($quantity);
+            $recipeIngredient->setOrder($lastOrder+1);
+            $recipeIngredient->setIdRecipe($idRecipe);
+            $recipeIngredient->setIDUnitMeasure($unit->getIdUnitMeasure());
+            $recipeIngredient->setIDIngredient($ingredient->getIdProduct());
+
+            $errorMessages = ['productName' => $productNameError, 'unitName' => $unitNameError, 'quantity' => $quantityError];
+            $data['errorMessages']=$errorMessages;
+            
+            // si bug, remettre null à la place de ""
+            // if there is no error
+            if ($productNameError=="" && $unitNameError=="" && $quantityError==""){
+                $recipeIngredientsDAO= new RecipeIngredientsDAO();
+                $recipeIngredientsDAO->createRecipeIngredient($recipeIngredient);
+                $data['recipeIngredient']='<div class="d-flex flex-row justify-content-between"><div>'.$quantity.' ' .$unit->getName().' de '.$ingredient->getProductName().'</div><div class="deleteRecipeIngredient" data-order="'.$recipeIngredient->getOrder().'">delete</div></div>';
+                $data['success'] = true;
+            }
+
+        }
+        echo json_encode($data);
+        die;
     }
 }
