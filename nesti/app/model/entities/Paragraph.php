@@ -11,7 +11,7 @@ class Paragraph
     {
         $this->idParagraph = $data['id_paragraph'];
         $this->content = $data['content'];
-        $this->order = $data['order'];
+        $this->order = $data['order_paragraph'];
         $this->creationDate = $data['creation_date'];
         $this->idRecipe = $data['id_recipes'];
         return $this;
