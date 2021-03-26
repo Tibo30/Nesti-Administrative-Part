@@ -44,8 +44,12 @@ class Product{
      */ 
     public function setProductName($productName)
     {
-        $this->productName = $productName;
-
-        return $this;
+        $productNameError = "";
+        if (empty($productName)) {
+            $productNameError = 'Please enter an ingredient name';
+        } else {
+            $this->productName = $productName;
+        }
+        return  $productNameError;
     }
 }
