@@ -46,8 +46,12 @@ class UnitMeasure{
      */ 
     public function setName($name)
     {
-        $this->name = $name;
-
-        return $this;
+        $unitNameError = "";
+        if (empty($name)) {
+            $unitNameError = 'Please enter a unit measure name';
+        } else {
+            $this->name = $name;
+        }
+        return  $unitNameError;
     }
 }
