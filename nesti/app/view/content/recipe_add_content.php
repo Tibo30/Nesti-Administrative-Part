@@ -82,9 +82,12 @@ if (!isset($listAllIngredients)) {
             <h3 class="mb-2 mt-2">Preparation</h3>
             <div class="form-group">
                 <div id="paragraphsAddRecipe" class="d-flex flex-column"></div>
+                <div class="d-flex flex-column align-items-center">
                 <button id="addParagraphNewRecipe" class="btn" onclick="addParagraph()">
                     <div class="fas fa-plus"></div>
                 </button>
+                <button id="okParagraphAddRecipe" type="submit" class="btn">SAVE</button>
+                </div>
             </div>
         </div>
         <div class="col-4">
@@ -184,8 +187,69 @@ if (!isset($listAllIngredients)) {
         }
     }
 
+    // -------------------------------- Add recipe picture --------------------------//   
 
+    const form = document.querySelector("#formAddRecipeImage"); // get the form used to add the picture
+    // Event listener on the form
+    form.addEventListener('submit', (function(e) {
+        event.preventDefault(); // stop the default action of the form
+        const img = document.querySelector("#InputFileAddRecipe");
+        const idRecipe = document.querySelector('#idRecipe').value;
+        if (img.value != "") {
+            addPicture(this, idRecipe).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        console.log(response);
+                        const namePicture = document.querySelector(".recipePictureAddName"); // get the paragraph where the name of the picture is written
+                        const divPicture = document.querySelector("#recipePictureAdd"); // get the div where the picture is displayed
+                        namePicture.innerHTML = response["picture"]; // change the name of the picture
+                        divPicture.style.backgroundImage = "url(" + response["urlPicture"] + ")"; // change the background image of the div with the new picture
+                        if (response.MessageDb != null) { // if there is a message from the Db (if the name of the picture is already taken)
+                            alert(response.MessageDb);
+                        } else {
+                            alert('Picture changed');
+                        }
+                    } else {
+                        if (response.errorMove != null) { // if the picture has not been moved
+                            alert(response.errorMove);
+                        }
+                    }
+                }
+            });
+        }
 
+    }))
+
+    /**
+     * Ajax Request to add the recipe picture
+     * @param {form} obj
+     * @param int idRecipe
+     * @returns mixed
+     */
+    async function addPicture(obj, idRecipe) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData(obj);
+        formData.append('id_recipe', idRecipe);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/addpicture', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
 
     // -------------------------------- Add recipe ingredient --------------------------//   
 
@@ -247,6 +311,66 @@ if (!isset($listAllIngredients)) {
         }
     }
 
+    // -------------------------------- Delete recipe ingredient --------------------------//   
+
+    // var buttonOkIngredient = document.querySelector("#okIngredientAddRecipe");
+    // buttonOkIngredient.addEventListener('click', (function(e) {
+    //     event.preventDefault();
+    //     const idRecipe = document.querySelector('#idRecipe').value;
+    //     const nameIngredient = document.querySelector('#inputIngredientNameAddRecipe').value;
+    //     const quantityIngredient = document.querySelector('#inputIngredientQuantityAddRecipe').value;
+    //     const unitIngredient = document.querySelector('#inputIngredientUnitAddRecipe').value;
+    //     var divList = document.querySelector("#addIngredientListAddRecipe");
+    //     if (idRecipe != null) {
+    //         addIngredient(idRecipe, nameIngredient, quantityIngredient, unitIngredient).then((response) => {
+    //             if (response) {
+    //                 if (response.success) {
+    //                     console.log(response)
+    //                     console.log(divList);
+    //                     console.log("test");
+    //                     divList.innerHTML += response.recipeIngredient;
+    //                     alert('Ingredient added');
+    //                 } else {
+    //                     console.log(response.errorMessages)
+    //                 }
+    //             }
+    //         });
+    //     }
+    // }))
+
+    /**
+     * Ajax Request to add ingredients to a recipe
+     * @param int idRecipe, string nameIngredient, int quantityIngredient, string unitIngredient
+     * @returns mixed
+     */
+    async function addIngredient(idRecipe, nameIngredient, quantityIngredient, unitIngredient) {
+        // var myHeaders = new Headers();
+
+        // let formData = new FormData();
+        // formData.append('id_recipe', idRecipe);
+        // formData.append('name_ingredient', nameIngredient);
+        // formData.append('quantity_ingredient', quantityIngredient);
+        // formData.append('unit_ingredient', unitIngredient);
+
+        // var myInit = {
+        //     method: 'POST',
+        //     headers: myHeaders,
+        //     mode: 'cors',
+        //     cache: 'default',
+        //     body: formData
+        // };
+        // let response = await fetch(ROOT + 'recipe/addingredient', myInit);
+        // try {
+        //     if (response.ok) {
+        //         return await response.json();
+        //     } else {
+        //         return false;
+        //     }
+        // } catch (e) {
+        //     console.error(e.message);
+        // }
+    }
+
     // -------------------------------- Add paragraph --------------------------//  
 
     var order = 0;
@@ -271,6 +395,7 @@ if (!isset($listAllIngredients)) {
         paragraphLine.className = "paragraphAddRecipeLine d-flex flex-row flex-wrap justify-content-between"
         // paragraphLine.setAttribute('data-id', index);
         paragraphLine.setAttribute('order', order)
+        paragraphLine.setAttribute('id', order)
 
         // create the textarea element
         var textLine = document.createElement('textarea');
@@ -359,38 +484,17 @@ if (!isset($listAllIngredients)) {
             downs.forEach(down =>
                 down.addEventListener('click',function() {
                     var currentParagraph=event.target.parentNode.parentNode;
-                    console.log(event.target.parentNode.nextSibling.value);
                    
                     var currentOrder=Number(currentParagraph.getAttribute('order'))-1; // get the attribute to know its position in the list of paragraphs(order-1)
-                    // currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
+                    currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
                    
-                    // var nextParagraph=event.target.parentNode.parentNode.nextSibling;
-                    // nextParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) -1);
+                    var nextParagraph=event.target.parentNode.parentNode.nextSibling;
+                    nextParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) -1);
 
                     var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); // get the list of paragraphs
-                    console.log( paragraphLines);
-                    var test = paragraphLines;
-                    console.log(test);
-                    console.log("ok");
-                    // var temp = paragraphLines[currentOrder]; // save the paragraph
-                    // console.log(temp);
-                    // console.log(paragraphLines[currentOrder+1]);
-                    // paragraphLines[currentOrder]=paragraphLines[currentOrder+1];
-                    // console.log(paragraphLines[currentOrder])
-                    // paragraphLines[currentOrder+1]=temp;
 
-                    console.log(Number(currentOrder)+1);
-                    console.log(Number(currentOrder));
-                    console.log(test[Number(currentOrder)+1]);
-                    test[Number(currentOrder)+1]=paragraphLines[Number(currentOrder)];
-                    test[Number(currentOrder)]=paragraphLines[Number(currentOrder)+1];
-                    console.log(test);
+                    paragraphLines[currentOrder].parentNode.insertBefore( paragraphLines[currentOrder], paragraphLines[currentOrder+1].nextSibling); // = insert after
 
-                    var paragraphArea = document.querySelector("#paragraphsAddRecipe");
-                    paragraphArea.innerHTML="";
-                    paragraphLines.forEach(function(element) {
-                        paragraphArea.appendChild(element);
-                    });
                     addButtons(); // we do again the addButtons function
                 })
             )
@@ -400,7 +504,20 @@ if (!isset($listAllIngredients)) {
         if (ups != null) {
             ups.forEach(up =>
                 up.addEventListener('click',function() {
-                    console.log("okUp")
+
+                    var currentParagraph=event.target.parentNode.parentNode;
+                   
+                    var currentOrder=Number(currentParagraph.getAttribute('order'))-1; // get the attribute to know its position in the list of paragraphs(order-1)
+                    currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) - 1);
+                   
+                    var previousParagraph=event.target.parentNode.parentNode.previousSibling;
+                    previousParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
+
+                    var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); // get the list of paragraphs
+
+                    paragraphLines[currentOrder].parentNode.insertBefore( paragraphLines[currentOrder], paragraphLines[currentOrder-1]); 
+
+                    addButtons(); // we do again the addButtons function
                 })
             )
         }
