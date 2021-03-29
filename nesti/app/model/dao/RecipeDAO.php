@@ -10,16 +10,6 @@ class RecipeDAO extends ModelDAO
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($data as $row) {
                 $item = new Recipe();
-                // create the Chief Object base on is ID
-                $userDao = new UserDAO();
-                $chief = $userDao->getChief($row["id_chief"]);
-                $row['chief'] = $chief;
-                // create the Picture Object base on is ID
-                if (isset($row["id_pictures"])){
-                    $pictureDAO = new PictureDAO();
-                    $picture = $pictureDAO->getPicture($row["id_pictures"]);
-                    $row['picture'] = $picture;
-                }
                 $var[] = $item->hydration($row);
             }
         }
@@ -33,16 +23,6 @@ class RecipeDAO extends ModelDAO
         $req->execute(array("id" => $idRecipe));
         $recipe = $req->fetch();
         $itemRecipe = new Recipe();
-        // create the Chief Object base on is ID
-        $userDao = new UserDAO();
-        $chief = $userDao->getChief($recipe["id_chief"]);
-        $recipe['chief'] = $chief;
-        // create the Picture Object base on is ID
-        if (isset($recipe["id_pictures"])){
-            $pictureDAO = new PictureDAO();
-            $picture = $pictureDAO->getPicture($recipe["id_pictures"]);
-            $recipe['picture'] = $picture;
-        }
         $itemRecipe->hydration($recipe);
 
         $req->closeCursor(); // release the server connection so it's possible to do other query
@@ -109,5 +89,13 @@ class RecipeDAO extends ModelDAO
         $req->execute(array("name"=>$recipeAdd->getRecipeName(),"difficulty"=>$recipeAdd->getDifficulty(),"number"=>$recipeAdd->getNumberOfPeople(),"time"=>$recipeAdd->getTimeDatabase(),"chief"=>$_SESSION["idUser"]));
         $last_id = self::$_bdd->lastInsertId();
         return $last_id;
+    }
+
+    public function editRecipe($recipeEdit,$change){
+        if ($change=="picture"){
+            $req = self::$_bdd->prepare('UPDATE recipes SET id_pictures=:idPicture WHERE id_recipes=:id');
+            $req->execute(array("idPicture" => ($recipeEdit->getIDPicture()),"id" => ($recipeEdit->getIdRecipe())));
+        } 
+        
     }
 }
