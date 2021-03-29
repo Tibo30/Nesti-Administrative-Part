@@ -66,7 +66,6 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                     </div>
                     <label class="custom-file-label" for="InputFileEditArticle" data-browse="Browse"></label>
                     <input type="text" class="form-control" name="idArticlePicture" id="idArticlePicture" value="<?= $article->getIdArticle() ?>" hidden>
-
                 </form>
             </div>
 
@@ -99,7 +98,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
     }))
 
     /**
-     * Ajax Request to edit the article picture
+     * Ajax Request to delete the article picture
      * @param int idArticle
      * @returns mixed
      */
