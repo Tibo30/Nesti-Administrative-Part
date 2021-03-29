@@ -441,3 +441,7 @@ color: var(--classicColorGrey);
     background-color:var( --colorButtonValidate);
 }
 
+#okParagraphAddRecipe{
+    background-color:var( --colorButtonValidate);
+}
+
