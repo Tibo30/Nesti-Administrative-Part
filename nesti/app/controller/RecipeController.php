@@ -24,6 +24,8 @@ class RecipeController extends BaseController
             }
         } else if (($this->_url) == "recipe_addingredient") {
             $this->addIngredient(); // this is the method called by the fetch API with the recipe/addingredient ROOT.
+        } else if (($this->_url) == "recipe_addpicture") {
+            $this->addPicture(); // this is the method called by the fetch API with the recipe/addpicture ROOT.
         }
         $data["title"] = "Recipes";
         $data["url"] = $this->_url;
@@ -160,4 +162,63 @@ class RecipeController extends BaseController
         echo json_encode($data);
         die;
     }
+
+    /**
+     * this is the Ajax method to add Picture of a recipe
+     */
+    private function addPicture()
+    {
+        $data = [];
+
+        if (isset($_FILES) && !empty($_FILES)) {
+            $data = [];
+            $data['success'] = false;
+
+            $pictureDAO = new PictureDAO;
+
+            $valid_extensions = array('jpeg', 'jpg', 'png', 'gif'); // we define the accepted extensions
+
+
+            $img = $_FILES['image']['name']; // this is the file name
+            $tmp = $_FILES['image']['tmp_name']; // this is the file temporary name
+
+            $path = BASE_DIR . "/public/pictures/pictures/" . strtolower($img); // this is the path that we want for the picture
+            $ext = strtolower(pathinfo($img, PATHINFO_EXTENSION)); // get the extension name of the file
+            $position = strrpos($img, "."); // get the position of the "." in the file name
+
+            $data['download'] = is_uploaded_file($tmp = $_FILES['image']['tmp_name']);
+
+            if (in_array($ext, $valid_extensions)) { // if the extension is valid    
+                $iD = $_POST['id_recipe'];
+                $picture = new Picture();
+                $picture->setExtension($ext);
+                $picture->setName(substr($img, 0, $position));
+                if (($pictureDAO->doesPictureExist($picture->getName(), $picture->getExtension())) == false) { // check if the picture/name is not already in the table
+                    if (move_uploaded_file($tmp, $path)) { // move the file form temporary folder to right folder (according to path)
+                        $data['success'] = true;
+                        $idPicture = $pictureDAO->insertPicture($picture, $iD); // insert the picture in the DAO et get the ID back
+                        $picture->setIdPicture($idPicture);
+                        $recipe = $this->recipeDAO->getRecipe($iD); // get the article from the DAO
+                        $recipe->setIdPicture($idPicture); // set the idPicture to the object
+                        $this->recipeDAO->editRecipe($recipe, "picture"); // edit the article in the database with the new picture
+                    } else {
+                        $data['errorMove'] = "The picture has not been added";
+                    }
+                } else { // the name is already in the database
+                    $data['success'] = true;
+                    $picture = $pictureDAO->getPictureByName($picture->getName(), $picture->getExtension()); // get the picture from the database
+                    $recipe = $this->recipeDAO->getRecipe($iD); // get the article from the DAO
+                    $recipe->setIdPicture($picture->getIdPicture()); // set the id picture of the article
+                    $this->recipeDAO->editRecipe($recipe, "picture"); // edit the article in the database with this picture
+                    $data['MessageDb'] = "The name is already taken in the database. The picture added is the one from the database. Change the name of your picture if you want this one to be added";
+                }
+
+                $data["picture"] = $picture->getName() . "." . $picture->getExtension();
+                $data["urlPicture"] = BASE_URL . PATH_PICTURES . $data["picture"];
+            }
+        }
+        echo json_encode($data);
+        die;
+    }
+
 }
