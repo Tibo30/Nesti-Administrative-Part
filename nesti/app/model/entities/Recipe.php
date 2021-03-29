@@ -8,8 +8,8 @@ class Recipe
     private $numberOfPeople;
     private $state;
     private $time;
-    private User $chief;
-    private Picture $picture;
+    private $idPicture;
+    private $idChief;
 
     // constructor
 
@@ -23,10 +23,8 @@ class Recipe
         $this->numberOfPeople = $data['number_of_people'];
         $this->state = $data['state'];
         $this->time = $data['time'];
-        if (isset($data['picture'])) {
-            $this->picture = $data['picture'];
-        }
-        $this->chief = $data['chief'];
+        $this->idPicture = $data['id_pictures'];
+        $this->idChief = $data['id_chief'];
         return $this;
     }
 
@@ -217,7 +215,9 @@ class Recipe
      */
     public function getChief()
     {
-        return $this->chief;
+        $userDAO = new UserDAO();
+        $chief = $userDAO->getChief($this->idChief);
+        return $chief;
     }
 
     /**
@@ -237,7 +237,9 @@ class Recipe
      */
     public function getPicture()
     {
-        return $this->picture;
+        $pictureDAO = new PictureDAO();
+        $picture = $pictureDAO->getPicture($this->idPicture);
+        return $picture;
     }
 
     /**
@@ -253,4 +255,44 @@ class Recipe
     }
 
     
+
+    /**
+     * Get the value of idPicture
+     */ 
+    public function getIdPicture()
+    {
+        return $this->idPicture;
+    }
+
+    /**
+     * Set the value of idPicture
+     *
+     * @return  self
+     */ 
+    public function setIdPicture($idPicture)
+    {
+        $this->idPicture = $idPicture;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of idChief
+     */ 
+    public function getIdChief()
+    {
+        return $this->idChief;
+    }
+
+    /**
+     * Set the value of idChief
+     *
+     * @return  self
+     */ 
+    public function setIdChief($idChief)
+    {
+        $this->idChief = $idChief;
+
+        return $this;
+    }
 }
