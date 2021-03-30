@@ -540,4 +540,66 @@ if (!isset($listAllIngredients)) {
             )
         }
     }
+
+// -------------------------------- Save paragraphes --------------------------//  
+    
+    okParagraphAddRecipe.addEventListener('click',(function(e) {
+        event.preventDefault();
+        const idRecipe = document.querySelector('#idRecipe').value;
+        var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); 
+
+        if (idRecipe != null) {
+            paragraphLines.forEach(element => saveParagraph(idRecipe, element).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        divList.innerHTML += response.recipeIngredient;
+                        //add event listener to the delete buttons
+                        var buttonsDeleteIngredient = document.querySelectorAll(".btn-delete-ingredient");
+                        buttonsDeleteIngredient.forEach(function(element) {
+                            element.addEventListener('click', (event) => listenerDeleteIngredient(event))
+                        });
+                        alert('Ingredient added');
+                    } else {
+                        console.log(response.errorMessages)
+                    }
+                }
+            }))
+            
+        }
+    }))
+
+    /**
+     * Ajax Request to save paragraphes
+     * @param {form} obj
+     * @param int idRecipe
+     * @returns mixed
+     */
+    async function saveParagraph(idRecipe, element) {
+        var myHeaders = new Headers();
+
+        console.log(idRecipe);
+        console.log(element)
+
+        // let formData = new FormData(obj);
+        // formData.append('id_recipe', idRecipe);
+
+        // var myInit = {
+        //     method: 'POST',
+        //     headers: myHeaders,
+        //     mode: 'cors',
+        //     cache: 'default',
+        //     body: formData
+        // };
+        // let response = await fetch(ROOT + 'recipe/addpicture', myInit);
+        // try {
+        //     if (response.ok) {
+        //         return await response.json();
+        //     } else {
+        //         return false;
+        //     }
+        // } catch (e) {
+        //     console.error(e.message);
+        // }
+    }
+
 </script>
