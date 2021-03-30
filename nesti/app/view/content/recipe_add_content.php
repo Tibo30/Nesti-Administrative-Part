@@ -83,10 +83,10 @@ if (!isset($listAllIngredients)) {
             <div class="form-group">
                 <div id="paragraphsAddRecipe" class="d-flex flex-column"></div>
                 <div class="d-flex flex-column align-items-center">
-                <button id="addParagraphNewRecipe" class="btn" onclick="addParagraph()">
-                    <div class="fas fa-plus"></div>
-                </button>
-                <button id="okParagraphAddRecipe" type="submit" class="btn">SAVE</button>
+                    <button id="addParagraphNewRecipe" class="btn" onclick="addParagraph()">
+                        <div class="fas fa-plus"></div>
+                    </button>
+                    <button id="okParagraphAddRecipe" type="submit" class="btn">SAVE</button>
                 </div>
             </div>
         </div>
@@ -265,10 +265,12 @@ if (!isset($listAllIngredients)) {
             addIngredient(idRecipe, nameIngredient, quantityIngredient, unitIngredient).then((response) => {
                 if (response) {
                     if (response.success) {
-                        console.log(response)
-                        console.log(divList);
-                        console.log("test");
                         divList.innerHTML += response.recipeIngredient;
+                        //add event listener to the delete buttons
+                        var buttonsDeleteIngredient = document.querySelectorAll(".btn-delete-ingredient");
+                        buttonsDeleteIngredient.forEach(function(element) {
+                            element.addEventListener('click', (event) => listenerDeleteIngredient(event))
+                        });
                         alert('Ingredient added');
                     } else {
                         console.log(response.errorMessages)
@@ -313,62 +315,78 @@ if (!isset($listAllIngredients)) {
 
     // -------------------------------- Delete recipe ingredient --------------------------//   
 
-    // var buttonOkIngredient = document.querySelector("#okIngredientAddRecipe");
-    // buttonOkIngredient.addEventListener('click', (function(e) {
-    //     event.preventDefault();
-    //     const idRecipe = document.querySelector('#idRecipe').value;
-    //     const nameIngredient = document.querySelector('#inputIngredientNameAddRecipe').value;
-    //     const quantityIngredient = document.querySelector('#inputIngredientQuantityAddRecipe').value;
-    //     const unitIngredient = document.querySelector('#inputIngredientUnitAddRecipe').value;
-    //     var divList = document.querySelector("#addIngredientListAddRecipe");
-    //     if (idRecipe != null) {
-    //         addIngredient(idRecipe, nameIngredient, quantityIngredient, unitIngredient).then((response) => {
-    //             if (response) {
-    //                 if (response.success) {
-    //                     console.log(response)
-    //                     console.log(divList);
-    //                     console.log("test");
-    //                     divList.innerHTML += response.recipeIngredient;
-    //                     alert('Ingredient added');
-    //                 } else {
-    //                     console.log(response.errorMessages)
-    //                 }
-    //             }
-    //         });
-    //     }
-    // }))
+
+    function listenerDeleteIngredient(event) {
+        event.preventDefault();
+        var buttonDelete = event.target;
+        console.log("ok delete")
+        // console.log(buttonDelete);
+        const idRecipe = buttonDelete.getAttribute("data-idrecipe");
+        const idIngredient = buttonDelete.getAttribute("data-idingredient");
+        const order = buttonDelete.getAttribute("data-order");
+        var divList = document.querySelector("#addIngredientListAddRecipe");
+        console.log(idRecipe);
+        console.log(idIngredient);
+        console.log(order);
+
+        if (idRecipe != null && idIngredient != null) {
+            deleteIngredient(idRecipe, idIngredient, order).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        divList.innerHTML = ""; //empty the list
+                        response['recipeIngredient'].forEach(element => {
+                            const div = document.createElement("div");
+                            div.innerHTML = element.all;
+                            divList.appendChild(div); // add the recipeIngredients to the divList
+                        })
+                        var buttonsDeleteIngredient = document.querySelectorAll(".btn-delete-ingredient");
+                        buttonsDeleteIngredient.forEach(function(element) { // add event listener to the new delete buttons
+                            element.addEventListener('click', (event) => listenerDeleteIngredient(event))
+                        });
+                        alert('Ingredient deleted');
+                    } else {
+                        console.log(response.errorMessages)
+                    }
+                }
+            });
+        }
+    }
+
 
     /**
      * Ajax Request to add ingredients to a recipe
-     * @param int idRecipe, string nameIngredient, int quantityIngredient, string unitIngredient
+     * @param int idRecipe, int idIngredient, int order
      * @returns mixed
      */
-    async function addIngredient(idRecipe, nameIngredient, quantityIngredient, unitIngredient) {
-        // var myHeaders = new Headers();
+    async function deleteIngredient(idRecipe, idIngredient, order) {
+        var myHeaders = new Headers();
 
-        // let formData = new FormData();
-        // formData.append('id_recipe', idRecipe);
-        // formData.append('name_ingredient', nameIngredient);
-        // formData.append('quantity_ingredient', quantityIngredient);
-        // formData.append('unit_ingredient', unitIngredient);
+        let formData = new FormData();
 
-        // var myInit = {
-        //     method: 'POST',
-        //     headers: myHeaders,
-        //     mode: 'cors',
-        //     cache: 'default',
-        //     body: formData
-        // };
-        // let response = await fetch(ROOT + 'recipe/addingredient', myInit);
-        // try {
-        //     if (response.ok) {
-        //         return await response.json();
-        //     } else {
-        //         return false;
-        //     }
-        // } catch (e) {
-        //     console.error(e.message);
-        // }
+        console.log(idRecipe);
+        console.log(idIngredient);
+        console.log(order);
+
+        formData.append('id_recipe', idRecipe);
+        formData.append('id_ingredient', idIngredient);
+        formData.append('order', order);
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/deleteingredient', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
     }
 
     // -------------------------------- Add paragraph --------------------------//  
@@ -482,18 +500,18 @@ if (!isset($listAllIngredients)) {
         var downs = document.querySelectorAll(".downSvg");
         if (downs != null) {
             downs.forEach(down =>
-                down.addEventListener('click',function() {
-                    var currentParagraph=event.target.parentNode.parentNode;
-                   
-                    var currentOrder=Number(currentParagraph.getAttribute('order'))-1; // get the attribute to know its position in the list of paragraphs(order-1)
+                down.addEventListener('click', function() {
+                    var currentParagraph = event.target.parentNode.parentNode;
+
+                    var currentOrder = Number(currentParagraph.getAttribute('order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
                     currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
-                   
-                    var nextParagraph=event.target.parentNode.parentNode.nextSibling;
-                    nextParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) -1);
+
+                    var nextParagraph = event.target.parentNode.parentNode.nextSibling;
+                    nextParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) - 1);
 
                     var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); // get the list of paragraphs
 
-                    paragraphLines[currentOrder].parentNode.insertBefore( paragraphLines[currentOrder], paragraphLines[currentOrder+1].nextSibling); // = insert after
+                    paragraphLines[currentOrder].parentNode.insertBefore(paragraphLines[currentOrder], paragraphLines[currentOrder + 1].nextSibling); // = insert after
 
                     addButtons(); // we do again the addButtons function
                 })
@@ -503,19 +521,19 @@ if (!isset($listAllIngredients)) {
         var ups = document.querySelectorAll(".upSvg");
         if (ups != null) {
             ups.forEach(up =>
-                up.addEventListener('click',function() {
+                up.addEventListener('click', function() {
 
-                    var currentParagraph=event.target.parentNode.parentNode;
-                   
-                    var currentOrder=Number(currentParagraph.getAttribute('order'))-1; // get the attribute to know its position in the list of paragraphs(order-1)
+                    var currentParagraph = event.target.parentNode.parentNode;
+
+                    var currentOrder = Number(currentParagraph.getAttribute('order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
                     currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) - 1);
-                   
-                    var previousParagraph=event.target.parentNode.parentNode.previousSibling;
+
+                    var previousParagraph = event.target.parentNode.parentNode.previousSibling;
                     previousParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
 
                     var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); // get the list of paragraphs
 
-                    paragraphLines[currentOrder].parentNode.insertBefore( paragraphLines[currentOrder], paragraphLines[currentOrder-1]); 
+                    paragraphLines[currentOrder].parentNode.insertBefore(paragraphLines[currentOrder], paragraphLines[currentOrder - 1]);
 
                     addButtons(); // we do again the addButtons function
                 })
