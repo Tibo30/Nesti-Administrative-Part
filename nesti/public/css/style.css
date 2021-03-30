@@ -274,6 +274,11 @@ color: var(--classicColorGrey);
     cursor: pointer;
 }
 
+.btn-see-article{
+    color:var(--colorButtonInformation);
+    cursor: pointer;
+}
+
 /*------------------------------------ article edit -------------------------------*/
 
 #articleEditPage .underLink>a,#articleEditPage .underLink>p{
@@ -443,5 +448,10 @@ color: var(--classicColorGrey);
 
 #okParagraphAddRecipe{
     background-color:var( --colorButtonValidate);
+}
+
+.btn-delete-ingredient{
+    color:var(--colorButtonInformation);
+    cursor: pointer;
 }
 
