@@ -291,4 +291,18 @@ class Article
         $stock=$quantityBought-$quantityOrdered;
         return $stock;
     }
+
+    public function getQuantityBought()
+    {
+        $lotDAO = new LotDAO();
+        $lots = $lotDAO->getLots($this->idArticle); // get all the lots for an article
+        $quantityBought=0;
+        foreach($lots as $lot){
+            $quantityBought += $lot->getBoughtQuantity();
+        }
+        $stock=$quantityBought;
+        return $stock;
+    }
+
+ 
 }
