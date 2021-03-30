@@ -12,4 +12,19 @@ class ImportDAO extends ModelDAO
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $importObject;
     }
+
+    public function getImports()
+    {
+        $req = self::$_bdd->prepare('SELECT * FROM import');
+        $req->execute();
+        if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($data as $row) {
+                $import = new Import();
+                $import->hydration($row);
+                $var[] = $import;
+            }
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $var;
+    }
 }
