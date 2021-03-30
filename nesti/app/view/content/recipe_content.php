@@ -64,8 +64,8 @@ if (!isset($recipes)||empty($recipes)) {
                 echo '<td>' . $recipe->getTime() . ' min </td>';
                 echo '<td>' . $recipe->getChief()->getLastName() . '</td>';
                 echo '<td>';
-                echo '<a href="' . BASE_URL . 'recipe/edit/' . $recipe->getIdRecipe() . ' "data-id='.$recipe->getIdRecipe().'>Modify</br></a>';
-                echo '<a href="' . BASE_URL . 'recipe/delete/' . $recipe->getIdRecipe() . ' "data-id='.$recipe->getIdRecipe().'>Delete</a>';
+                echo '<a class="btn-modify-recipe" href="' . BASE_URL . 'recipe/edit/' . $recipe->getIdRecipe() . ' "data-id='.$recipe->getIdRecipe().'>Modify</br></a>';
+                echo '<a class="btn-modify-recipe" href="' . BASE_URL . 'recipe/delete/' . $recipe->getIdRecipe() . ' "data-id='.$recipe->getIdRecipe().'>Delete</a>';
                 echo '</td>';
                 echo '</tr>';
             } ?>
