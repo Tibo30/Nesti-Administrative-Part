@@ -14,8 +14,8 @@ class RecipeController extends BaseController
             $data = $this->recipes();
         } else if (($this->_url) == "recipe_add") {
             if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
-            $data = $this->addRecipeAllIngredients();
-            $this->addRecipeDatabase();
+                $data = $this->addRecipeAllIngredients();
+                $this->addRecipeDatabase();
             }
         } else if (($this->_url) == "recipe_edit") {
             $idRecipe = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
@@ -24,6 +24,8 @@ class RecipeController extends BaseController
             }
         } else if (($this->_url) == "recipe_addingredient") {
             $this->addIngredient(); // this is the method called by the fetch API with the recipe/addingredient ROOT.
+        } else if (($this->_url) == "recipe_deleteingredient") {
+            $this->deleteIngredient(); // this is the method called by the fetch API with the recipe/deleteingredient ROOT.
         } else if (($this->_url) == "recipe_addpicture") {
             $this->addPicture(); // this is the method called by the fetch API with the recipe/addpicture ROOT.
         }
@@ -155,7 +157,44 @@ class RecipeController extends BaseController
             if ($productNameError == "" && $unitNameError == "" && $quantityError == "") {
                 $recipeIngredientsDAO = new RecipeIngredientsDAO();
                 $recipeIngredientsDAO->createRecipeIngredient($recipeIngredient);
-                $data['recipeIngredient'] = '<div class="d-flex flex-row justify-content-between"><div>' . $quantity . ' ' . $unit->getName() . ' de ' . $ingredient->getProductName() . '</div><div class="deleteRecipeIngredient" data-order="' . $recipeIngredient->getOrder() . '">delete</div></div>';
+                $data['recipeIngredient'] = '<div class="d-flex flex-row justify-content-between"><div>' . $quantity . ' ' . $unit->getName() . ' de ' . $ingredient->getProductName() . '</div><div class="btn-delete-ingredient" data-idingredient="' . $recipeIngredient->getIDIngredient() . '" data-idrecipe="' . $recipeIngredient->getIdRecipe() . '" data-order="' . $recipeIngredient->getOrder() . '">delete</div></div>';
+                $data['success'] = true;
+            }
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the Ajax method to delete an ingredient from a recipe
+     */
+    private function deleteIngredient()
+    {
+        $data = [];
+        $data['success'] = false;
+
+        if (isset($_POST) && !empty($_POST)) {
+            $idRecipe = filter_input(INPUT_POST, "id_recipe", FILTER_SANITIZE_STRING); // first we get the id of the recipe
+            $idIngredient = filter_input(INPUT_POST, "id_ingredient", FILTER_SANITIZE_STRING); // then we get the id of the ingredient
+            $order = filter_input(INPUT_POST, "order", FILTER_SANITIZE_STRING); // then we get the order of the ingredient
+
+            $recipeIngredientDAO = new RecipeIngredientsDAO();
+            $recipeIngredientDAO->deleteRecipeIngredient($idRecipe, $idIngredient, $order);
+
+            $recipeIngredients = $recipeIngredientDAO->getRecipeIngredients($idRecipe); // we get all the remaining recipe ingredients for this recipe
+
+            if ($recipeIngredients != null) {
+                $index = 0;
+                $newOrder = 1;
+                foreach ($recipeIngredients as $recipeIngredient) {
+                    if ($recipeIngredient->getOrder() != $newOrder) {
+                        $recipeIngredientDAO->editRecipeIngredient($recipeIngredient->getIdRecipe(), $recipeIngredient->getIDIngredient(), $recipeIngredient->getOrder(), $newOrder);
+                        $recipeIngredient->setOrder($newOrder);
+                    }
+                    $data['recipeIngredient'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $recipeIngredient->getQuantity() . ' ' . $recipeIngredient->getUnitMeasure()->getName() . ' de ' . $recipeIngredient->getIngredient()->getProductName() . '</div><div class="btn-delete-ingredient" data-idingredient="' . $recipeIngredient->getIDIngredient() . '" data-idrecipe="' . $recipeIngredient->getIdRecipe() . '" data-order="' . $recipeIngredient->getOrder() . '">delete</div></div>';
+                    $index++;
+                    $newOrder++;
+                }
                 $data['success'] = true;
             }
         }
@@ -220,5 +259,4 @@ class RecipeController extends BaseController
         echo json_encode($data);
         die;
     }
-
 }
