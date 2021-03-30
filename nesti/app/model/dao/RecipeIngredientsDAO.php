@@ -32,5 +32,19 @@ class RecipeIngredientsDAO extends ModelDAO
         $req->execute(array("quantity" => $recipeIngredient->getQuantity(), "order"=>$recipeIngredient->getOrder(), "idUnit"=>$recipeIngredient->getIDUnitMeasure(),"idRecipe" => $recipeIngredient->getIdRecipe(),"idIng" => $recipeIngredient->getIDIngredient()));
         $req->closeCursor(); // release the server connection so it's possible to do other query
     }
+
+    public function deleteRecipeIngredient($idRecipe, $idIngredient, $order)
+    {
+        $req = self::$_bdd->prepare('DELETE FROM recipe_ingredients WHERE id_recipes=:idRecipe AND id_ingredients=:idIngredient AND order_ingredient=:order');
+        $req->execute(array("idRecipe" => $idRecipe, "idIngredient"=>$idIngredient, "order"=>$order));
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+    }
+
+    public function editRecipeIngredient($idRecipe, $idIngredient, $order, $newOrder)
+    {
+        $req = self::$_bdd->prepare('UPDATE recipe_ingredients SET order_ingredient=:newOrder WHERE id_recipes=:idRecipe AND id_ingredients=:idIngredient AND order_ingredient=:order');
+        $req->execute(array("newOrder"=>$newOrder, "idRecipe" => $idRecipe, "idIngredient"=>$idIngredient, "order"=>$order));
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+    }
     
 }
