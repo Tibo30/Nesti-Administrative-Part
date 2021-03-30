@@ -158,11 +158,7 @@ class ArticleController extends BaseController
                 $index = 0;
                 // in this loop we prepare the return data from the fetch
                 foreach ($articles as $article) {
-                    $data['articles'][$index]['quantity'] = $article->getQuantityPerUnit();
-                    $data['articles'][$index]['unitMeasure'] = $article->getUnitMeasure()->getName();
-                    $data['articles'][$index]['product'] = $article->getProduct()->getProductName();
-                    $data['articles'][$index]["see"] = '<a id="orderSeeArticle" onclick="" data-id=' . $article->getIdArticle() . '>See</a>';
-                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . '</div>' . '<a id="seeArticle" class="btn-delete-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
+                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . '</div>' . '<a id="seeArticle" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
                     $index++;
                 }
             }
