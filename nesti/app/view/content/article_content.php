@@ -9,7 +9,7 @@ if (!isset($articles)) {
 }
 ?>
 
-<div class="container bg-light border d-flex flex-column align-items-left" id="allArticlesPage">
+<div class="container d-flex flex-column align-items-left" id="allArticlesPage">
     <h2 class="mb-5 mt-5">Article</h2>
 
     <div class="d-flex flex-row justify-content-between">
