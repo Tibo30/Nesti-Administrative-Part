@@ -76,7 +76,7 @@ class RecipeDAO extends ModelDAO
         $req->execute();
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($data as $row) {
-               $ingredients= new Ingredients();
+                $ingredients = new Ingredients();
                 $var[] = $ingredients->hydration($row);
             }
         }
@@ -84,18 +84,37 @@ class RecipeDAO extends ModelDAO
         return $var;
     }
 
-    public function addRecipe($recipeAdd){
+    public function addRecipe($recipeAdd)
+    {
         $req = self::$_bdd->prepare('INSERT INTO recipes (creation_date, recipe_name, difficulty, number_of_people,state,time,id_chief) VALUES (CURRENT_TIMESTAMP, :name, :difficulty, :number, "a", :time, :chief) ');
-        $req->execute(array("name"=>$recipeAdd->getRecipeName(),"difficulty"=>$recipeAdd->getDifficulty(),"number"=>$recipeAdd->getNumberOfPeople(),"time"=>$recipeAdd->getTimeDatabase(),"chief"=>$_SESSION["idUser"]));
+        $req->execute(array("name" => $recipeAdd->getRecipeName(), "difficulty" => $recipeAdd->getDifficulty(), "number" => $recipeAdd->getNumberOfPeople(), "time" => $recipeAdd->getTimeDatabase(), "chief" => $_SESSION["idUser"]));
         $last_id = self::$_bdd->lastInsertId();
+        $req->closeCursor(); // release the server connection so it's possible to do other query
         return $last_id;
     }
 
-    public function editRecipe($recipeEdit,$change){
-        if ($change=="picture"){
+    public function editRecipe($recipeEdit, $change)
+    {
+        if ($change == "picture") {
             $req = self::$_bdd->prepare('UPDATE recipes SET id_pictures=:idPicture WHERE id_recipes=:id');
-            $req->execute(array("idPicture" => ($recipeEdit->getIDPicture()),"id" => ($recipeEdit->getIdRecipe())));
-        } 
-        
+            $req->execute(array("idPicture" => ($recipeEdit->getIDPicture()), "id" => ($recipeEdit->getIdRecipe())));
+        }
+    }
+
+    public function createParagraph($idRecipe, $order, $content)
+    {
+        $req = self::$_bdd->prepare('INSERT INTO paragraph (content,order_paragraph,creation_date,id_recipes) VALUES (:content, :order, CURRENT_TIMESTAMP, :idRecipe) ');
+        $req->execute(array("content" => $content, "order" => $order, "idRecipe" => $idRecipe));
+        $last_id = self::$_bdd->lastInsertId();
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $last_id;
+    }
+
+    public function editParagraph($idRecipe, $idParagraph, $order, $content)
+    {
+
+        $req = self::$_bdd->prepare('UPDATE paragraph SET order_paragraph=:order, content=:content WHERE id_recipes=:idRecipe AND id_paragraph=:idParagraph ');
+        $req->execute(array("order" => $order, "content" => $content, "idRecipe" => $idRecipe, "idParagraph" => $idParagraph));
+        $req->closeCursor(); // release the server connection so it's possible to do other query
     }
 }
