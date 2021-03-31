@@ -13,7 +13,6 @@ if (!isset($listAllIngredients)) {
         }
     }
 }
-
 ?>
 <div class="container bg-white align-items-left" id="recipeAddPage">
     <div class="d-flex flex-row underLink">
@@ -99,7 +98,7 @@ if (!isset($listAllIngredients)) {
 
                     <label for="inputIngredientNameAddRecipe">Add an ingredient</label>
                     <input list="ingredientsAdd" type="text" class="form-control p-0" id="inputIngredientNameAddRecipe" name="ingredient">
-                    <datalist id="ingredientsAddListAddRecipe">
+                    <datalist id="ingredientsAdd">
                         <?php
                         foreach ($listAllIngredients as $ingredients) {
                             echo '<option value="' . ($ingredients->getProductName()) . '">';
@@ -411,9 +410,7 @@ if (!isset($listAllIngredients)) {
         // create a paragraphLine element
         var paragraphLine = document.createElement('div');
         paragraphLine.className = "paragraphAddRecipeLine d-flex flex-row flex-wrap justify-content-between"
-        // paragraphLine.setAttribute('data-id', index);
         paragraphLine.setAttribute('order', order)
-        // paragraphLine.setAttribute('id', order)
 
         // create the textarea element
         var textLine = document.createElement('textarea');
@@ -486,13 +483,26 @@ if (!isset($listAllIngredients)) {
         if (bins != null) {
             bins.forEach(bin =>
                 bin.addEventListener('click', function() {
+                    idParagraph = event.target.parentNode.parentNode.getAttribute("id");
+                    if (idParagraph != null) {
+                        deleteParagrapheFromDB(idParagraph).then((response) => {
+                            if (response) {
+                                if (response.success) {
+                                    console.log("ok")
+                                    alert('Paragraph deleted from Database');
+                                } else {
+                                    console.log("probleme")
+                                    console.log(response.errorMessages)
+                                }
+                            }
+                        });
+                    }
                     event.target.parentNode.parentNode.remove();
                     var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); // get the list of the remain paragraphs
 
                     paragraphLines.forEach(function(element, index) { // we change the attribute order
                         element.setAttribute('order', index + 1)
                     });
-
                     addButtons(); // we do again the addButtons function
                 })
             )
@@ -544,7 +554,40 @@ if (!isset($listAllIngredients)) {
         }
     }
 
-    // -------------------------------- Save paragraphes --------------------------//  
+
+    // -------------------------------- Delete paragraphes ------------------------- //
+
+    /**
+     * Ajax Request to delete paragraphes
+     * @param int idParagraph
+     * @returns mixed
+     */
+    async function deleteParagrapheFromDB(idParagraph) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData();
+        formData.append('id_paragraph', idParagraph);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/deleteparagraph', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+
+    // -------------------------------- Save paragraphes -------------------------- //  
 
     okParagraphAddRecipe.addEventListener('click', (function(e) {
         event.preventDefault();
@@ -569,7 +612,6 @@ if (!isset($listAllIngredients)) {
     /**
      * Ajax Request to save paragraphes
      * @param {div} element, int idRecipe
-     * @param int idRecipe
      * @returns mixed
      */
     async function saveParagraph(idRecipe, element) {
