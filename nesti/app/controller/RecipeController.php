@@ -28,6 +28,8 @@ class RecipeController extends BaseController
             $this->deleteIngredient(); // this is the method called by the fetch API with the recipe/deleteingredient ROOT.
         } else if (($this->_url) == "recipe_addpicture") {
             $this->addPicture(); // this is the method called by the fetch API with the recipe/addpicture ROOT.
+        } else if (($this->_url) == "recipe_saveparagraph") {
+            $this->saveParagraph(); // this is the method called by the fetch API with the recipe/saveparagraph ROOT.
         }
         $data["title"] = "Recipes";
         $data["url"] = $this->_url;
@@ -60,6 +62,9 @@ class RecipeController extends BaseController
         return $data;
     }
 
+    /**
+     * this is the Ajax method to add a recipe in the database
+     */
     public function addRecipeDatabase()
     {
         $data = [];
@@ -255,6 +260,37 @@ class RecipeController extends BaseController
                 $data["picture"] = $picture->getName() . "." . $picture->getExtension();
                 $data["urlPicture"] = BASE_URL . PATH_PICTURES . $data["picture"];
             }
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the Ajax method to save a paragraph in the database
+     */
+    public function saveParagraph()
+    {
+        $data = [];
+        $data['success'] = false;
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idRecipe = filter_input(INPUT_POST, "id_recipe", FILTER_SANITIZE_STRING);
+            $idParagraph = filter_input(INPUT_POST, "id_paragraph", FILTER_SANITIZE_STRING);
+            $order = filter_input(INPUT_POST, "order_paragraph", FILTER_SANITIZE_STRING);
+            $content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_STRING);
+
+            if ($content != "") {
+                $data['success'] = true;
+                if ($idParagraph == 'null') {
+                    $idParagraph = $this->recipeDAO->createParagraph($idRecipe, $order, $content);
+                } else {
+                    $this->recipeDAO->editParagraph($idRecipe, $idParagraph, $order, $content);
+                }
+            }
+
+            $data['order'] = $order;
+            $data['id_recipe'] = $idRecipe;
+            $data['content'] = $content;
+            $data['id_paragraph'] = $idParagraph;
         }
         echo json_encode($data);
         die;
