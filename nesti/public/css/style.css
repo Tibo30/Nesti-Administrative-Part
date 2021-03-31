@@ -133,18 +133,13 @@ color: var(--classicColorGrey);
     color:var(--primaryLightColor);
 }
 
-#submitNewUser,#submitEditRecipe, #okRecipe{
+#submitNewUser{
     background-color:var( --colorButtonValidate);
 }
 
-#cancelNewUser ,#cancelEditRecipe{
+#cancelNewUser {
     background-color:var( --colorButtonInformation);
     color: var(--classicColorWhite);
-}
-
-#addParagraphEditRecipe>div{
-    color: var(--primaryLightColor);
-    font-size: 50px;
 }
 
 #deleteEditArticle{
@@ -152,11 +147,6 @@ color: var(--classicColorGrey);
     color: var(--classicColorWhite);
 }
 
-#addParagraphEditRecipe{
-    width: 100%;
-    background-color: var(--classicColorWhite) ;
-    border:1px dashed rgb(184, 183, 183);
-}
 
 
 
@@ -471,3 +461,94 @@ color: var(--classicColorGrey);
     cursor: pointer;
 }
 
+/*------------------------------------ recipe edit content -------------------------------*/
+
+#recipeEditPage .underLink>a,#recipeAddPage .underLink>p{
+    color:var(--primaryLightColor);
+}
+
+#recipePictureEdit{
+    width: 100%;
+    height: 70%;
+    min-height: 300px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+}
+
+#btn-edit-recipe-picture{
+    background-color:var( --colorButtonValidate);
+}
+
+#submitEditRecipe{
+    background-color:var( --colorButtonValidate);
+}
+
+#cancelEditRecipe{
+    background-color:var( --colorButtonInformation);
+    color: var(--classicColorWhite);
+}
+
+
+#addParagraphEditRecipe>div{
+    color: var(--primaryLightColor);
+    font-size: 50px;
+}
+
+
+#addParagraphEditRecipe{
+    width: 100%;
+    background-color: var(--classicColorWhite) ;
+    border:1px dashed rgb(184, 183, 183);
+}
+
+#okParagraphEditRecipe{
+    background-color:var( --colorButtonValidate);
+}
+
+#okIngredientEditRecipe{
+    background-color:var( --colorButtonValidate);
+}
+
+
+#recipeEditPage .paragraphEditRecipe[readonly]{
+    background-color:red;
+    box-shadow: none;
+  }
+ 
+  #recipeEditPage .paragraphEditRecipe{
+      resize: none;
+  }
+
+  #recipeEditPage .paragraphIcons{
+      width: 20px;
+      display:flex;
+      flex-direction:column;
+      justify-content: center;
+  }
+
+  #recipeEditPage .paragraphIcons img{
+      margin-bottom: 5px;
+  }
+
+  #recipeEditPage textarea{
+      width: 90%;
+  }
+
+  #recipeEditPage .deleteSvg{
+    padding: 2px;
+    background-color: red;
+    cursor: pointer;
+  }
+
+  #recipeEditPage .upSvg{
+    padding: 2px;
+    background-color: var(--secondaryColor);
+    cursor: pointer;
+  }
+
+  #recipeEditPage .downSvg{
+    padding: 2px;
+    background-color: var(--secondaryColor);
+    cursor: pointer;
+  }
