@@ -295,4 +295,14 @@ class Recipe
 
         return $this;
     }
+
+     /**
+     * Get paragraphs for a recipe
+     */
+    public function getParagraphs()
+    {
+        $recipeDAO = new recipeDAO();
+        $paragraphes = $recipeDAO->getParagraphs($this->idRecipe);
+        return $paragraphes;
+    }
 }
