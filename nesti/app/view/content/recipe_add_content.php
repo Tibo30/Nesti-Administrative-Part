@@ -413,12 +413,13 @@ if (!isset($listAllIngredients)) {
         paragraphLine.className = "paragraphAddRecipeLine d-flex flex-row flex-wrap justify-content-between"
         // paragraphLine.setAttribute('data-id', index);
         paragraphLine.setAttribute('order', order)
-        paragraphLine.setAttribute('id', order)
+        // paragraphLine.setAttribute('id', order)
 
         // create the textarea element
         var textLine = document.createElement('textarea');
         textLine.className = "form-control mb-2 paragraphAddRecipe";
         textLine.setAttribute('rows', 5)
+        textLine.setAttribute('maxlength', 255)
         textLine.style.resize = "none";
 
         // create the div where the icons will be
@@ -514,6 +515,7 @@ if (!isset($listAllIngredients)) {
                     paragraphLines[currentOrder].parentNode.insertBefore(paragraphLines[currentOrder], paragraphLines[currentOrder + 1].nextSibling); // = insert after
 
                     addButtons(); // we do again the addButtons function
+                    alert("Please don't forget to save");
                 })
             )
         }
@@ -536,70 +538,69 @@ if (!isset($listAllIngredients)) {
                     paragraphLines[currentOrder].parentNode.insertBefore(paragraphLines[currentOrder], paragraphLines[currentOrder - 1]);
 
                     addButtons(); // we do again the addButtons function
+                    alert("Please don't forget to save");
                 })
             )
         }
     }
 
-// -------------------------------- Save paragraphes --------------------------//  
-    
-    okParagraphAddRecipe.addEventListener('click',(function(e) {
+    // -------------------------------- Save paragraphes --------------------------//  
+
+    okParagraphAddRecipe.addEventListener('click', (function(e) {
         event.preventDefault();
         const idRecipe = document.querySelector('#idRecipe').value;
-        var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); 
-
+        var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine");
+        console.log(paragraphLines);
         if (idRecipe != null) {
             paragraphLines.forEach(element => saveParagraph(idRecipe, element).then((response) => {
                 if (response) {
                     if (response.success) {
-                        divList.innerHTML += response.recipeIngredient;
-                        //add event listener to the delete buttons
-                        var buttonsDeleteIngredient = document.querySelectorAll(".btn-delete-ingredient");
-                        buttonsDeleteIngredient.forEach(function(element) {
-                            element.addEventListener('click', (event) => listenerDeleteIngredient(event))
-                        });
-                        alert('Ingredient added');
+                        element.setAttribute("id", response.id_paragraph)
+                        console.log(response);
                     } else {
                         console.log(response.errorMessages)
                     }
                 }
             }))
-            
+            alert('Paragraphes saved');
         }
     }))
 
     /**
      * Ajax Request to save paragraphes
-     * @param {form} obj
+     * @param {div} element, int idRecipe
      * @param int idRecipe
      * @returns mixed
      */
     async function saveParagraph(idRecipe, element) {
         var myHeaders = new Headers();
 
-        console.log(idRecipe);
-        console.log(element)
+        order = element.getAttribute("order");
+        idParagraph = element.getAttribute("id");
+        content = element.childNodes[1].value;
 
-        // let formData = new FormData(obj);
-        // formData.append('id_recipe', idRecipe);
+        let formData = new FormData();
+        formData.append('id_recipe', idRecipe);
+        formData.append('id_paragraph', idParagraph);
+        formData.append('order_paragraph', order);
+        formData.append('content', content);
 
-        // var myInit = {
-        //     method: 'POST',
-        //     headers: myHeaders,
-        //     mode: 'cors',
-        //     cache: 'default',
-        //     body: formData
-        // };
-        // let response = await fetch(ROOT + 'recipe/addpicture', myInit);
-        // try {
-        //     if (response.ok) {
-        //         return await response.json();
-        //     } else {
-        //         return false;
-        //     }
-        // } catch (e) {
-        //     console.error(e.message);
-        // }
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/saveparagraph', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
     }
-
 </script>
