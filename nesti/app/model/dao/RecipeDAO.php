@@ -32,7 +32,7 @@ class RecipeDAO extends ModelDAO
     public function getParagraphs($idRecipe)
     {
         $var = [];
-        $req = self::$_bdd->prepare('SELECT p.id_paragraph, p.content, p.order, p.creation_date, p.id_recipes FROM paragraph p WHERE p.id_recipes=:id');
+        $req = self::$_bdd->prepare('SELECT p.id_paragraph, p.content, p.order_paragraph, p.creation_date, p.id_recipes FROM paragraph p WHERE p.id_recipes=:id');
         $req->execute(array("id" => $idRecipe));
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($data as $row) {
@@ -44,30 +44,30 @@ class RecipeDAO extends ModelDAO
         return $var;
     }
 
-    public function getIngredients($idRecipe)
-    {
-        $var = [];
-        $req = self::$_bdd->prepare('SELECT r.quantity, r.order, r.id_unit_measures,r.id_recipes, p.id_products, p.product_name FROM recipe_ingredients r JOIN ingredients i ON r.id_ingredients = i.id_ingredients JOIN products p ON p.id_products = i.id_ingredients WHERE r.id_recipes=:id');
-        $req->execute(array("id" => $idRecipe));
-        if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
-            foreach ($data as $row) {
-                $recipeIngredient = new RecipeIngredients();
-                // create the object ingredient
-                $ing = new Ingredients();
-                $ingHyd = array('id_products' => $row['id_products'], 'product_name' => $row['product_name']);
-                $dataIng = $ing->hydration($ingHyd);
-                // create the object unit measure
-                $unitDAO = new UnitMeasureDAO();
-                $unit = $unitDAO->getUnitMeasure($row['id_unit_measures']);
-                // add ingredient and unit measure to the data $row
-                $row['ingredient'] = $dataIng;
-                $row['unitMeasure'] = $unit;
-                $var[] = $recipeIngredient->hydration($row);
-            }
-        }
-        $req->closeCursor(); // release the server connection so it's possible to do other query
-        return $var;
-    }
+    // public function getIngredients($idRecipe)
+    // {
+    //     $var = [];
+    //     $req = self::$_bdd->prepare('SELECT r.quantity, r.order_ingredient, r.id_unit_measures,r.id_recipes, p.id_products, p.product_name FROM recipe_ingredients r JOIN ingredients i ON r.id_ingredients = i.id_ingredients JOIN products p ON p.id_products = i.id_ingredients WHERE r.id_recipes=:id');
+    //     $req->execute(array("id" => $idRecipe));
+    //     if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
+    //         foreach ($data as $row) {
+    //             $recipeIngredient = new RecipeIngredients();
+    //             // create the object ingredient
+    //             $ing = new Ingredients();
+    //             $ingHyd = array('id_products' => $row['id_products'], 'product_name' => $row['product_name']);
+    //             $dataIng = $ing->hydration($ingHyd);
+    //             // create the object unit measure
+    //             $unitDAO = new UnitMeasureDAO();
+    //             $unit = $unitDAO->getUnitMeasure($row['id_unit_measures']);
+    //             // add ingredient and unit measure to the data $row
+    //             $row['ingredient'] = $dataIng;
+    //             $row['unitMeasure'] = $unit;
+    //             $var[] = $recipeIngredient->hydration($row);
+    //         }
+    //     }
+    //     $req->closeCursor(); // release the server connection so it's possible to do other query
+    //     return $var;
+    // }
 
     public function getAllIngredients()
     {
@@ -115,6 +115,14 @@ class RecipeDAO extends ModelDAO
 
         $req = self::$_bdd->prepare('UPDATE paragraph SET order_paragraph=:order, content=:content WHERE id_recipes=:idRecipe AND id_paragraph=:idParagraph ');
         $req->execute(array("order" => $order, "content" => $content, "idRecipe" => $idRecipe, "idParagraph" => $idParagraph));
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+    }
+
+    public function deleteParagraph($idParagraph)
+    {
+
+        $req = self::$_bdd->prepare('DELETE FROM paragraph WHERE id_paragraph=:idParagraph ');
+        $req->execute(array("idParagraph" => $idParagraph));
         $req->closeCursor(); // release the server connection so it's possible to do other query
     }
 }
