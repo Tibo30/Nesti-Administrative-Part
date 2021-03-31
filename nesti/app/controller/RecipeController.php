@@ -14,9 +14,9 @@ class RecipeController extends BaseController
             $data = $this->recipes();
         } else if (($this->_url) == "recipe_add") {
             if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
-                $data = $this->addRecipeAllIngredients();
                 $this->addRecipeDatabase();
             }
+            $data = $this->addRecipeAllIngredients();
         } else if (($this->_url) == "recipe_edit") {
             $idRecipe = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
             if (isset($idRecipe)) {
@@ -30,6 +30,8 @@ class RecipeController extends BaseController
             $this->addPicture(); // this is the method called by the fetch API with the recipe/addpicture ROOT.
         } else if (($this->_url) == "recipe_saveparagraph") {
             $this->saveParagraph(); // this is the method called by the fetch API with the recipe/saveparagraph ROOT.
+        } else if (($this->_url) == "recipe_deleteparagraph") {
+            $this->deleteParagraph(); // this is the method called by the fetch API with the recipe/saveparagraph ROOT.
         }
         $data["title"] = "Recipes";
         $data["url"] = $this->_url;
@@ -47,11 +49,14 @@ class RecipeController extends BaseController
 
     private function modifyRecipe($idRecipe)
     {
-        $recipe = $this->recipeDAO->getRecipe($idRecipe);
-        $paragraphs = $this->recipeDAO->getParagraphs($idRecipe);
-        $ingredients = $this->recipeDAO->getIngredients($idRecipe);
-        $listAllIngredients = $this->recipeDAO->getAllIngredients();
-        $data = ['recipe' => $recipe, 'paragraphs' => $paragraphs, 'ingredients' => $ingredients, 'listAllIngredients' => $listAllIngredients];
+        $recipe = $this->recipeDAO->getRecipe($idRecipe); // get the recipe
+
+        $recipeIngredientDAO=new RecipeIngredientsDAO();
+        $recipeIngredients = $recipeIngredientDAO->getRecipeIngredients($idRecipe); // get all the ingredients for this recipe
+
+        $listAllIngredients = $this->recipeDAO->getAllIngredients(); // get all the ingredients from the Database
+
+        $data = ['recipe' => $recipe, 'recipeIngredients' => $recipeIngredients, 'listAllIngredients' => $listAllIngredients];
         return $data;
     }
 
@@ -291,6 +296,22 @@ class RecipeController extends BaseController
             $data['id_recipe'] = $idRecipe;
             $data['content'] = $content;
             $data['id_paragraph'] = $idParagraph;
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the Ajax method to delete a paragraph in the database
+     */
+    public function deleteParagraph()
+    {
+        $data = [];
+        $data['success'] = false;
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idParagraph = filter_input(INPUT_POST, "id_paragraph", FILTER_SANITIZE_STRING);
+            $data['success'] = true;
+            $this->recipeDAO->deleteParagraph($idParagraph);
         }
         echo json_encode($data);
         die;
