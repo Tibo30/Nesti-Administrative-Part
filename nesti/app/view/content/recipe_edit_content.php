@@ -37,26 +37,26 @@ if (!isset($ingredients)) {
     <div class="d-flex flex-row justify-content-around">
         <div class="d-flex flex-column">
             <h2 class="mb-2 mt-2">Recipe Edit</h2>
-            <form>
+            <form method="post" id="editRecipeForm">
                 <div class="form-group">
-                    <label for="inputRecipeName">Recipe name</label>
-                    <input type="text" class="form-control p-0" id="inputRecipeName" value="<?= $recipe->getRecipeName() ?>">
+                    <label for="inputEditRecipeName">Recipe name</label>
+                    <input type="text" class="form-control p-0" id="inputEditRecipeName" name="recipeName" value="<?= $recipe->getRecipeName() ?>">
                     <small id="recipeChiefName" class="form-text text-muted">Recipe Chief : <?= $recipe->getChief()->getLastname() . " " . $recipe->getChief()->getFirstname() ?></small>
                 </div>
                 <span class="text-danger" id="errorEditRecipeName"></span>
                 <div class="mx-0 p-0 form-group row justify-content-between">
-                    <label for="inputDifficulty">Difficulty (grade on 5)</label>
-                    <div class="col-2 p-0"><input type="text" class="form-control" id="inputDifficulty" value="<?= $recipe->getDifficulty() ?>"></div>
+                    <label for="inputEditDifficulty">Difficulty (grade on 5)</label>
+                    <div class="col-2 p-0"><input type="text" class="form-control" id="inputEditDifficulty" name="difficulty" value="<?= $recipe->getDifficulty() ?>"></div>
                 </div>
                 <span class="text-danger" id="errorEditDifficulty"></span>
                 <div class="mx-0 p-0 form-group row justify-content-between">
-                    <label for="inputNumberOfPeople">Number of people</label>
-                    <div class="col-2 p-0"><input type="text" class="form-control" id="inputNumberOfPeople" value="<?= $recipe->getNumberOfPeople() ?>"></div>
+                    <label for="inputEditNumberOfPeople">Number of people</label>
+                    <div class="col-2 p-0"><input type="text" class="form-control" id="inputEditNumberOfPeople" name="numberOfPeople" value="<?= $recipe->getNumberOfPeople() ?>"></div>
                 </div>
                 <span class="text-danger" id="errorEditNumberPeople"></span>
                 <div class="mx-0 p-0 form-group row justify-content-between">
-                    <label for="inputPreparationTime">Preparation time in minutes</label>
-                    <div class="col-2 p-0"><input type="text" class="form-control" id="inputPreparationTime" value="<?= $recipe->getTime() ?>"></div>
+                    <label for="inputEditPreparationTime">Preparation time in minutes</label>
+                    <div class="col-2 p-0"><input type="text" class="form-control" id="inputEditPreparationTime" name="preparationTime" value="<?= $recipe->getTime() ?>"></div>
                 </div>
                 <span class="text-danger" id="errorEditTime"></span>
                 <div class="d-flex flex-row">
@@ -167,6 +167,73 @@ if (!isset($ingredients)) {
 <script>
     const ROOT_ICONS = '<?= BASE_URL . PATH_ICONS ?>';
     const ROOT = '<?= BASE_URL ?>';
+
+    // -------------------------------- Edit recipe --------------------------//  
+
+    var formEditRecipe = document.querySelector("#editRecipeForm"); // get the form used to add the recipe
+    // Event listener on the form
+    formEditRecipe.addEventListener('submit', (function(e) {
+        event.preventDefault(); // stop the default action of the form
+        const idRecipe = document.querySelector('#idRecipe').value;
+        editRecipe(this, idRecipe).then((response) => {
+            if (response) {
+                if (response.success) {
+                    console.log(response);
+                    document.querySelector("#inputEditRecipeName").value = response.nameRecipe;
+                    document.querySelector("#inputEditDifficulty").value = response.difficultyRecipe;
+                    document.querySelector("#inputEditNumberOfPeople").value = response.numberPeopleRecipe;
+                    document.querySelector("#inputEditPreparationTime").value = response.timeRecipe;
+
+                    document.querySelector("#errorEditRecipeName").innerHTML = "";
+                    document.querySelector("#errorEditDifficulty").innerHTML = "";
+                    document.querySelector("#errorEditNumberPeople").innerHTML = "";
+                    document.querySelector("#errorEditTime").innerHTML = "";
+
+                    document.querySelector("#idRecipe").value = response.idRecipe;
+
+                    alert("recipe edited");
+                } else {
+                    document.querySelector("#errorEditRecipeName").innerHTML = response.errorMessages['recipeName'];
+                    document.querySelector("#errorEditDifficulty").innerHTML = response.errorMessages['difficulty'];
+                    document.querySelector("#errorEditNumberPeople").innerHTML = response.errorMessages['numberOfPeople'];
+                    document.querySelector("#errorEditTime").innerHTML = response.errorMessages['preparationTime'];
+                }
+            }
+        });
+    }))
+
+    /**
+     * Ajax Request to edit the recipe
+     * @param {form} obj, int idRecipe
+     * @returns mixed
+     */
+    async function editRecipe(obj, idRecipe) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData(obj);
+        formData.append('id_recipe', idRecipe);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/editrecipe', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+
+    // -------------------------------- Add paragraph --------------------------//  
+
 
     addListenerButtons()
 
