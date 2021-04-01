@@ -150,10 +150,7 @@ color: var(--classicColorGrey);
 
 
 
-  .btn-remove-ingredients{
-      color:var(--colorButtonInformation);
-    cursor: pointer;
-  }
+
 
   .custom-file-input ~ .custom-file-label::after {
     content: "choisir";
@@ -552,3 +549,8 @@ color: var(--classicColorGrey);
     background-color: var(--secondaryColor);
     cursor: pointer;
   }
+
+  .btn-delete-ingredients{
+    color:var(--colorButtonInformation);
+  cursor: pointer;
+}
