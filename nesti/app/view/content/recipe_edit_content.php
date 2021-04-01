@@ -63,8 +63,8 @@ if (!isset($ingredients)) {
                     <button id="submitEditRecipe" type="submit" class="btn mr-5">Submit</button>
                     <button id="cancelEditRecipe" type="reset" class="btn">Cancel</button>
                 </div>
-
             </form>
+            <input type="text" class="form-control" name="idRecipe" id="idRecipe" value="<?= $recipe->getIdRecipe() ?>" hidden>
         </div>
 
         <div id="editPicture">
@@ -124,14 +124,14 @@ if (!isset($ingredients)) {
                         $index++;
                     }
                     ?>
-                    
+
                 </div>
                 <div class="d-flex flex-column align-items-center">
-                        <button id="addParagraphEditRecipe" class="btn" onclick="addParagraph()">
-                            <div class="fas fa-plus"></div>
-                        </button>
-                        <button id="okParagraphEditRecipe" type="submit" class="btn">SAVE</button>
-                    </div>
+                    <button id="addParagraphEditRecipe" class="btn" onclick="addParagraph()">
+                        <div class="fas fa-plus"></div>
+                    </button>
+                    <button id="okParagraphEditRecipe" type="submit" class="btn">SAVE</button>
+                </div>
             </div>
         </div>
         <div class="col-4">
@@ -181,9 +181,8 @@ if (!isset($ingredients)) {
      * This function create all the elements needed for the paragraph (div, textareas)
      */
     function createEntitiesParagraph() {
-        paragraphs= document.querySelectorAll(".paragraphEditRecipeLine")
-        order = paragraphs[paragraphs.length-1].getAttribute('order');
-        console.log(order);
+        paragraphs = document.querySelectorAll(".paragraphEditRecipeLine")
+        order = paragraphs[paragraphs.length - 1].getAttribute('order');
         order++;
         // get the paragraphes area
         var paragraphArea = document.querySelector("#paragraphsEditRecipe");
@@ -215,22 +214,22 @@ if (!isset($ingredients)) {
         if (bins != null) {
             bins.forEach(bin =>
                 bin.addEventListener('click', function() {
-                    idParagraph = event.target.parentNode.parentNode.getAttribute("id");
+                    idParagraph = event.target.parentNode.parentNode.getAttribute("data-id");
+                    const idRecipe = document.querySelector('#idRecipe').value;
                     if (idParagraph != null) {
-                        deleteParagrapheFromDB(idParagraph).then((response) => {
+                        deleteParagrapheFromDB(idParagraph, idRecipe).then((response) => {
                             if (response) {
                                 if (response.success) {
                                     console.log("ok")
-                                    alert('Paragraph deleted from Database');
+                                    alert("Paragraph deleted from Database. Please don't forget to save");
                                 } else {
-                                    console.log("probleme")
                                     console.log(response.errorMessages)
                                 }
                             }
                         });
                     }
                     event.target.parentNode.parentNode.remove();
-                    var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); // get the list of the remain paragraphs
+                    var paragraphLines = document.querySelectorAll(".paragraphEditRecipeLine"); // get the list of the remain paragraphs
 
                     paragraphLines.forEach(function(element, index) { // we change the attribute order
                         element.setAttribute('order', index + 1)
@@ -249,11 +248,12 @@ if (!isset($ingredients)) {
 
                     var currentOrder = Number(currentParagraph.getAttribute('order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
                     currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
+                    console.log(currentParagraph);
+                    var nextParagraph = event.target.parentNode.parentNode.nextElementSibling;
+                    console.log(nextParagraph);
 
-                    var nextParagraph = event.target.parentNode.parentNode.nextSibling;
-                    
                     nextParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) - 1);
-                    
+
                     var paragraphLines = document.querySelectorAll(".paragraphEditRecipeLine"); // get the list of paragraphs
 
                     paragraphLines[currentOrder].parentNode.insertBefore(paragraphLines[currentOrder], paragraphLines[currentOrder + 1].nextSibling); // = insert after
@@ -274,7 +274,7 @@ if (!isset($ingredients)) {
                     var currentOrder = Number(currentParagraph.getAttribute('order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
                     currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) - 1);
 
-                    var previousParagraph = event.target.parentNode.parentNode.previousSibling;
+                    var previousParagraph = event.target.parentNode.parentNode.previousElementSibling;
                     previousParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
 
                     var paragraphLines = document.querySelectorAll(".paragraphEditRecipeLine"); // get the list of paragraphs
@@ -336,4 +336,98 @@ if (!isset($ingredients)) {
         addListenerButtons();
     }
 
+
+    // -------------------------------- Delete paragraphes ------------------------- //
+
+    /**
+     * Ajax Request to delete paragraphes
+     * @param int idParagraph, int idRecipe
+     * @returns mixed
+     */
+    async function deleteParagrapheFromDB(idParagraph, idRecipe) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData();
+        formData.append('id_paragraph', idParagraph);
+        formData.append('id_recipe', idRecipe);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/deleteparagraph', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+
+    // -------------------------------- Save paragraphes -------------------------- //  
+
+    okParagraphEditRecipe.addEventListener('click', (function(e) {
+        event.preventDefault();
+        const idRecipe = document.querySelector('#idRecipe').value;
+        var paragraphLines = document.querySelectorAll(".paragraphEditRecipeLine");
+        if (idRecipe != null) {
+            var error = "";
+            paragraphLines.forEach(element => saveParagraph(idRecipe, element).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        element.setAttribute("data-id", response.id_paragraph);
+                    } else {
+                        console.log(response.errorMessages)
+                        error = response.errorMessages;
+                    }
+                }
+            }))
+            if (error == "") {
+                alert('Paragraphes saved');
+            }
+
+        }
+    }))
+
+    /**
+     * Ajax Request to save paragraphes
+     * @param {div} element, int idRecipe
+     * @returns mixed
+     */
+    async function saveParagraph(idRecipe, element) {
+        var myHeaders = new Headers();
+        order = element.getAttribute("order");
+        idParagraph = element.getAttribute("data-id");
+        content = element.children[1].value;
+
+        let formData = new FormData();
+        formData.append('id_recipe', idRecipe);
+        formData.append('id_paragraph', idParagraph);
+        formData.append('order_paragraph', order);
+        formData.append('content', content);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/saveparagraph', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
 </script>
