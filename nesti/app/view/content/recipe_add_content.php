@@ -221,8 +221,7 @@ if (!isset($listAllIngredients)) {
 
     /**
      * Ajax Request to add the recipe picture
-     * @param {form} obj
-     * @param int idRecipe
+     * @param {form} obj, int idRecipe
      * @returns mixed
      */
     async function addPicture(obj, idRecipe) {
@@ -265,11 +264,6 @@ if (!isset($listAllIngredients)) {
                 if (response) {
                     if (response.success) {
                         divList.innerHTML += response.recipeIngredient;
-                        //add event listener to the delete buttons
-                        var buttonsDeleteIngredient = document.querySelectorAll(".btn-delete-ingredient");
-                        buttonsDeleteIngredient.forEach(function(element) {
-                            element.addEventListener('click', (event) => listenerDeleteIngredient(event))
-                        });
                         alert('Ingredient added');
                     } else {
                         console.log(response.errorMessages)
@@ -318,15 +312,10 @@ if (!isset($listAllIngredients)) {
     function listenerDeleteIngredient(event) {
         event.preventDefault();
         var buttonDelete = event.target;
-        console.log("ok delete")
-        // console.log(buttonDelete);
         const idRecipe = buttonDelete.getAttribute("data-idrecipe");
         const idIngredient = buttonDelete.getAttribute("data-idingredient");
         const order = buttonDelete.getAttribute("data-order");
         var divList = document.querySelector("#addIngredientListAddRecipe");
-        console.log(idRecipe);
-        console.log(idIngredient);
-        console.log(order);
 
         if (idRecipe != null && idIngredient != null) {
             deleteIngredient(idRecipe, idIngredient, order).then((response) => {
@@ -338,10 +327,6 @@ if (!isset($listAllIngredients)) {
                             div.innerHTML = element.all;
                             divList.appendChild(div); // add the recipeIngredients to the divList
                         })
-                        var buttonsDeleteIngredient = document.querySelectorAll(".btn-delete-ingredient");
-                        buttonsDeleteIngredient.forEach(function(element) { // add event listener to the new delete buttons
-                            element.addEventListener('click', (event) => listenerDeleteIngredient(event))
-                        });
                         alert('Ingredient deleted');
                     } else {
                         console.log(response.errorMessages)
@@ -353,7 +338,7 @@ if (!isset($listAllIngredients)) {
 
 
     /**
-     * Ajax Request to add ingredients to a recipe
+     * Ajax Request to delete ingredients to a recipe
      * @param int idRecipe, int idIngredient, int order
      * @returns mixed
      */
