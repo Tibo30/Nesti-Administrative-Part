@@ -158,7 +158,7 @@ if (!isset($listAllIngredients)) {
     }))
 
     /**
-     * Ajax Request to edit the article picture
+     * Ajax Request to add a recipe to the database
      * @param {form} obj
      * @returns mixed
      */
