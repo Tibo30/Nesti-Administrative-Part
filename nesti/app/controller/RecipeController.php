@@ -20,7 +20,7 @@ class RecipeController extends BaseController
         } else if (($this->_url) == "recipe_edit") {
             $idRecipe = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
             if (isset($idRecipe)) {
-                $data =  $this->modifyRecipe($idRecipe);
+                $data =  $this->getThisRecipe($idRecipe);
             }
         } else if (($this->_url) == "recipe_addingredient") {
             $this->addIngredient(); // this is the method called by the fetch API with the recipe/addingredient ROOT.
@@ -31,7 +31,9 @@ class RecipeController extends BaseController
         } else if (($this->_url) == "recipe_saveparagraph") {
             $this->saveParagraph(); // this is the method called by the fetch API with the recipe/saveparagraph ROOT.
         } else if (($this->_url) == "recipe_deleteparagraph") {
-            $this->deleteParagraph(); // this is the method called by the fetch API with the recipe/saveparagraph ROOT.
+            $this->deleteParagraph(); // this is the method called by the fetch API with the recipe/deleteparagraph ROOT.
+        } else if (($this->_url) == "recipe_editrecipe") {
+            $this->editRecipeDatabase(); // this is the method called by the fetch API with the recipe/editrecipe ROOT.
         }
         $data["title"] = "Recipes";
         $data["url"] = $this->_url;
@@ -47,7 +49,7 @@ class RecipeController extends BaseController
     }
 
 
-    private function modifyRecipe($idRecipe)
+    private function getThisRecipe($idRecipe)
     {
         $recipe = $this->recipeDAO->getRecipe($idRecipe); // get the recipe
 
@@ -85,6 +87,11 @@ class RecipeController extends BaseController
             $DifficultyError = $recipeAdd->setDifficulty($difficulty);
             $NumberOfPeopleError = $recipeAdd->setNumberOfPeople($numberOfPeople);
             $PreparationTimeError =  $recipeAdd->setTime($preparationTime);
+
+            if ($this->recipeDAO->recipeDoesExist($recipeName) == true) { // if the name of the recipe is already taken
+                $RecipeNameError = "this recipe name already exists. Please choose another one";
+            }
+
             $errorMessages = ['recipeName' => $RecipeNameError, 'difficulty' => $DifficultyError, 'numberOfPeople' => $NumberOfPeopleError, 'preparationTime' => $PreparationTimeError];
             $data['errorMessages'] = $errorMessages;
             // if all the datas inputed are correct, we do the query
@@ -325,6 +332,66 @@ class RecipeController extends BaseController
                 }
             }
             $data['success'] = true;
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the Ajax method to edit a recipe in the database
+     */
+    public function editRecipeDatabase()
+    {
+        $data = [];
+        $data['success'] = false;
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idRecipe = filter_input(INPUT_POST, "id_recipe", FILTER_SANITIZE_STRING);
+            $recipeName = filter_input(INPUT_POST, "recipeName", FILTER_SANITIZE_STRING);
+            $difficulty = filter_input(INPUT_POST, "difficulty", FILTER_SANITIZE_STRING);
+            $numberOfPeople = filter_input(INPUT_POST, "numberOfPeople", FILTER_SANITIZE_STRING);
+            $preparationTime = filter_input(INPUT_POST, "preparationTime", FILTER_SANITIZE_STRING);
+
+            $recipeEdit = $this->recipeDAO->getRecipe($idRecipe); // get all the info of the recipe from the database
+            $formerRecipeName = $recipeEdit->getRecipeName();
+            $formerDifficulty = $recipeEdit->getDifficulty();
+            $formerNumberOfPeople = $recipeEdit->getNumberOfPeople();
+            $formerPreparationTime = $recipeEdit->getTime();
+
+            $RecipeNameError = $recipeEdit->setRecipeName($recipeName);
+            $DifficultyError = $recipeEdit->setDifficulty($difficulty);
+            $NumberOfPeopleError = $recipeEdit->setNumberOfPeople($numberOfPeople);
+            $PreparationTimeError =  $recipeEdit->setTime($preparationTime);
+           
+
+            if ($recipeEdit->getRecipeName()!= $formerRecipeName && $this->recipeDAO->recipeDoesExist($recipeName) == true) { // if the new name of the recipe is already taken
+                $RecipeNameError = "this recipe name already exists. Please choose another one";
+            }
+
+            $errorMessages = ['recipeName' => $RecipeNameError, 'difficulty' => $DifficultyError, 'numberOfPeople' => $NumberOfPeopleError, 'preparationTime' => $PreparationTimeError];
+            $data['errorMessages'] = $errorMessages;
+            // if all the datas inputed are correct, we do the query
+            if ($RecipeNameError == "" && $DifficultyError == "" && $NumberOfPeopleError == "" && $PreparationTimeError == "") {
+                if ($formerRecipeName != $recipeName) { // if the name changed
+                    $this->recipeDAO->editRecipe($recipeEdit, "name");
+                }
+                if ($formerDifficulty !=$difficulty){ // if the difficulty changed
+                    $idRecipe = $this->recipeDAO->editRecipe($recipeEdit, "difficulty");
+                }
+                if ($formerNumberOfPeople !=$numberOfPeople){ // if the number of people changed
+                    $idRecipe = $this->recipeDAO->editRecipe($recipeEdit, "number");
+                }
+                if ($formerPreparationTime !=$preparationTime){ // if the preparation time changed
+                    $idRecipe = $this->recipeDAO->editRecipe($recipeEdit, "time");
+                }
+
+                $data['recipeAdd'] = $recipeEdit;
+                $data['idRecipe'] = $recipeEdit->getIdRecipe();
+                $data['nameRecipe'] = $recipeEdit->getRecipeName();
+                $data['difficultyRecipe'] = $recipeEdit->getDifficulty();
+                $data['numberPeopleRecipe'] = $recipeEdit->getNumberOfPeople();
+                $data['timeRecipe'] = $recipeEdit->getTime();
+                $data['success'] = true;
+            }
         }
         echo json_encode($data);
         die;
