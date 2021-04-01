@@ -34,6 +34,12 @@ class RecipeController extends BaseController
             $this->deleteParagraph(); // this is the method called by the fetch API with the recipe/deleteparagraph ROOT.
         } else if (($this->_url) == "recipe_editrecipe") {
             $this->editRecipeDatabase(); // this is the method called by the fetch API with the recipe/editrecipe ROOT.
+        } else if (($this->_url) == "recipe_editpicture") {
+            $this->addPicture(); // this is the method called by the fetch API with the recipe/editpicture ROOT.
+        } else if (($this->_url) == "recipe_editaddingredient") {
+            $this->addIngredient(); // this is the method called by the fetch API with the recipe/editaddingredient ROOT.
+        } else if (($this->_url) == "recipe_editdeleteingredient") {
+            $this->deleteIngredient(); // this is the method called by the fetch API with the recipe/editdeleteingredient ROOT.
         }
         $data["title"] = "Recipes";
         $data["url"] = $this->_url;
@@ -174,7 +180,7 @@ class RecipeController extends BaseController
             if ($productNameError == "" && $unitNameError == "" && $quantityError == "") {
                 $recipeIngredientsDAO = new RecipeIngredientsDAO();
                 $recipeIngredientsDAO->createRecipeIngredient($recipeIngredient);
-                $data['recipeIngredient'] = '<div class="d-flex flex-row justify-content-between"><div>' . $quantity . ' ' . $unit->getName() . ' de ' . $ingredient->getProductName() . '</div><div class="btn-delete-ingredient" data-idingredient="' . $recipeIngredient->getIDIngredient() . '" data-idrecipe="' . $recipeIngredient->getIdRecipe() . '" data-order="' . $recipeIngredient->getOrder() . '">delete</div></div>';
+                $data['recipeIngredient'] = '<div class="d-flex flex-row justify-content-between"><div class="mb-3">' . $quantity . ' ' . $unit->getName() . ' de ' . $ingredient->getProductName() . '</div><div onclick="listenerDeleteIngredient(event)" class="btn-delete-ingredient" data-idingredient="' . $recipeIngredient->getIDIngredient() . '" data-idrecipe="' . $recipeIngredient->getIdRecipe() . '" data-order="' . $recipeIngredient->getOrder() . '">delete</div></div>';
                 $data['success'] = true;
             }
         }
@@ -208,7 +214,7 @@ class RecipeController extends BaseController
                         $recipeIngredientDAO->editRecipeIngredient($recipeIngredient->getIdRecipe(), $recipeIngredient->getIDIngredient(), $recipeIngredient->getOrder(), $newOrder);
                         $recipeIngredient->setOrder($newOrder);
                     }
-                    $data['recipeIngredient'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $recipeIngredient->getQuantity() . ' ' . $recipeIngredient->getUnitMeasure()->getName() . ' de ' . $recipeIngredient->getIngredient()->getProductName() . '</div><div class="btn-delete-ingredient" data-idingredient="' . $recipeIngredient->getIDIngredient() . '" data-idrecipe="' . $recipeIngredient->getIdRecipe() . '" data-order="' . $recipeIngredient->getOrder() . '">delete</div></div>';
+                    $data['recipeIngredient'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div class="mb-3">' . $recipeIngredient->getQuantity() . ' ' . $recipeIngredient->getUnitMeasure()->getName() . ' de ' . $recipeIngredient->getIngredient()->getProductName() . '</div><div onclick="listenerDeleteIngredient(event)" class="btn-delete-ingredient" data-idingredient="' . $recipeIngredient->getIDIngredient() . '" data-idrecipe="' . $recipeIngredient->getIdRecipe() . '" data-order="' . $recipeIngredient->getOrder() . '">delete</div></div>';
                     $index++;
                     $newOrder++;
                 }
