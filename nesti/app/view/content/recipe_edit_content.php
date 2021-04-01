@@ -135,11 +135,11 @@ if (!isset($ingredients)) {
             </div>
         </div>
         <div class="col-4">
-            <h3 class="mb-2 mt-2">Ingredient List</h3>
+            <h3 class="mb-2 mt-2">Ingredient List</h3> 
             <div class="form-group">
-                <div class="d-flex flex-column justify-content-between w-100 p-2 bg-white border">
+                <div id="addIngredientListEditRecipe" class="d-flex flex-column justify-content-between w-100 p-2 bg-white border">
                     <?php foreach ($recipeIngredients as $recipeIngredient) {
-                        echo ' <div class="d-flex flex-row justify-content-between"> <p> ' . $recipeIngredient->getQuantity() . " " . $recipeIngredient->getUnitMeasure()->getName() . " de " . $recipeIngredient->getIngredient()->getProductName() . ' </p><div><a class="btn-remove-ingredients" onclick="deleteIngredient()">Delete</a></div></div>';
+                        echo ' <div class="d-flex flex-row justify-content-between"> <div class="mb-3"> ' . $recipeIngredient->getQuantity() . " " . $recipeIngredient->getUnitMeasure()->getName() . " de " . $recipeIngredient->getIngredient()->getProductName() . ' </div><div onclick="listenerDeleteIngredient(event)" class="btn-delete-ingredient" data-idingredient="' . $recipeIngredient->getIDIngredient() . '" data-idrecipe="' . $recipeIngredient->getIdRecipe() . '" data-order="' . $recipeIngredient->getOrder() . '">delete</div></div>';
                     }
                     ?>
                 </div>
@@ -155,9 +155,9 @@ if (!isset($ingredients)) {
                     </datalist>
                 </div>
                 <div class="mx-0 p-0 form-group row justify-content-between">
-                    <div class="col-4 p-0"><input type="text" class="form-control" placeholder="Quantity"></div>
-                    <div class="col-2 p-0"><input type="text" class="form-control" placeholder="Unit of Measure"></div>
-                    <button id="okIngredientEditRecipe" type="submit" class="btn mr-5">ok</button>
+                    <div class="col-4 p-0"><input type="text" class="form-control" placeholder="Quantity" name="quantity" id="inputIngredientQuantityEditRecipe"></div>
+                    <div class="col-2 p-0"><input type="text" class="form-control" placeholder="Unit of Measure" name="unitMeasure" id="inputIngredientUnitEditRecipe"></div>
+                    <button id="okIngredientEditRecipe" type="submit" class="btn mr-5">OK</button>
                 </div>
             </div>
         </div>
@@ -221,6 +221,190 @@ if (!isset($ingredients)) {
             body: formData
         };
         let response = await fetch(ROOT + 'recipe/editrecipe', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+
+     // -------------------------------- Edit recipe picture --------------------------//   
+
+     const form = document.querySelector("#formEditRecipeImage"); // get the form used to add the picture
+    // Event listener on the form
+    form.addEventListener('submit', (function(e) {
+        event.preventDefault(); // stop the default action of the form
+        const img = document.querySelector("#InputFileEditRecipe");
+        const idRecipe = document.querySelector('#idRecipe').value;
+        if (img.value != "") {
+            editPicture(this, idRecipe).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        console.log(response);
+                        const namePicture = document.querySelector(".recipePictureEditName"); // get the paragraph where the name of the picture is written
+                        const divPicture = document.querySelector("#recipePictureEdit"); // get the div where the picture is displayed
+                        namePicture.innerHTML = response["picture"]; // change the name of the picture
+                        divPicture.style.backgroundImage = "url(" + response["urlPicture"] + ")"; // change the background image of the div with the new picture
+                        if (response.MessageDb != null) { // if there is a message from the Db (if the name of the picture is already taken)
+                            alert(response.MessageDb);
+                        } else {
+                            alert('Picture changed');
+                        }
+                    } else {
+                        if (response.errorMove != null) { // if the picture has not been moved
+                            alert(response.errorMove);
+                        }
+                    }
+                }
+            });
+        }
+
+    }))
+
+    /**
+     * Ajax Request to add the recipe picture
+     * @param {form} obj ,int idRecipe
+     * @returns mixed
+     */
+    async function editPicture(obj, idRecipe) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData(obj);
+        formData.append('id_recipe', idRecipe);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/editpicture', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+
+    // -------------------------------- Add recipe ingredient --------------------------//   
+
+    var buttonOkIngredient = document.querySelector("#okIngredientEditRecipe");
+    buttonOkIngredient.addEventListener('click', (function(e) {
+        event.preventDefault();
+        const idRecipe = document.querySelector('#idRecipe').value;
+        const nameIngredient = document.querySelector('#inputIngredientNameEditRecipe').value;
+        const quantityIngredient = document.querySelector('#inputIngredientQuantityEditRecipe').value;
+        const unitIngredient = document.querySelector('#inputIngredientUnitEditRecipe').value;
+        var divList = document.querySelector("#addIngredientListEditRecipe");
+        if (idRecipe != null) {
+            addIngredient(idRecipe, nameIngredient, quantityIngredient, unitIngredient).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        divList.innerHTML += response.recipeIngredient;
+                        //add event listener to the delete buttons
+                        alert('Ingredient added');
+                    } else {
+                        console.log(response.errorMessages)
+                    }
+                }
+            });
+        }
+    }))
+
+    /**
+     * Ajax Request to add ingredients to a recipe
+     * @param int idRecipe, string nameIngredient, int quantityIngredient, string unitIngredient
+     * @returns mixed
+     */
+    async function addIngredient(idRecipe, nameIngredient, quantityIngredient, unitIngredient) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData();
+        formData.append('id_recipe', idRecipe);
+        formData.append('name_ingredient', nameIngredient);
+        formData.append('quantity_ingredient', quantityIngredient);
+        formData.append('unit_ingredient', unitIngredient);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/editaddingredient', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+
+    // -------------------------------- Delete recipe ingredient --------------------------//   
+
+
+    function listenerDeleteIngredient(event) {
+        event.preventDefault();
+        var buttonDelete = event.target;
+        const idRecipe = buttonDelete.getAttribute("data-idrecipe");
+        const idIngredient = buttonDelete.getAttribute("data-idingredient");
+        const order = buttonDelete.getAttribute("data-order");
+        var divList = document.querySelector("#addIngredientListEditRecipe");
+
+        if (idRecipe != null && idIngredient != null) {
+            deleteIngredient(idRecipe, idIngredient, order).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        divList.innerHTML = ""; //empty the list
+                        response['recipeIngredient'].forEach(element => {
+                            const div = document.createElement("div");
+                            div.innerHTML = element.all;
+                            divList.appendChild(div); // add the recipeIngredients to the divList
+                        })
+                        alert('Ingredient deleted');
+                    } else {
+                        console.log(response.errorMessages)
+                    }
+                }
+            });
+        }
+    }
+
+
+    /**
+     * Ajax Request to delete ingredients to a recipe
+     * @param int idRecipe, int idIngredient, int order
+     * @returns mixed
+     */
+    async function deleteIngredient(idRecipe, idIngredient, order) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData();
+
+        formData.append('id_recipe', idRecipe);
+        formData.append('id_ingredient', idIngredient);
+        formData.append('order', order);
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/editdeleteingredient', myInit);
         try {
             if (response.ok) {
                 return await response.json();
