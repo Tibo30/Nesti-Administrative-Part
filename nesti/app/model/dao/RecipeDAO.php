@@ -32,7 +32,7 @@ class RecipeDAO extends ModelDAO
     public function getParagraphs($idRecipe)
     {
         $var = [];
-        $req = self::$_bdd->prepare('SELECT p.id_paragraph, p.content, p.order_paragraph, p.creation_date, p.id_recipes FROM paragraph p WHERE p.id_recipes=:id');
+        $req = self::$_bdd->prepare('SELECT p.id_paragraph, p.content, p.order_paragraph, p.creation_date, p.id_recipes FROM paragraph p WHERE p.id_recipes=:id ORDER BY p.order_paragraph ASC');
         $req->execute(array("id" => $idRecipe));
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
             foreach ($data as $row) {
@@ -112,9 +112,15 @@ class RecipeDAO extends ModelDAO
 
     public function editParagraph($idRecipe, $idParagraph, $order, $content)
     {
-
         $req = self::$_bdd->prepare('UPDATE paragraph SET order_paragraph=:order, content=:content WHERE id_recipes=:idRecipe AND id_paragraph=:idParagraph ');
         $req->execute(array("order" => $order, "content" => $content, "idRecipe" => $idRecipe, "idParagraph" => $idParagraph));
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+    }
+
+    public function editOrderParagraph($idRecipe, $order, $newOrder)
+    {
+        $req = self::$_bdd->prepare('UPDATE paragraph SET order_paragraph=:newOrder WHERE id_recipes=:idRecipe AND order_paragraph=:order ');
+        $req->execute(array("order" => $order, "newOrder" => $newOrder, "idRecipe" => $idRecipe));
         $req->closeCursor(); // release the server connection so it's possible to do other query
     }
 
