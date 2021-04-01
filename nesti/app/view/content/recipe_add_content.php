@@ -483,15 +483,15 @@ if (!isset($listAllIngredients)) {
         if (bins != null) {
             bins.forEach(bin =>
                 bin.addEventListener('click', function() {
-                    idParagraph = event.target.parentNode.parentNode.getAttribute("id");
+                    idParagraph = event.target.parentNode.parentNode.getAttribute("data-id");
+                    const idRecipe = document.querySelector('#idRecipe').value;
                     if (idParagraph != null) {
-                        deleteParagrapheFromDB(idParagraph).then((response) => {
+                        deleteParagrapheFromDB(idParagraph,idRecipe).then((response) => {
                             if (response) {
                                 if (response.success) {
                                     console.log("ok")
-                                    alert('Paragraph deleted from Database');
+                                    alert("Paragraph deleted from Database. Please don't forget to save");
                                 } else {
-                                    console.log("probleme")
                                     console.log(response.errorMessages)
                                 }
                             }
@@ -517,7 +517,7 @@ if (!isset($listAllIngredients)) {
                     var currentOrder = Number(currentParagraph.getAttribute('order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
                     currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
 
-                    var nextParagraph = event.target.parentNode.parentNode.nextSibling;
+                    var nextParagraph = event.target.parentNode.parentNode.nextElementSibling;
                     nextParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) - 1);
 
                     var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); // get the list of paragraphs
@@ -540,7 +540,7 @@ if (!isset($listAllIngredients)) {
                     var currentOrder = Number(currentParagraph.getAttribute('order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
                     currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) - 1);
 
-                    var previousParagraph = event.target.parentNode.parentNode.previousSibling;
+                    var previousParagraph = event.target.parentNode.parentNode.previousElementSibling;
                     previousParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
 
                     var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); // get the list of paragraphs
@@ -559,14 +559,15 @@ if (!isset($listAllIngredients)) {
 
     /**
      * Ajax Request to delete paragraphes
-     * @param int idParagraph
+     * @param int idParagraph, int idRecipe
      * @returns mixed
      */
-    async function deleteParagrapheFromDB(idParagraph) {
+    async function deleteParagrapheFromDB(idParagraph, idRecipe) {
         var myHeaders = new Headers();
 
         let formData = new FormData();
         formData.append('id_paragraph', idParagraph);
+        formData.append('id_recipe', idRecipe);
 
         var myInit = {
             method: 'POST',
@@ -595,17 +596,20 @@ if (!isset($listAllIngredients)) {
         var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine");
         console.log(paragraphLines);
         if (idRecipe != null) {
+            var error = "";
             paragraphLines.forEach(element => saveParagraph(idRecipe, element).then((response) => {
                 if (response) {
                     if (response.success) {
-                        element.setAttribute("id", response.id_paragraph)
-                        console.log(response);
+                        element.setAttribute("data-id", response.id_paragraph)
                     } else {
                         console.log(response.errorMessages)
+                        error = response.errorMessages;
                     }
                 }
             }))
-            alert('Paragraphes saved');
+            if (error == "") {
+                alert('Paragraphes saved');
+            }
         }
     }))
 
@@ -618,7 +622,7 @@ if (!isset($listAllIngredients)) {
         var myHeaders = new Headers();
 
         order = element.getAttribute("order");
-        idParagraph = element.getAttribute("id");
+        idParagraph = element.getAttribute("data-id");
         content = element.childNodes[1].value;
 
         let formData = new FormData();
