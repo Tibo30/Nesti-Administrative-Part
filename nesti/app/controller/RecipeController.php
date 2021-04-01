@@ -51,7 +51,7 @@ class RecipeController extends BaseController
     {
         $recipe = $this->recipeDAO->getRecipe($idRecipe); // get the recipe
 
-        $recipeIngredientDAO=new RecipeIngredientsDAO();
+        $recipeIngredientDAO = new RecipeIngredientsDAO();
         $recipeIngredients = $recipeIngredientDAO->getRecipeIngredients($idRecipe); // get all the ingredients for this recipe
 
         $listAllIngredients = $this->recipeDAO->getAllIngredients(); // get all the ingredients from the Database
@@ -309,9 +309,22 @@ class RecipeController extends BaseController
         $data = [];
         $data['success'] = false;
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
-            $idParagraph = filter_input(INPUT_POST, "id_paragraph", FILTER_SANITIZE_STRING);
+            $idParagraph = filter_input(INPUT_POST, "id_paragraph", FILTER_SANITIZE_STRING); // get the id of the paragraph to delete
+            $idRecipe = filter_input(INPUT_POST, "id_recipe", FILTER_SANITIZE_STRING); // get the id of the recipe
+            $this->recipeDAO->deleteParagraph($idParagraph); // delete the paragraph from the database
+
+            $paragraphs = $this->recipeDAO->getParagraphs($idRecipe); // we get all the remaining paragraphs for this recipe
+            // this loop : if the order of the paragraph in the database is no the same as the order in the list of paragraphs, we update it
+            if ($paragraphs != null) {
+                $newOrder = 1;
+                foreach ($paragraphs as $paragraph) {
+                    if ($paragraph->getOrder() != $newOrder) {
+                        $this->recipeDAO->editOrderParagraph($idRecipe, $paragraph->getOrder(), $newOrder);
+                    }
+                    $newOrder++;
+                }
+            }
             $data['success'] = true;
-            $this->recipeDAO->deleteParagraph($idParagraph);
         }
         echo json_encode($data);
         die;
