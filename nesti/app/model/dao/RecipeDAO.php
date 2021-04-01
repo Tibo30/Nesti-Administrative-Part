@@ -102,7 +102,7 @@ class RecipeDAO extends ModelDAO
                 break;
             case "time":
                 $req = self::$_bdd->prepare('UPDATE recipes SET time=:time WHERE id_recipes=:id');
-                $req->execute(array("time" => ($recipeEdit->getTime()), "id" => ($recipeEdit->getIdRecipe())));
+                $req->execute(array("time" => ($recipeEdit->getTimeDatabase()), "id" => ($recipeEdit->getIdRecipe())));
                 break;
             default:
                 break;
