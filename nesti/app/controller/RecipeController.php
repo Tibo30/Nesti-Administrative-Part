@@ -36,6 +36,8 @@ class RecipeController extends BaseController
             $this->editRecipeDatabase(); // this is the method called by the fetch API with the recipe/editrecipe ROOT.
         } else if (($this->_url) == "recipe_editpicture") {
             $this->addPicture(); // this is the method called by the fetch API with the recipe/editpicture ROOT.
+        } else if (($this->_url) == "recipe_deletepicture") {
+            $this->deletePictureRecipe(); // this is the method called by the fetch API with the recipe/deletepicture ROOT.
         } else if (($this->_url) == "recipe_editaddingredient") {
             $this->addIngredient(); // this is the method called by the fetch API with the recipe/editaddingredient ROOT.
         } else if (($this->_url) == "recipe_editdeleteingredient") {
@@ -278,6 +280,25 @@ class RecipeController extends BaseController
                 $data["picture"] = $picture->getName() . "." . $picture->getExtension();
                 $data["urlPicture"] = BASE_URL . PATH_PICTURES . $data["picture"];
             }
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the Ajax method to delete the Picture of a recipe
+     */
+    private function deletePictureRecipe()
+    {
+        $data = [];
+        $data['success'] = false;
+
+        if (isset($_POST) && !empty($_POST)) {
+            $idRecipe = $_POST["id_recipe"]; // first we get the id of the recipe
+            $recipe = $this->recipeDAO->getRecipe($idRecipe); // then we get the object recipe from the database.
+            $recipe->setIdPicture(null);
+            $this->recipeDAO->editRecipe($recipe, "picture"); // set the picture to null in the database for this recipe
+            $data['success'] = true;
         }
         echo json_encode($data);
         die;
