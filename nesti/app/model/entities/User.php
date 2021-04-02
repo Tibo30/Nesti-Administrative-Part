@@ -76,9 +76,11 @@ class User
     {
         $userLastnameError = "";
         if (empty($lastname)) {
-            $this->lastname = null;
+            $userLastnameError = "Please enter a lastname";
+        } else if (!preg_match("/^[a-z ,.'-]{3,20}+$/i", $lastname)) { // A MODIFIER
+            $this->userLastnameError = "The lastname is incorrect";
         } else {
-        $this->lastname = $lastname;
+            $this->lastname = $lastname;
         }
         return  $userLastnameError;
     }
@@ -100,9 +102,11 @@ class User
     {
         $userFirstnameError = "";
         if (empty($firstname)) {
-            $this->firstname = null;
+            $userFirstnameError = "Please enter a firstname";
+        } else if (!preg_match("/^[a-z ,.'-]{3,20}+$/i", $firstname)) { // A MODIFIER
+            $this->userFirstnameError = "The firstname is incorrect";
         } else {
-        $this->firstname = $firstname;
+            $this->firstname = $firstname;
         }
         return  $userFirstnameError;
     }
@@ -152,6 +156,8 @@ class User
         $userPasswordError = "";
         if (empty($password)) {
             $userPasswordError = 'Please enter a Password';
+        } else if (!preg_match("/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!?^&+=])(?=\\S+$).{12,}$/", $password)) {
+            $this->userPasswordError = "The password isn't strong enough or doesn't respect the conditions";
         } else {
             $this->password = $password;
         }
@@ -164,45 +170,20 @@ class User
      */
     public function getState()
     {
-        // switch ($this->state) {
-        //     case 'a':
-        //         $this->state = "Accepted";
-        //         break;
-        //     case 'b':
-        //         $this->state = "Blocked";
-        //         break;
-        //     case 'w':
-        //         $this->state = "Waiting";
-        //         break;
-        // }
-
         return $this->state;
     }
 
     /**
      * Set the value of state
      *
-     * @return  string
+     * @return  self
      */
     public function setState($state)
     {
-        $userStateError = "";
-        if (empty($state)) {
-            $userStateError = 'Please enter a state';
-        } else {
-            switch ($state) {
-                case 'Accepted':
-                    $this->state = "a";
-                    break;
-                case 'Blocked':
-                    $this->state = "b";
-                    break;
-                case 'Waiting':
-                    $this->state = "w";
-                    break;
-            }
-        }
-        return  $userStateError;
+
+        $this->state = $state;
+
+        return $this;
     }
 
     /**
@@ -243,6 +224,8 @@ class User
         $userUsernameError = "";
         if (empty($username)) {
             $userUsernameError = 'Please enter a username';
+        } else if (!preg_match("/^[a-zA-Z0-9._-]{3,20}$/", $username)) {
+            $this->userUsernameError = "The username doesn't respect the conditions";
         } else {
             $this->username = $username;
         }
@@ -266,9 +249,9 @@ class User
     {
         $userAddress1Error = "";
         if (empty($address1)) {
-            $this->address1 = null;
+            $userAddress1Error = "Please enter a postal address";
         } else {
-        $this->address1 = $address1;
+            $this->address1 = $address1;
         }
         return  $userAddress1Error;
     }
@@ -292,7 +275,7 @@ class User
         if (empty($address2)) {
             $this->address2 = null;
         } else {
-        $this->address2 = $address2;
+            $this->address2 = $address2;
         }
         return  $userAddress2Error;
     }
@@ -314,9 +297,11 @@ class User
     {
         $userPostCodeError = "";
         if (empty($postcode)) {
-            $this->postcode = null;
+            $userPostCodeError = "Please enter a postcode";
+        } else if (!preg_match("/^[0-9]{5}$/", $postcode)) {
+            $this->postcodeError = "Please enter a valid postcode (5 digits)";
         } else {
-        $this->postcode = $postcode;
+            $this->postcode = $postcode;
         }
         return  $userPostCodeError;
     }
@@ -340,7 +325,7 @@ class User
         if (empty($idCity)) {
             $this->idCity = null;
         } else {
-        $this->idCity = $idCity;
+            $this->idCity = $idCity;
         }
         return  $userCityError;
     }
@@ -364,7 +349,7 @@ class User
         if (empty($roles)) {
             $this->roles = null;
         } else {
-        $this->roles = $roles;
+            $this->roles = $roles;
         }
         return  $userRolesError;
     }
@@ -375,7 +360,7 @@ class User
     public function getLog()
     {
         $logDAO = new UserDAO();
-        $log = $logDAO -> getLog ($this->idUser);
+        $log = $logDAO->getLog($this->idUser);
         return $log;
     }
 
@@ -383,7 +368,47 @@ class User
     {
         $cityDAO = new UserDAO();
         $city = $cityDAO->getCity($this->idCity);
-        echo $city->getCityName();
         return $city;
     }
+
+     // Display state for tables
+     public function getDisplayState()
+     {
+ 
+         if ($this->state == 'a') {
+             $state = 'Active';
+         }
+         if ($this->state == 'b') {
+             $state = 'Blocked';
+         }
+         if ($this->state == 'w') {
+             $state = 'Waiting';
+         }
+         return $state;
+     }
+   
+    // Display roles for tables
+    public function getDisplayRoles()
+    {
+        $displayRoles = [];
+
+        foreach ($this->roles as $role) {
+            if ($role == 'admin') {
+                $displayRoles[] = 'Administrator';
+            }
+            if ($role == 'moderator') {
+                $displayRoles[] = 'Moderator';
+            }
+            if ($role == 'chief') {
+                $displayRoles[] = 'Chief';
+            }
+        }
+
+        if ($displayRoles == null) {
+            $displayRoles[] = 'Utilisateur';
+        }
+
+        return $displayRoles;
+    }
+     
 }
