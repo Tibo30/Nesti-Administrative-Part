@@ -77,6 +77,8 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 <script>
     const ROOT = '<?= BASE_URL ?>';
 
+// -------------------------------- Delete article picture --------------------------//  
+
     const deleteButton = document.querySelector("#deletePictureButton");
     deleteButton.addEventListener('click', (function(e) {
         event.preventDefault();
@@ -127,6 +129,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
         }
     }
 
+// -------------------------------- Edit article picture --------------------------//   
 
     const form = document.querySelector("#formEditArticleImage"); // get the form used to edit the picture
     // Event listener on the form
