@@ -71,6 +71,9 @@ if (!isset($ingredients)) {
             <div id="recipePictureEdit" class="bg-light border mb-2" style='background-image:url("<?= $recipe->getIdPicture() != null ? BASE_URL . PATH_PICTURES . $recipe->getPicture()->getName() . "." . $recipe->getPicture()->getExtension() : "" ?>")'></div>
             <div class=" d-flex flex-row justify-content-between">
                 <p class="recipePictureEditName"><?= $recipe->getIdPicture() != null ? ($recipe->getPicture()->getName() . "." . $recipe->getPicture()->getExtension()) : "" ?></p>
+                <a id="deletePictureRecipeButton" href="">
+                    <div class="recipePictureBin"><img src="<?php echo BASE_URL . PATH_ICONS ?>delete-svg.svg" alt="svg bin"></div>
+                </a>
             </div>
             <label class="form-label" for="customFile">Download a new picture</label>
 
@@ -135,7 +138,7 @@ if (!isset($ingredients)) {
             </div>
         </div>
         <div class="col-4">
-            <h3 class="mb-2 mt-2">Ingredient List</h3> 
+            <h3 class="mb-2 mt-2">Ingredient List</h3>
             <div class="form-group">
                 <div id="addIngredientListEditRecipe" class="d-flex flex-column justify-content-between w-100 p-2 bg-white border">
                     <?php foreach ($recipeIngredients as $recipeIngredient) {
@@ -232,9 +235,9 @@ if (!isset($ingredients)) {
         }
     }
 
-     // -------------------------------- Edit recipe picture --------------------------//   
+    // -------------------------------- Edit recipe picture --------------------------//   
 
-     const form = document.querySelector("#formEditRecipeImage"); // get the form used to add the picture
+    const form = document.querySelector("#formEditRecipeImage"); // get the form used to add the picture
     // Event listener on the form
     form.addEventListener('submit', (function(e) {
         event.preventDefault(); // stop the default action of the form
@@ -284,6 +287,58 @@ if (!isset($ingredients)) {
             body: formData
         };
         let response = await fetch(ROOT + 'recipe/editpicture', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+
+    // -------------------------------- Delete article picture --------------------------//  
+
+    const deleteButton = document.querySelector("#deletePictureRecipeButton");
+    deleteButton.addEventListener('click', (function(e) {
+        event.preventDefault();
+        const idRecipe = document.querySelector('#idRecipe').value;
+        console.log(idRecipe);
+        if (idRecipe != null) {
+            deletePicture(idRecipe).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        const namePicture = document.querySelector(".recipePictureEditName"); // get the paragraph where the name of the picture is written
+                        const divPicture = document.querySelector("#recipePictureEdit"); // get the div where the picture is displayed
+                        namePicture.innerHTML = ""; // change the name of the picture to empty
+                        divPicture.style.backgroundImage = null; // change the background image of the div to null
+                        alert('Picture deleted');
+                    }
+                }
+            });
+        }
+    }))
+
+    /**
+     * Ajax Request to delete the recipe picture
+     * @param int idRecipe
+     * @returns mixed
+     */
+    async function deletePicture(idRecipe) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData();
+        formData.append('id_recipe', idRecipe);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'recipe/deletepicture', myInit);
         try {
             if (response.ok) {
                 return await response.json();
