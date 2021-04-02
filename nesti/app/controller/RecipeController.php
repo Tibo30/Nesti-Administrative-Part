@@ -14,7 +14,7 @@ class RecipeController extends BaseController
             $data = $this->recipes();
         } else if (($this->_url) == "recipe_add") {
             if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
-                $this->addRecipeDatabase();
+                $this->addRecipeDatabase(); // this is the method called by the fetch API with the recipe/add ROOT.
             }
             $data = $this->addRecipeAllIngredients();
         } else if (($this->_url) == "recipe_edit") {
