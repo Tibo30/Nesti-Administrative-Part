@@ -554,3 +554,18 @@ color: var(--classicColorGrey);
     color:var(--colorButtonInformation);
   cursor: pointer;
 }
+
+
+.recipePictureBin{
+    width: 30px;
+    height: 30px;
+    background-color: red;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: center;
+}
+.recipePictureBin img{
+    width: 20px;
+    height: 20px;
+    background-color: red;
+}
