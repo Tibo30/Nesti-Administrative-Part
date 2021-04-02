@@ -235,7 +235,7 @@ class ArticleController extends BaseController
 
         if (isset($_POST) && !empty($_POST)) {
             $idArticle = $_POST["id_article"]; // first we get the id of the article
-            $article = $this->articleDAO->getArticle($idArticle); // the we get the object article from the database.
+            $article = $this->articleDAO->getArticle($idArticle); // then we get the object article from the database.
             $article->setIDPicture(null);
             $this->articleDAO->editArticle($article, "picture"); // set the picture to null in the database for this article
             $data['success'] = true;
