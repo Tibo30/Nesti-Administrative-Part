@@ -86,7 +86,7 @@ class RecipeDAO extends ModelDAO
         switch ($change) {
             case "picture":
                 $req = self::$_bdd->prepare('UPDATE recipes SET id_pictures=:idPicture WHERE id_recipes=:id');
-                $req->execute(array("idPicture" => ($recipeEdit->getIDPicture()), "id" => ($recipeEdit->getIdRecipe())));
+                $req->execute(array("idPicture" => ($recipeEdit->getIdPicture()), "id" => ($recipeEdit->getIdRecipe())));
                 break;
             case "name":
                 $req = self::$_bdd->prepare('UPDATE recipes SET recipe_name=:name WHERE id_recipes=:id');
