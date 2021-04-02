@@ -7,18 +7,10 @@ if (!isset($users)) {
         }
     }
 }
-// if (!isset($logs)) {
-//     $logs =[];
-//     if (!empty($logs)){
-//         foreach ($logs as $log) {
-//             $log = new UserLog();
-//         }
-//     }
-// }
 
 ?>
 
-<div class="container bg-white d-flex flex-column align-items-left" id="recipePage">
+<div class="container bg-white d-flex flex-column align-items-left" id="allUserPage">
     <h2 class="mb-2 mt-2">Users</h2>
     <div class="d-flex flex-row justify-content-between">
         <nav class="navbar navbar-white bg-white pl-0">
@@ -28,7 +20,7 @@ if (!isset($users)) {
             </form>
         </nav>
         <div>
-            <a id="btnAddUser" href="user/add" class="btn mb-1 border align-self-end"> <img id="addUser" src="<?php echo BASE_URL.PATH_ICONS ?>create-svg.svg" alt="svg plus">
+            <a id="btnAddUser" href="user/add" class="btn mb-1 border align-self-end"> <img id="svgAddUser" src="<?php echo BASE_URL.PATH_ICONS ?>create-svg.svg" alt="svg plus">
                 Add User</a>
         </div>
 
@@ -50,6 +42,8 @@ if (!isset($users)) {
         <thead>
             <th>ID</th>
 
+            <th>Username</th>
+
             <th>Name</th>
 
             <th>Role</th>
@@ -66,10 +60,11 @@ if (!isset($users)) {
             foreach ($users as $user) {
                 echo '<tr>';
                 echo '<td>' . $user->getIdUser() . '</td>';
+                echo '<td>' . $user->getUsername() . '</td>';
                 echo '<td>' . $user->getLastname() . ' ' .  $user->getFirstname() . '</td>';
                 echo '<td>' . implode(", ",$user->getRoles()). '</td>';
                 echo '<td>'.   $user->getLog()->getConnectionDate().' </td>';
-                echo '<td>' . $user->getCity() ->getCityName() . '</td>';
+                echo '<td>' . $user->getState() . '</td>';
                 echo '<td>';
                 echo '<a href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . ' "data-id='.$user->getIdUser().'>Modify</br></a>';
                 echo '<a href="' . BASE_URL . 'user/delete/' . $user->getIdUser() . ' "data-id='.$user->getIdUser().'>Delete</a>';
