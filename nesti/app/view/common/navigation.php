@@ -23,7 +23,7 @@ if (!isset($url)) {
           <i class="fas fa-utensils mr-2"></i>
           Articles</a>
       </li>
-      <li class="nav-item m-xl-3 <?= ($url == 'user') ? 'active' : ''; ?>">
+      <li class="nav-item m-xl-3 <?= ($url == 'user'||$url == 'user_add'||$url == 'user_edit'||$url == 'user_delete') ? 'active' : ''; ?>">
         <a class="nav-link" href="<?= BASE_URL ?>user">
           <i class="fas fa-user mr-2"></i>
           Users</a>
