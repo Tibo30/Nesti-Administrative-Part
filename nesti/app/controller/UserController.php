@@ -20,7 +20,7 @@ class UserController extends BaseController
             }
         } else if ($this->_url == "user_add") {
             if (!empty($_POST)) {
-                $data = $this-> addUserDatabase();
+                $this->addUserDatabase(); // this is the method called by the fetch API with the user/add ROOT.
             }
         }
         $data["title"] = "Users";
@@ -47,45 +47,96 @@ class UserController extends BaseController
 
     private function addUserDatabase()
     {
-        $data=[];
+        $data = [];
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
-            var_dump($_POST);
+
             $userLastname = filter_input(INPUT_POST, "userLastname", FILTER_SANITIZE_STRING);
             $userFirstname = filter_input(INPUT_POST, "userFirstname", FILTER_SANITIZE_STRING);
-            $userUsername = filter_input(INPUT_POST, "userUsername", FILTER_SANITIZE_STRING);
             $userEmail = filter_input(INPUT_POST, "userEmail", FILTER_SANITIZE_STRING);
-            // $userPassword = filter_input(INPUT_POST, "recipeName", FILTER_SANITIZE_ENCODED);
+            $userUsername = filter_input(INPUT_POST, "userUsername", FILTER_SANITIZE_STRING);
             $userPassword = filter_input(INPUT_POST, "userPassword", FILTER_SANITIZE_STRING);
-            $userState = filter_input(INPUT_POST, "userState", FILTER_SANITIZE_STRING);
+            $userConfirmPassword = filter_input(INPUT_POST, "userConfirmPassword", FILTER_SANITIZE_STRING);
             $userAddress1 = filter_input(INPUT_POST, "userAddress1", FILTER_SANITIZE_STRING);
             $userAddress2 = filter_input(INPUT_POST, "userAddress2", FILTER_SANITIZE_STRING);
-            $userPostCode = filter_input(INPUT_POST, "userPostCode", FILTER_SANITIZE_STRING);
             $userCity = filter_input(INPUT_POST, "userCity", FILTER_SANITIZE_STRING);
-            $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_SANITIZE_STRING); // vérifier array list
+            $userPostCode = filter_input(INPUT_POST, "userPostCode", FILTER_SANITIZE_STRING);
+            $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_DEFAULT,FILTER_REQUIRE_ARRAY);
+            $userState = filter_input(INPUT_POST, "userState", FILTER_SANITIZE_STRING);
+
+            // first we have to check if the city already exists, if not to create it
+            $cityDAO = new CityDAO();
+            $city = new City();
+            $city = $cityDAO->doesCityExists($userCity); // we check if the city already exist
+            $userCityError = "";
+            if ($city->getIdCity() == null) { // if not we create it
+                $userCityError = $city->setCityName($userCity);
+                if ($userCityError == "") {
+                    $cityId = $cityDAO->createCity($userCity);
+                    $city->setIdCity($cityId);
+                }
+            }
 
             $userAdd = new User();
             $userLastnameError = $userAdd->setLastname($userLastname);
             $userFirstnameError = $userAdd->setFirstname($userFirstname);
-            $userUsernameError = $userAdd->setUsername($userUsername);
             $userEmailError = $userAdd->setEmail($userEmail);
+            $userUsernameError = $userAdd->setUsername($userUsername);
             $userPasswordError = $userAdd->setPassword($userPassword);
-            $userStateError = $userAdd->setState($userState);
             $userAddress1Error = $userAdd->setAddress1($userAddress1);
             $userAddress2Error = $userAdd->setAddress2($userAddress2);
             $userPostCodeError = $userAdd->setPostCode($userPostCode);
-            $userCityError = $userAdd->setIdCity($userCity);
-            $userRolesError = $userAdd->setRoles($userRoles); // changer facon de set avec array list
-            $errorMessages = ['userLastname' => $userLastnameError, 'userFirstname' => $userFirstnameError, 'userUsername' => $userUsernameError, 'userEmail' => $userEmailError, 'userPassword' => $userPasswordError, 'userState' => $userStateError, 'userAddress1' => $userAddress1Error, 'userAddress2' => $userAddress2Error,'userPostCode' => $userPostCodeError, 'userCity' => $userCityError, 'userRoles' => $userRolesError];
+            $userAdd->setIdCity($city->getIdCity());
+            $userAdd->setState($userState);
+            $userAdd->setRoles($userRoles);
+
+            // check if the confirm password is right
+            $userConfirmPasswordError = "";
+            if ($userConfirmPassword != $userPassword) {
+                $userConfirmPasswordError = "Passwords don't match";
+            } else if ($userConfirmPassword == "") {
+                $userConfirmPasswordError = "Please confirm the password";
+            }
+
+            // check if the email or username is already taken
+            if ($this->userDAO->isEmailOrUsernameTaken($userAdd->getEmail()) == true) { // if the email is already taken
+                $userEmailError = "this email already exists. Please choose another one";
+            }
+            if ($this->userDAO->isEmailOrUsernameTaken($userAdd->getUsername()) == true) { // if the username is already taken
+                $userUsernameError = "this username already exists. Please choose another one";
+            }
+
+            $errorMessages = ['userLastname' => $userLastnameError, 'userFirstname' => $userFirstnameError, 'userUsername' => $userUsernameError, 'userEmail' => $userEmailError, 'userPassword' => $userPasswordError, 'userConfirmPassword' => $userConfirmPasswordError, 'userAddress1' => $userAddress1Error, 'userAddress2' => $userAddress2Error, 'userPostcode' => $userPostCodeError, 'userCity' => $userCityError];
             $data['errorMessages'] = $errorMessages;
 
             // if all the datas inputed are correct, we do the query
             // si bug, remettre null à la place de ""
-            if ($userLastnameError == "" && $userFirstnameError == "" && $userUsernameError == "" && $userEmailError == ""&& $userPasswordError == "" && $userStateError == "" && $userAddress1Error == "" && $userAddress2Error == "" && $userPostCodeError == "" && $userCityError == "" && $userRolesError == "") {
-                $this->userDAO->addUser($userAdd);
-                $data['userAdd'] = $userAdd;
+            if ($userLastnameError == "" && $userFirstnameError == "" && $userUsernameError == "" && $userEmailError == "" && $userPasswordError == "" && $userConfirmPasswordError == "" && $userAddress1Error == "" && $userAddress2Error == "" && $userPostCodeError == "" && $userCityError == "") {
+
+                // create the user in the database
+                $idUser = $this->userDAO->addUser($userAdd);
+                $userAdd->setIdUser($idUser);
+
+                //add roles to the user
+                $roleDAO = new RoleDAO();
+                $roleDAO->createRoles($userAdd);
+
+                $data['idUser'] = $userAdd->getIdUser();
+                $data['userLastname'] = $userAdd->getLastname();
+                $data['userFirstname'] = $userAdd->getFirstname();
+                $data['userEmail'] = $userAdd->getEmail();
+                $data['userUsername'] = $userAdd->getUsername();
+                $data['userPassword'] = $userAdd->getPassword();
+                $data['userConfirmPassword'] = $userAdd->getPassword();
+                $data['userAddress1'] = $userAdd->getAddress1();
+                $data['userAddress2'] = $userAdd->getAddress2();
+                $data['userCity'] = $userAdd->getCity()->getCityName();
+                $data['userPostcode'] = $userAdd->getPostCode();
+                $data['userRoles'] = $userAdd->getRoles();
+                $data['userState'] = $userAdd->getState();
+                $data['success'] = true;
             }
         }
-
-        return $data;
+        echo json_encode($data);
+        die;
     }
 }
