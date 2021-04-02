@@ -46,8 +46,14 @@ class City{
      */ 
     public function setCityName($cityName)
     {
-        $this->cityName = $cityName;
-
-        return $this;
+        $cityError = "";
+        if (empty($cityName)) {
+            $cityError = "Please enter a city";
+        } else if (!preg_match("/^[a-z ,.'-]{3,20}+$/i", $cityName)) { // A MODIFIER
+            $this->cityError = "The city is incorrect";
+        } else {
+            $this->cityName = $cityName;
+        }
+        return  $cityError;
     }
 }
