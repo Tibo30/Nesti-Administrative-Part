@@ -7,7 +7,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 }
 
 ?>
-<div class="container bg-white align-items-left" id="userPage">
+<div class="container bg-white align-items-left" id="userAddPage">
     <div class="d-flex flex-row underLink">
         <a href="<?= BASE_URL ?>user"><u>Users</u>
         </a>
@@ -16,103 +16,246 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 
     <div class="d-flex flex-column">
         <h2 class="mb-2 mt-2">User Creation</h2>
-        <form method="post" style="width : 100%;">
-            <div class="d-flex flex-row justify-content-around">
-                <div class="d-flex flex-column">
-                    <div class="form-group">
-                        <label for="inputUserLastname">Lastname</label>
-                        <input type="text" class="form-control p-0" id="inputUserLastname" name="userLastname" value="<?php echo !empty($userAdd->getLastname()) ? htmlspecialchars($userAdd->getLastname(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userLastname', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userLastname']; ?></span>
-                        <?php endif; ?>
+
+
+        <!-- Section Top -->
+        <div class="d-flex flex-row justify-content-around">
+
+            <!-- Article Input Informations Recipe-->
+
+            <form method="POST" action="<?= BASE_URL?>user/add" id="addUserForm" class="application">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-5">
+
+                        <div class="row mb-2">
+                            <label for="inputUserLastname">Lastname *</label>
+                            <input type="text" class="form-control" id="inputUserLastname" name="userLastname" value="">
+                        </div>
+                        <span class="text-danger" id="errorUserLastname"></span>
+
+                        <div class=" row mb-2">
+                            <label for="inputUserFirstname">Firstname *</label>
+                            <input type="text" class="form-control" id="inputUserFirstname" name="userFirstname" value="">
+                        </div>
+                        <span class="text-danger" id="errorUserFirstname"></span>
+
+                        <div class="row mb-2">
+                            <label for="inputUserEmail">Email *</label>
+                            <input type="text" class="form-control" id="inputUserEmail" name="userEmail" value="">
+                        </div>
+                        <span class="text-danger" id="errorUserEmail"></span>
+
+                        <div class="row mb-2">
+                            <label for="inputUserUsername">Username *</label>
+                            <input type="text" class="form-control" id="inputUserUsername" name="userUsername" value="">
+                        </div>
+                        <span class="text-danger" id="errorUserUsername"></span>
+
+                        <div class="row mb-2">
+                            <label for="inputUserPassword">Password *</label>
+                            <input type="password" class="form-control" id="inputUserPassword" name="userPassword" value="">
+                            <progress id="pwd-strength" value="0" max="5"></progress>
+                        </div>
+                        <span class="text-danger" id="errorUserPassword"></span>
+
+                        <div id="password_verification">
+                            <div class="font-weight-bold">Your password has to respect these rules : </div>
+                            <div id='password_conditions'>
+                                <div id='pwdLength'> • At least 12 characters</div>
+                                <div id='pwdLowCase'> • At least one lowercase</div>
+                                <div id='pwdUpperCase'> • At least one uppercase</div>
+                                <div id='pwdDigit'> • At least one number</div>
+                                <div id='pwdSpecial'> • At least a special character</div>
+                            </div>
+                        </div>
+
+                        <br>
+
                     </div>
-                    <div class="form-group">
-                        <label for="inputUserFirstname">Firstname</label>
-                        <input type="text" class="form-control p-0" id="inputUserFirstname" name="userFirstname" value="<?php echo !empty($userAdd->getFirstname()) ? htmlspecialchars($userAdd->getFirstname(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userFirstname', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userFirstname']; ?></span>
-                        <?php endif; ?>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUserUsername">Username</label>
-                        <input type="text" class="form-control p-0" id="inputUserUsername" name="userUsername" value="<?php echo !empty($userAdd->getUsername()) ? htmlspecialchars($userAdd->getUsername(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userUsername', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userUsername']; ?></span>
-                        <?php endif; ?>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUserEmail">Email</label>
-                        <input type="text" class="form-control p-0" id="inputUserEmail" name="userEmail" value="<?php echo !empty($userAdd->getEmail()) ? htmlspecialchars($userAdd->getEmail(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userEmail', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userEmail']; ?></span>
-                        <?php endif; ?>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUserPassword">Password</label>
-                        <input type="text" class="form-control p-0" id="inputUserPassword" name="userPassword" value="<?php echo !empty($userAdd->getPassword()) ? htmlspecialchars($userAdd->getPassword(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userPassword', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userPassword']; ?></span>
-                        <?php endif; ?>
+
+                    <div class="col-5">
+
+                        <div class="row mb-2">
+                            <label for="inputUserConfirmPassword">Confirm Password *</label>
+                            <input type="password" class="form-control" id="inputUserConfirmPassword" name="userConfirmPassword" value="">
+                        </div>
+                        <span class="text-danger" id="errorUserConfirmPassword"></span>
+
+                        <div class=" row mb-2">
+                            <label for="inputUserAddress1">Address *</label>
+                            <input type="text" class="form-control" id="inputUserAddress1" name="userAddress1" value="">
+                        </div>
+                        <span class="text-danger" id="errorUserAddress1"></span>
+
+                        <div class="row mb-2">
+                            <label for="inputUserAddress2">Additional address</label>
+                            <input type="text" class="form-control" id="inputUserAddress2" name="userAddress2" value="">
+                        </div>
+                        <span class="text-danger" id="errorUserAddress2"></span>
+
+                        <div class="row mb-2">
+                            <label for="inputUserCity">City *</label>
+                            <input type="text" class="form-control" id="inputUserCity" name="userCity" value="">
+                        </div>
+                        <span class="text-danger" id="errorUserCity"></span>
+
+                        <div class="row mb-2">
+                            <label for="inputUserPostcode">Postcode *</label>
+                            <input type="text" class="form-control" id="inputUserPostcode" name="userPostCode" value="">
+                        </div>
+                        <span class="text-danger" id="errorUserPostcode"></span>
+
+                        <div class="row mb-2">
+
+                            <div class="col-6">
+                                <label for="inputUserRole">Role(s)</label> <br>
+
+                                <input type="checkbox" id="admin" name="userRoles[]" value="admin">
+                                <label for="admin"> Administrator</label><br>
+
+                                <input type="checkbox" id="mod" name="userRoles[]" value="moderator">
+                                <label for="mod"> Moderator </label><br>
+
+                                <input type="checkbox" id="chief" name="userRoles[]" value="chief">
+                                <label for="chief"> Chief </label><br>
+
+                            </div>
+
+                            <div class="col-6">
+                                <label for="inputUserState">State</label> <br>
+                                <select name="userState" id="userState">
+                                    <option value="a">Active</option>
+                                    <option value="b">Blocked</option>
+                                    <option value="w">Waiting</option>
+                                </select>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-
-                <div class="d-flex flex-column">
-                    <div class="form-group">
-                        <label for="inputUserState">State</label>
-                        <input type="text" class="form-control p-0" id="inputUserState" name="userState" value="<?php echo !empty($userAdd->getState()) ? htmlspecialchars($userAdd->getState(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userState', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userState']; ?></span>
-                        <?php endif; ?>
-                    </div>
-                    <div class="form-group">
-                        <label for="inputUserAdress1">Adress1</label>
-                        <input type="text" class="form-control p-0" id="inputUserAdress1" name="userAddress1" value="<?php echo !empty($userAdd->getAddress1()) ? htmlspecialchars($userAdd->getAddress1(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userAddress1', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userAddress1']; ?></span>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputUserAdress2">Adress2</label>
-                        <input type="text" class="form-control p-0" id="inputUserAdress2" name="userAddress2" value="<?php echo !empty($userAdd->getAddress2()) ? htmlspecialchars($userAdd->getAddress2(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userAddress2', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userAddress2']; ?></span>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputUserPostcode">Postcode</label>
-                        <input type="text" class="form-control p-0" id="inputUserPostcode" name="userPostcode" value="<?php echo !empty($userAdd->getPostCode()) ? htmlspecialchars($userAdd->getPostCode(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userPostcode', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userPostcode']; ?></span>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputUserCity">City</label>
-                        <input type="text" class="form-control p-0" id="inputUserCity" name="userCity" value="<?php echo !empty($userAdd->getIdCity()) ? htmlspecialchars($userAdd->getIdCity(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userCity', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userCity']; ?></span>
-                        <?php endif; ?>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="inputUserRoles">Roles</label>
-                        <input type="text" class="form-control p-0" id="inputUserRoles" name="userRoles" value="<?php echo !empty($userAdd->getRoles()) ? htmlspecialchars($userAdd->getRoles(), ENT_QUOTES) : ''; ?>">
-                        <?php if (array_key_exists('userRoles', $errorMessages)) : ?>
-                            <span class="text-danger"><?php echo $errorMessages['userRoles']; ?></span>
-                        <?php endif; ?>
-                    </div>
+                <div class="row d-flex justify-content-around">
+                    <button id="submitNewUser" class="btn" type="submit">Submit</button>
+                    <button id="cancelNewUser" class="btn" type="reset">Cancel</button>
                 </div>
-            </div>
-
-
-            <div class="d-flex flex-row justify-content-center">
-                <button id="submitNewUser" type="submit" class="btn mr-5">Submit</button>
-                <button id="cancelNewUser" type="reset" class="btn">Cancel</button>
-            </div>
-        </form>
-
+            </form>
+        </div>
     </div>
 
 </div>
+
+<script>
+    const ROOT_ICONS = '<?= BASE_URL . PATH_ICONS ?>';
+    const ROOT = '<?= BASE_URL ?>';
+
+    // -------------------------------- Add user --------------------------//  
+
+    var formAddUser = document.querySelector("#addUserForm"); // get the form used to add the user
+    // Event listener on the form
+    formAddUser.addEventListener('submit', (function(e) {
+        event.preventDefault(); // stop the default action of the form
+
+        console.log(document.querySelector("#inputUserLastname").value);
+        console.log(document.querySelector("#inputUserFirstname").value);
+        console.log(document.querySelector("#inputUserEmail").value);
+        console.log(document.querySelector("#inputUserUsername").value);
+        console.log(document.querySelector("#inputUserPassword").value);
+        console.log(document.querySelector("#inputUserConfirmPassword").value);
+        console.log(document.querySelector("#inputUserAddress1").value);
+        console.log(document.querySelector("#inputUserAddress2").value);
+        console.log(document.querySelector("#inputUserCity").value);
+        console.log(document.querySelector("#inputUserPostcode").value);
+        console.log(document.querySelector("#userState").value);
+        console.log(document.querySelector("#admin").checked);
+        console.log(document.querySelector("#mod").checked);
+        console.log(document.querySelector("#chief").checked);
+
+
+        addUser(this).then((response) => {
+            if (response) {
+                if (response.success) {
+                    document.querySelector("#inputUserLastname").value = response.userLastname;
+                    document.querySelector("#inputUserFirstname").value = response.userFirstname;
+                    document.querySelector("#inputUserEmail").value = response.userEmail;
+                    document.querySelector("#inputUserUsername").value = response.userUsername;
+                    document.querySelector("#inputUserPassword").value = response.userPassword;
+                    document.querySelector("#inputUserConfirmPassword").value = response.userConfirmPassword;
+                    document.querySelector("#inputUserAddress1").value = response.userAddress1;
+                    document.querySelector("#inputUserAddress2").value = response.userAddress2;
+                    document.querySelector("#inputUserCity").value = response.userCity;
+                    document.querySelector("#inputUserPostcode").value = response.userPostcode;
+                    if (response.userRoles.indexOf('admin') != -1) {
+                        document.querySelector("#admin").checked = true;
+                    }
+                    if (response.userRoles.indexOf('moderator') != -1) {
+                        document.querySelector("#mod").checked = true;
+                    }
+                    if (response.userRoles.indexOf('chief') != -1) {
+                        document.querySelector("#chief").checked = true;
+                    }
+                    if (response.userState == "a") {
+                        document.querySelector("#userState").options.selectedIndex = 0;
+                    } else if (response.userState == "b") {
+                        document.querySelector("#userState").options.selectedIndex = 1;
+                    } else if (response.userState == "w") {
+                        document.querySelector("#userState").options.selectedIndex = 2;
+                    }
+
+
+                    document.querySelector("#errorUserLastname").innerHTML = "";
+                    document.querySelector("#errorUserFirstname").innerHTML = "";
+                    document.querySelector("#errorUserEmail").innerHTML = "";
+                    document.querySelector("#errorUserUsername").innerHTML = "";
+                    document.querySelector("#errorUserPassword").innerHTML = "";
+                    document.querySelector("#errorUserConfirmPassword").innerHTML = "";
+                    document.querySelector("#errorUserAddress1").innerHTML = "";
+                    document.querySelector("#errorUserAddress2").innerHTML = "";
+                    document.querySelector("#errorUserCity").innerHTML = "";
+                    document.querySelector("#errorUserPostcode").innerHTML = "";
+
+                    alert("user added");
+                } else {
+                    document.querySelector("#errorUserLastname").innerHTML = response.errorMessages['userLastname'];
+                    document.querySelector("#errorUserFirstname").innerHTML = response.errorMessages['userFirstname'];
+                    document.querySelector("#errorUserEmail").innerHTML = response.errorMessages['userEmail'];
+                    document.querySelector("#errorUserUsername").innerHTML = response.errorMessages['userUsername'];
+                    document.querySelector("#errorUserPassword").innerHTML = response.errorMessages['userPassword'];
+                    document.querySelector("#errorUserConfirmPassword").innerHTML = response.errorMessages['userConfirmPassword'];
+                    document.querySelector("#errorUserAddress1").innerHTML = response.errorMessages['userAddress1'];
+                    document.querySelector("#errorUserAddress2").innerHTML = response.errorMessages['userAddress2'];
+                    document.querySelector("#errorUserCity").innerHTML = response.errorMessages['userCity'];
+                    document.querySelector("#errorUserPostcode").innerHTML = response.errorMessages['userPostcode'];
+
+                }
+            }
+        });
+    }))
+
+    /**
+     * Ajax Request to add a user to the database
+     * @param {form} obj
+     * @returns mixed
+     */
+    async function addUser(obj) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData(obj);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'user/add', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+</script>
