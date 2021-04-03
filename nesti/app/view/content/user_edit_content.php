@@ -144,8 +144,8 @@ if (!isset($user) || empty($user)) {
 
                         <p>
                         <h5> Moderator </h5>
-                        Number of approved comments : <?= $user->getComments()["approved"] ?> <br>
-                        Number of blocked comments : <?= $user->getComments()["blocked"] ?> </p>
+                        Number of approved comments : <?= $user->getCommentsNumber()["approved"] ?> <br>
+                        Number of blocked comments : <?= $user->getCommentsNumber()["blocked"] ?> </p>
 
                     <?php
                     }
@@ -189,206 +189,206 @@ if (!isset($user) || empty($user)) {
     <br>
     <br>
 
-    <!-- Section Middle -->
-    <div class="row d-flex">
+    <div class="d-flex flex-column">
+        <div class="col">
+            <h1>His orders</h1>
+            <h5>Consultation of his orders</h5>
+        </div>
+        <div class="d-flex flex-row justify-content-around">
+            <div class="col-6">
+                <br>
+                <div class="wrapper-articles-table justify-content-between">
+                    <div>
+                        <div class="d-flex flex-row justify-content-between">
+                            <nav class="navbar navbar-white bg-white pl-0">
+                                <form class="form-inline">
+                                    <input class="form-control mr-sm-2" id="customSearchOrderUser" type="search" placeholder="Search" aria-label="Search">
+                                    <img id="searchOrderUser" src="<?php echo BASE_URL . PATH_ICONS ?>search-svg.svg" alt="">
+                                </form>
+                            </nav>
 
-        <!-- Titles -->
-        <div class="col-12">
-            <div class="row">
-                <div class="col">
-                    <h1>His orders</h1>
-                    <h5>Consultation of his orders</h5>
+                        </div>
+                        <table class="table-borderless table-striped" rowEvents="" id="allOrdersUserTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchOrderUser" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
+                            <thead>
+                                <th>ID</th>
+
+                                <th>User</th>
+
+                                <th>Amount</th>
+
+                                <th>Date</th>
+
+                                <th>State</th>
+
+                            </thead>
+                            <tbody id="allOrdersTbody">
+                                <?php
+                                $orders = $user->getOrders();
+                                foreach ($orders as $order) {
+                                    echo '<tr class="orders" data-id="' . $order->getIdOrder() . '">';
+                                    echo '<td>' . $order->getIdOrder() . '</td>';
+                                    echo '<td>' . $order->getUser()->getFirstName() . " " . $order->getUser()->getLastName() . '</td>';
+                                    echo '<td>' . round(($order->getAmount()), 2) . '</td>';
+                                    echo '<td>' . $order->getCreationDate() . '</td>';
+                                    echo '<td>' . $order->getState() . '</td>';
+                                    echo '</tr>';
+                                } ?>
+                            </tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-4 mb-3">
+                <div class="d-flex justify-content-between px-3 align-items-end">
+                    <h2>Details</h2>
+                    <h4 id="idOrderUser" className="mr-5">N°:</h4>
+                </div>
+                <div id="listOrderLinesUser" class="d-flex flex-column justify-content-start w-100 p-2 bg-white border">
                 </div>
             </div>
 
-            <br>
-
-            <!-- Table Container -->
-            <div class="row wrapper-articles-table justify-content-between">
-
-                <div>
-                    <div class="d-flex flex-row justify-content-between">
-                        <nav class="navbar navbar-white bg-white pl-0">
-                            <form class="form-inline">
-                                <input class="form-control mr-sm-2" id="customSearchOrderUser" type="search" placeholder="Search" aria-label="Search">
-                                <img id="searchOrderUser" src="<?php echo BASE_URL . PATH_ICONS ?>search-svg.svg" alt="">
-                            </form>
-                        </nav>
-
-                    </div>
-                    <table class="table-borderless table-striped" rowEvents="" id="allOrdersUserTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchOrderUser" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
-                        <thead>
-                            <th>ID</th>
-
-                            <th>User</th>
-
-                            <th>Amount</th>
-
-                            <th>Date</th>
-
-                            <th>State</th>
-
-                        </thead>
-                        <tbody id="allOrdersTbody">
-                            <?php
-                            $orders=$user->getOrders();
-                            foreach ($orders as $order) {
-                                echo '<tr class="orders" data-id="' . $order->getIdOrder() . '">';
-                                echo '<td>' . $order->getIdOrder() . '</td>';
-                                echo '<td>' . $order->getUser()->getFirstName() . " " . $order->getUser()->getLastName() . '</td>';
-                                echo '<td>' . round(($order->getAmount()), 2) . '</td>';
-                                echo '<td>' . $order->getCreationDate() . '</td>';
-                                echo '<td>' . $order->getState() . '</td>';
-                                echo '</tr>';
-                            } ?>
-                        </tbody>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Details -->
-                <div class="col-4 mb-3">
-                    <div class="row d-flex justify-content-between px-3 align-items-end">
-                        <h2>Détails</h2>
-                        <label class="px-2 bg-warning">ID n° 3</label>
-                    </div>
-                    <textarea rows="10" cols="50" class="form-control shadow" id="inputRecipeName" placeholder="" name="recipe[name_recipes]"> </textarea>
-                </div>
-            </div>
         </div>
     </div>
-
     <br>
 
-    <div class="row d-flex">
+    <div class="d-flex flex-column">
+        <h1>His comments</h1>
+        <h5>Moderation of his comments</h5>
+        <br>
+        <div class="d-flex flex-row">
+            <div class="col-12">
+                <div class="d-flex flex-row justify-content-between">
+                    <nav class="navbar navbar-white bg-white pl-0">
+                        <form class="form-inline">
+                            <input class="form-control mr-sm-2" id="customSearchCommentUser" type="search" placeholder="Search" aria-label="Search">
+                            <img id="searchCommentUser" src="<?php echo BASE_URL . PATH_ICONS ?>search-svg.svg" alt="">
+                        </form>
+                    </nav>
 
-        <!-- Section Comments -->
-        <div class="col-12">
-            <h1>Ses Commentaires</h1>
-            <h5>Modération des ses commentaires</h5>
-            <br>
+                </div>
+                <table class="table-borderless table-striped" rowEvents="" id="allCommentsUserTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchCommentUser" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
+                    <thead>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Recipe</th>
+                        <th>Content</th>
+                        <th>Date</th>
+                        <th>State</th>
+                        <th>Action</th>
+                    </thead>
+                    <tbody>
+                        <?php
+                        foreach ($user->getComments() as $comment) {
+                        ?>
+                            <tr>
+                                <th>
+                                    <?= $comment->getIdComment() ?>
+                                </th>
+                                <td>
+                                    <?= $comment->getCommentTitle() ?>
+                                </td>
+                                <td>
+                                    <?= $comment->getRecipe()->getRecipeName() ?>
+                                </td>
+                                <td>
+                                    <?= $comment->getCommentContent() ?>
+                                </td>
+                                <td>
+                                    <?= $comment->getCreationDate() ?>
+                                </td>
+                                <td>
+                                    <?= $comment->getDisplayState(); ?>
+                                </td>
 
-            <!-- Research Bar -->
-            <div class="col-8 d-flex align-items-center no-padding">
-                <input type="search" class="form-control-lg shadow mr-2" id="searchComments" placeholder="Rechercher un commentaire">
-                <i class="fas fa-search"></i>
+                                <td>
+                                    <form method="POST" action="<?= BASE_URL . "users/edition/" . $id . "/commentapproved" ?>" class="form-table mb-2 rounded bg-success">
+
+                                        <button type="button" class="btn bt-tbl">
+                                            Approuver
+                                        </button>
+                                    </form>
+
+
+                                    <form method="POST" action="<?= BASE_URL . "users/edition/" . $id . "/commentdisapproved" ?>" class="form-table rounded bg-danger">
+
+                                        <button type="button" class="btn bt-tbl">
+                                            Bloquer
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+
+                        <?php
+                        }
+                        ?>
+
+                    </tbody>
+                </table>
+                <br>
             </div>
-
-            <br>
-
-            <!-- Table Comments Container -->
-            <table class="table" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-next-text="Next" data-search="true" data-search-selector="#searchComments" data-locale="fr-FR" data-toolbar="#toolbar" data-toolbar-align="left">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Titre</th>
-                        <th scope="col">Recette</th>
-                        <th scope="col">Contenu</th>
-                        <th scope="col">Date</th>
-                        <th scope="col">État</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    foreach ($arrayComments as $element) {
-                    ?>
-                        <tr>
-                            <th scope="row">
-                                <?= $element->getId_comment() ?>
-                            </th>
-                            <td>
-                                <?= $element->getTitle_comment() ?>
-                            </td>
-                            <td>
-                                <?= $element->getRecipe()->getName_recipe() ?>
-                            </td>
-                            <td>
-                                <?= $element->getContent_comment() ?>
-                            </td>
-                            <td>
-                                <?= $element->getDate_creation_comment() ?>
-                            </td>
-                            <td>
-                                <?= $element->getDisplayState_comment(); ?>
-                            </td>
-
-                            <td>
-                                <!-- Form POST Approve -->
-                                <form method="POST" action="<?= BASE_URL . "users/edition/" . $id . "/commentapproved" ?>" class="form-table mb-2 rounded bg-success">
-
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn bt-tbl" data-bs-toggle="modal" data-bs-target="#approveComment">
-                                        Approuver
-                                    </button>
-
-                                    <!-- Input Hidden POST -->
-                                    <input type="hidden" name="id_user" value="<?= $id ?>">
-                                    <input type="hidden" name="id_comment" value="<?= $element->getId_comment() ?>">
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="approveComment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="staticBackdropLabel">État commentaire</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Vous êtes sur le point d'approuver ce commentaire. Êtes-vous sûr de vouloir réaliser cette action ?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Non</button>
-                                                    <button type="submit" class="btn btn-success">Oui !</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-
-                                <!-- Form POST Disapprove -->
-                                <form method="POST" action="<?= BASE_URL . "users/edition/" . $id . "/commentdisapproved" ?>" class="form-table rounded bg-danger">
-
-                                    <!-- Button trigger modal -->
-                                    <button type="button" class="btn bt-tbl" data-bs-toggle="modal" data-bs-target="#disapproveComment">
-                                        Bloquer
-                                    </button>
-
-                                    <!-- Input Hidden POST -->
-                                    <input type="hidden" name="id_user" value="<?= $id ?>">
-                                    <input type="hidden" name="id_comment" value="<?= $element->getId_comment() ?>">
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="disapproveComment" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="staticBackdropLabel">État commentaire</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Vous êtes sur le point de bloquer ce commentaire. Êtes-vous sûr de vouloir réaliser cette action ?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Non</button>
-                                                    <button type="submit" class="btn btn-success">Oui !</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </td>
-                        </tr>
-
-                    <?php
-                    }
-                    ?>
-
-                </tbody>
-            </table>
-            <br>
         </div>
     </div>
 
 </div>
-</div>
+
+<script>
+    const ROOT = '<?= BASE_URL ?>';
+    const myTable = document.querySelector("#allOrdersUserTable"); // get the table
+    console.log(myTable);
+    myTable.addEventListener('click', function() { // add event listener
+        const orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
+        getOrderLines(orderId).then((response) => {
+            if (response) {
+                const divList = document.querySelector("#listOrderLinesUser")
+                divList.innerHTML = "";
+                if (response.success) {
+                    response['articles'].forEach(element => {
+                        const div = document.createElement("div");
+                        div.innerHTML = element.all;
+                        divList.appendChild(div); // add the articles lines to the divList
+                    })
+                } else {
+                    const div = document.createElement("div");
+                    div.innerHTML = "";
+                    divList.appendChild(div); // if no response, empty the divList.
+                }
+                document.querySelector("#idOrderUser").innerHTML = "N°: " + orderId;
+
+            }
+        });
+    });
+
+    /**
+     * Ajax Request to get the articles from the orderLines according to the order
+     * @param int orderId
+     * @returns mixed
+     */
+    async function getOrderLines(orderId) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData();
+        formData.append('id_order', orderId);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'user/userorder', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+
+
+    }
+</script>
