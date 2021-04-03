@@ -581,7 +581,7 @@ color: var(--classicColorGrey);
 }
 
 
-/*------------------------------------ recipe add content -------------------------------*/
+/*------------------------------------ user add content -------------------------------*/
 
 #userAddPage .underLink>a,#userAddPage .underLink>p{
     color:var(--primaryLightColor);
@@ -596,10 +596,57 @@ color: var(--classicColorGrey);
     color: var(--classicColorWhite);
 }
 
-#pwd-strength {
+#pwdStrength {
     margin-top: 2px;
     width: 100%;
     height: 8px;
     border-radius: .10rem;
     background-color: red;
+}
+
+#pwdStrength::-moz-progress-bar,
+#pwdStrength::-webkit-progress-value {
+    background: green;
+}
+
+#passwordConditions {
+    color: red;
+}
+
+#passwordVerification {
+    font-size: small;
+    line-height: 1rem;
+}
+
+/*------------------------------------ user add content -------------------------------*/
+
+#userEditPage .underLink>a,#userEditPage .underLink>p{
+    color:var(--primaryLightColor);
+}
+
+#submitEditUser{
+    background-color:var( --colorButtonValidate);
+}
+
+#cancelEditUser {
+    background-color:var( --colorButtonInformation);
+    color: var(--classicColorWhite);
+}
+
+/*------------------------------------ user edit content -------------------------------*/
+#userEditPage thead{
+    background-color:var(--primaryColor) ;
+    color: var(--classicColorWhite);
+}
+
+#searchOrderUser{
+    position: absolute;
+    width: 10%;
+    left : 2%;
+}
+
+
+#customSearchOrderUser{
+    margin: 0;
+    padding-left: 50px;
 }
