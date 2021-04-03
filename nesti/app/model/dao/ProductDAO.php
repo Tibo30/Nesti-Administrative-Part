@@ -5,9 +5,10 @@ class ProductDAO extends ModelDAO
     {
         $req = self::$_bdd->prepare('SELECT * FROM products WHERE id_products=:id');
         $req->execute(array("id" => $idProduct));
-        $product =  $req->fetch();
         $productObject = new Product();
-        $productObject->hydration($product);
+        if($product =  $req->fetch()){
+            $productObject->hydration($product);
+        }
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $productObject;
     }
