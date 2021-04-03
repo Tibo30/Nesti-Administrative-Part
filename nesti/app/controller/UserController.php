@@ -24,6 +24,8 @@ class UserController extends BaseController
             }
         } else if (($this->_url) == "user_userorder") {
             $this->order(); // this is the method called by the fetch API with the user/userorder ROOT.
+        } else if (($this->_url) == "user_usercomment") {
+            $this->changeStateComment(); // this is the method called by the fetch API with the user/usercomment ROOT.
         }
         $data["title"] = "Users";
         $data["url"] = $this->_url;
@@ -169,6 +171,30 @@ class UserController extends BaseController
                     $index++;
                 }
             }
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the method called by the fetch API with the user/usercomment ROOT.
+     */
+    private function changeStateComment()
+    {
+        $data = [];
+        $data['success'] = false;
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idComment = $_POST["id_comment"]; // first we get the id of the comment
+            $state=$_POST["state"]; // first we get the state of the comment
+            $data["id"] = $idComment;
+            $data["state"] = $state;
+            $commentDAO = new CommentsDAO();
+            $comment = $commentDAO->getComment($idComment); // we get the comment from Database
+            $comment->setState($state);
+            $commentDAO->editComment($idComment, $state); // change the state in the database
+            $data["state"]=$comment->getDisplayState();
+            $data['success'] = true;
         }
         echo json_encode($data);
         die;
