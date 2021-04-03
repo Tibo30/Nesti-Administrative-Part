@@ -154,22 +154,6 @@ if (!isset($errorMessages) || empty($errorMessages)) {
     formAddUser.addEventListener('submit', (function(e) {
         event.preventDefault(); // stop the default action of the form
 
-        console.log(document.querySelector("#inputUserLastname").value);
-        console.log(document.querySelector("#inputUserFirstname").value);
-        console.log(document.querySelector("#inputUserEmail").value);
-        console.log(document.querySelector("#inputUserUsername").value);
-        console.log(document.querySelector("#inputUserPassword").value);
-        console.log(document.querySelector("#inputUserConfirmPassword").value);
-        console.log(document.querySelector("#inputUserAddress1").value);
-        console.log(document.querySelector("#inputUserAddress2").value);
-        console.log(document.querySelector("#inputUserCity").value);
-        console.log(document.querySelector("#inputUserPostcode").value);
-        console.log(document.querySelector("#userState").value);
-        console.log(document.querySelector("#admin").checked);
-        console.log(document.querySelector("#mod").checked);
-        console.log(document.querySelector("#chief").checked);
-
-
         addUser(this).then((response) => {
             if (response) {
                 if (response.success) {
