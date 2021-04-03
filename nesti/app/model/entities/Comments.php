@@ -1,5 +1,6 @@
 <?php
 class Comments{
+    private $id_comments;
     private $commentTitle;
     private $commentContent;
     private $creationDate;
@@ -8,6 +9,19 @@ class Comments{
     private $idModerator;
     private $idUser;
     
+    public function hydration($data)
+    {
+        $this->id_comments = $data['id_comments'];
+        $this->commentTitle = $data['comments_title'];
+        $this->commentContent = $data['comment_content'];
+        $this->creationDate = $data['creation_date'];
+        $this->state = $data['state'];
+        $this->idRecipe = $data['id_recipes'];
+        $this->idModerator = $data['id_moderator'];
+        $this->idUser = $data['id_users'];
+       
+        return $this;
+    }
 
     /**
      * Get the value of commentTitle
@@ -145,6 +159,26 @@ class Comments{
     public function setIdUser($idUser)
     {
         $this->idUser = $idUser;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of id_comments
+     */ 
+    public function getId_comments()
+    {
+        return $this->id_comments;
+    }
+
+    /**
+     * Set the value of id_comments
+     *
+     * @return  self
+     */ 
+    public function setId_comments($id_comments)
+    {
+        $this->id_comments = $id_comments;
 
         return $this;
     }
