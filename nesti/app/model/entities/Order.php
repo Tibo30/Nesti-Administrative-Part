@@ -113,4 +113,20 @@ class Order{
         }
         return $amount;
     }
+
+    // Display state for tables
+    public function getDisplayState()
+    {
+
+        if ($this->state == 'a') {
+            $state = 'Active';
+        }
+        if ($this->state == 'b') {
+            $state = 'Blocked';
+        }
+        if ($this->state == 'w') {
+            $state = 'Waiting';
+        }
+        return $state;
+    }
 }
