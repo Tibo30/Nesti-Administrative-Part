@@ -22,6 +22,8 @@ class UserController extends BaseController
             if (!empty($_POST)) {
                 $this->addUserDatabase(); // this is the method called by the fetch API with the user/add ROOT.
             }
+        } else if (($this->_url) == "user_userorder") {
+            $this->order(); // this is the method called by the fetch API with the user/userorder ROOT.
         }
         $data["title"] = "Users";
         $data["url"] = $this->_url;
@@ -134,6 +136,38 @@ class UserController extends BaseController
                 $data['userRoles'] = $userAdd->getRoles();
                 $data['userState'] = $userAdd->getState();
                 $data['success'] = true;
+            }
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the method called by the fetch API with the user/userorder ROOT.
+     */
+    private function order()
+    {
+        $data = [];
+        $data['success'] = false;
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idOrder = $_POST["id_order"]; // first we get the id of the order
+            $data["id"] = $idOrder;
+            $ordersDAO = new OrderDAO();
+            $orderLines = $ordersDAO->getOrderLines($idOrder); // we get all the orderLines for this order
+            if (count($orderLines) > 0) { // if there is at least one orderLine
+                $data['success'] = true;
+                $articles = [];
+                $articleDAO = new ArticleDAO();
+                foreach ($orderLines as $orderLine) { // we get all the articles of the orderLines
+                    $articles[] = $articleDAO->getArticle($orderLine->getIdArticle());
+                }
+                $index = 0;
+                // in this loop we prepare the return data from the fetch
+                foreach ($articles as $article) {
+                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . '</div>' . '<a id="seeArticle" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
+                    $index++;
+                }
             }
         }
         echo json_encode($data);
