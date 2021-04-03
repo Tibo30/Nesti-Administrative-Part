@@ -23,7 +23,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 
             <!-- Article Input Informations Recipe-->
 
-            <form method="POST" action="<?= BASE_URL?>user/add" id="addUserForm" class="application">
+            <form method="POST" action="<?= BASE_URL ?>user/add" id="addUserForm" class="application">
                 <div class="row d-flex justify-content-between">
                     <div class="col-5">
 
@@ -54,13 +54,13 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                         <div class="row mb-2">
                             <label for="inputUserPassword">Password *</label>
                             <input type="password" class="form-control" id="inputUserPassword" name="userPassword" value="">
-                            <progress id="pwd-strength" value="0" max="5"></progress>
+                            <progress id="pwdStrength" value="0" max="100"></progress>
                         </div>
                         <span class="text-danger" id="errorUserPassword"></span>
 
-                        <div id="password_verification">
+                        <div id="passwordVerification">
                             <div class="font-weight-bold">Your password has to respect these rules : </div>
-                            <div id='password_conditions'>
+                            <div id='passwordConditions'>
                                 <div id='pwdLength'> • At least 12 characters</div>
                                 <div id='pwdLowCase'> • At least one lowercase</div>
                                 <div id='pwdUpperCase'> • At least one uppercase</div>
@@ -225,6 +225,8 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                     document.querySelector("#errorUserCity").innerHTML = response.errorMessages['userCity'];
                     document.querySelector("#errorUserPostcode").innerHTML = response.errorMessages['userPostcode'];
 
+                    console.log(response.errorMessages)
+
                 }
             }
         });
@@ -257,5 +259,80 @@ if (!isset($errorMessages) || empty($errorMessages)) {
         } catch (e) {
             console.error(e.message);
         }
+    }
+
+    // -------------------------------- Handle password strength --------------------------//
+    const pw = document.getElementById("inputUserPassword");
+
+    pw.addEventListener('keyup', function() {
+
+        if (pw.value == '') {
+            document.getElementById("pwdStrength").value = 0;
+
+        } else {
+            document.getElementById("pwdStrength").value = passwordStrength(pw.value);
+        }
+    });
+
+    // Checks the strength of the password
+    function passwordStrength(pw) {
+
+        changeColorConditions(pw);
+
+        var n = 0;
+        var strength = 0;
+        if (/\d/.test(pw)) {
+            n += 10;
+        }
+        if (/[a-z]/.test(pw)) {
+            n += 26;
+        }
+        if (/[A-Z]/.test(pw)) {
+            n += 26;
+        }
+        if (/\W/.test(pw)) {
+            n += 28;
+        }
+        strength = Math.round(pw.length * Math.log(n) / Math.log(2));
+
+        if (strength >= 100) {
+            strength = 100;
+        }
+        console.log(strength)
+        return strength;
+    }
+
+    // Changes the color of the conditions depending of the input password
+    function changeColorConditions(pw) {
+
+        if (/.{12,}/.test(pw) == true) {
+            document.getElementById("pwdLength").style.color = 'green'
+        } else(
+            document.getElementById("pwdLength").style.color = 'red'
+        )
+
+        if (/[a-z]/.test(pw) == true) {
+            document.getElementById("pwdLowCase").style.color = 'green'
+        } else(
+            document.getElementById("pwdLowCase").style.color = 'red'
+        )
+
+        if (/[A-Z]/.test(pw) == true) {
+            document.getElementById("pwdUpperCase").style.color = 'green'
+        } else(
+            document.getElementById("pwdUpperCase").style.color = 'red'
+        )
+
+        if (/\d/.test(pw) == true) {
+            document.getElementById("pwdDigit").style.color = 'green'
+        } else(
+            document.getElementById("pwdDigit").style.color = 'red'
+        )
+
+        if (/\W/.test(pw) == true) {
+            document.getElementById("pwdSpecial").style.color = 'green'
+        } else(
+            document.getElementById("pwdSpecial").style.color = 'red'
+        )
     }
 </script>
