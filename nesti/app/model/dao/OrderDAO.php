@@ -1,6 +1,7 @@
 <?php
 class OrderDAO extends ModelDAO
 {
+    // get all the orders
     public function getOrders()
     {
         $var = [];
@@ -19,6 +20,7 @@ class OrderDAO extends ModelDAO
         return $var;
     }
 
+    // get all the orderlines for an order
     public function getOrderLines($idOrder)
     {
         $var = [];
@@ -34,6 +36,7 @@ class OrderDAO extends ModelDAO
         return $var;
     }
 
+    // get all the orderlines for an article
     public function getOrderLinesArticle($idArticle)
     {
         $var = [];
@@ -48,5 +51,36 @@ class OrderDAO extends ModelDAO
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $var;
     }
+
+    // get all the orders from a user
+    public function getOrdersUser($idUser)
+    {
+        $var = [];
+        $req = self::$_bdd->prepare('SELECT * FROM order_request WHERE id_users=:id');
+        $req->execute(array("id" => $idUser));
+        if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($data as $row) {
+                $order = new Order();
+                $order->hydration($row);
+                $var[] = $order;
+            }
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $var;
+    }
+
+
+    public function getLastOrder($idUser)
+    {
+        $req = self::$_bdd->prepare('SELECT * FROM order_request WHERE id_users=:id ORDER BY creation_date DESC LIMIT 1');
+        $req->execute(array("id" => $idUser));
+        $lastOrder = new Order();
+        if ($order = $req->fetch()) {
+            $lastOrder->hydration($order);
+        }       
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $lastOrder;
+    }
+
 
 }
