@@ -55,7 +55,7 @@ if (!isset($articles)) {
                 echo '<td>' . round(($article->getPrice()->getPrice()), 2) . '</td>';
                 echo '<td>' . $article->getType() . '</td>';
                 echo '<td>' . $article->getLastImport()->getImportDate() . '</td>';
-                echo '<td>' . $article->getState() . '</td>';
+                echo '<td>' . $article->getDisplayState() . '</td>';
                 echo '<td>' . $article->getStock() . '</td>';
                 echo '<td>';
                 echo '<a id="allArticlesModify" class="btn-modify-article" href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id=' . $article->getIdArticle() . '>Modify</br></a>';
