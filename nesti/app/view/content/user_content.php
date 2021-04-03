@@ -62,7 +62,7 @@ if (!isset($users)) {
                 echo '<td>' . $user->getIdUser() . '</td>';
                 echo '<td>' . $user->getUsername() . '</td>';
                 echo '<td>' . $user->getLastname() . ' ' .  $user->getFirstname() . '</td>';
-                echo '<td>' . implode(", ",$user->getRoles()). '</td>';
+                echo '<td>' . implode(" ",$user->getDisplayRoles()). '</td>';
                 echo '<td>'.   $user->getLog()->getConnectionDate().' </td>';
                 echo '<td>' . $user->getState() . '</td>';
                 echo '<td>';
