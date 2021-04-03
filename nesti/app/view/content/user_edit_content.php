@@ -195,7 +195,7 @@ if (!isset($user) || empty($user)) {
             <h5>Consultation of his orders</h5>
         </div>
         <div class="d-flex flex-row justify-content-around">
-            <div class="col-6">
+            <div class="col-8">
                 <br>
                 <div class="wrapper-articles-table justify-content-between">
                     <div>
@@ -230,7 +230,7 @@ if (!isset($user) || empty($user)) {
                                     echo '<td>' . $order->getUser()->getFirstName() . " " . $order->getUser()->getLastName() . '</td>';
                                     echo '<td>' . round(($order->getAmount()), 2) . '</td>';
                                     echo '<td>' . $order->getCreationDate() . '</td>';
-                                    echo '<td>' . $order->getState() . '</td>';
+                                    echo '<td>' . $order->getDisplayState() . '</td>';
                                     echo '</tr>';
                                 } ?>
                             </tbody>
@@ -278,11 +278,11 @@ if (!isset($user) || empty($user)) {
                         <th>State</th>
                         <th>Action</th>
                     </thead>
-                    <tbody>
+                    <tbody id="allCommentsTbody">
                         <?php
                         foreach ($user->getComments() as $comment) {
                         ?>
-                            <tr>
+                            <tr data-id='<?= $comment->getIdComment() ?>'>
                                 <th>
                                     <?= $comment->getIdComment() ?>
                                 </th>
@@ -303,20 +303,52 @@ if (!isset($user) || empty($user)) {
                                 </td>
 
                                 <td>
-                                    <form method="POST" action="<?= BASE_URL . "users/edition/" . $id . "/commentapproved" ?>" class="form-table mb-2 rounded bg-success">
+                                    <a class="btn-approve-comment" data-toggle="modal" data-target="#modelApproveComment">
+                                        Approve
+                                    </a>
+                                    <div class="modal fade" id="modelApproveComment" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Do you want to approve this comment ?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <!-- <div class="modal-body">
+                                                    ...
+                                                </div> -->
+                                                <div class="modal-footer">
+                                                    <button id="confirm-approve" type="button" class="btn" data-id="<?= $comment->getIdComment() ?>" onclick='changeState("a")'>Confirm</button>
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                        <button type="button" class="btn bt-tbl">
-                                            Approuver
-                                        </button>
-                                    </form>
-
-
-                                    <form method="POST" action="<?= BASE_URL . "users/edition/" . $id . "/commentdisapproved" ?>" class="form-table rounded bg-danger">
-
-                                        <button type="button" class="btn bt-tbl">
-                                            Bloquer
-                                        </button>
-                                    </form>
+                                    </br>
+                                    <a class="btn-block-comment" data-toggle="modal" data-target="#modelBlockComment">
+                                        Block
+                                    </a>
+                                    <div class="modal fade" id="modelBlockComment" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLongTitle">Do you want to block this comment ?</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <!-- <div class="modal-body">
+                                                    ...
+                                                </div> -->
+                                                <div class="modal-footer">
+                                                    <button id="confirm-block" type="button" class="btn" data-id="<?= $comment->getIdComment() ?>" onclick='changeState("b")'>Confirm</button>
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
 
@@ -335,8 +367,10 @@ if (!isset($user) || empty($user)) {
 
 <script>
     const ROOT = '<?= BASE_URL ?>';
+
+    // -------------------------------- Display articles for an order --------------------------//  
+
     const myTable = document.querySelector("#allOrdersUserTable"); // get the table
-    console.log(myTable);
     myTable.addEventListener('click', function() { // add event listener
         const orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
         getOrderLines(orderId).then((response) => {
@@ -379,6 +413,56 @@ if (!isset($user) || empty($user)) {
             body: formData
         };
         let response = await fetch(ROOT + 'user/userorder', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+
+
+    }
+
+    // -------------------------------- Change state of a comment --------------------------//  
+
+    function changeState(state) {
+        const idComment = event.target.getAttribute('data-id'); // get the id of the event target
+        console.log(idComment);
+        const td = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.previousSibling; // get td of state for this comment
+        const btnclose = event.target.parentNode.parentNode.children[0].children[1]; // get the btn close of the modal
+        changeStateComment(state, idComment).then((response) => {
+            if (response) {
+                if (response.success) {
+                    td.innerHTML = response.state;
+                    btnclose.click();
+                }
+            }
+        });
+    }
+
+    /**
+     * Ajax Request to change state of a comment
+     * @param int state, int idComment
+     * @returns mixed
+     */
+    async function changeStateComment(state, idComment) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData();
+        formData.append('state', state);
+        formData.append('id_comment', idComment);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'user/usercomment', myInit);
         try {
             if (response.ok) {
                 return await response.json();
