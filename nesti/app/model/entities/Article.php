@@ -86,6 +86,23 @@ class Article
         return $this;
     }
 
+    
+    // Display state for tables
+    public function getDisplayState()
+    {
+
+        if ($this->state == 'a') {
+            $state = 'Active';
+        }
+        if ($this->state == 'b') {
+            $state = 'Blocked';
+        }
+        if ($this->state == 'w') {
+            $state = 'Waiting';
+        }
+        return $state;
+    }
+
     /**
      * Get the value of creationDate
      */
