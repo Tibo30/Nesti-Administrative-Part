@@ -618,13 +618,13 @@ color: var(--classicColorGrey);
     line-height: 1rem;
 }
 
-/*------------------------------------ user add content -------------------------------*/
+/*------------------------------------ user edit content -------------------------------*/
 
 #userEditPage .underLink>a,#userEditPage .underLink>p{
     color:var(--primaryLightColor);
 }
 
-#submitEditUser{
+#submitEditUser, #confirm-approve, #confirm-block{
     background-color:var( --colorButtonValidate);
 }
 
@@ -633,7 +633,6 @@ color: var(--classicColorGrey);
     color: var(--classicColorWhite);
 }
 
-/*------------------------------------ user edit content -------------------------------*/
 #userEditPage thead{
     background-color:var(--primaryColor) ;
     color: var(--classicColorWhite);
@@ -654,4 +653,9 @@ color: var(--classicColorGrey);
 #listOrderLinesUser{
     min-width: 400px;
     min-height: 200px;
+}
+
+.btn-block-comment, .btn-approve-comment{
+    color:var(--colorButtonInformation);
+    cursor: pointer;
 }
