@@ -26,6 +26,8 @@ class UserController extends BaseController
             $this->order(); // this is the method called by the fetch API with the user/userorder ROOT.
         } else if (($this->_url) == "user_usercomment") {
             $this->changeStateComment(); // this is the method called by the fetch API with the user/usercomment ROOT.
+        } else if (($this->_url) == "user_edituser") {
+            $this->editUserDatabase(); // this is the method called by the fetch API with the recipe/edituser ROOT.
         }
         $data["title"] = "Users";
         $data["url"] = $this->_url;
@@ -64,7 +66,7 @@ class UserController extends BaseController
             $userAddress2 = filter_input(INPUT_POST, "userAddress2", FILTER_SANITIZE_STRING);
             $userCity = filter_input(INPUT_POST, "userCity", FILTER_SANITIZE_STRING);
             $userPostCode = filter_input(INPUT_POST, "userPostCode", FILTER_SANITIZE_STRING);
-            $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_DEFAULT,FILTER_REQUIRE_ARRAY);
+            $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
             $userState = filter_input(INPUT_POST, "userState", FILTER_SANITIZE_STRING);
 
             // first we have to check if the city already exists, if not to create it
@@ -186,15 +188,123 @@ class UserController extends BaseController
 
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
             $idComment = $_POST["id_comment"]; // first we get the id of the comment
-            $state=$_POST["state"]; // first we get the state of the comment
+            $state = $_POST["state"]; // first we get the state of the comment
             $data["id"] = $idComment;
             $data["state"] = $state;
             $commentDAO = new CommentsDAO();
             $comment = $commentDAO->getComment($idComment); // we get the comment from Database
             $comment->setState($state);
             $commentDAO->editComment($idComment, $state); // change the state in the database
-            $data["state"]=$comment->getDisplayState();
+            $data["state"] = $comment->getDisplayState();
             $data['success'] = true;
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the Ajax method to edit a user in the database
+     */
+    public function editUserDatabase()
+    {
+        $data = [];
+        $data['success'] = false;
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idUser = filter_input(INPUT_POST, "id_user", FILTER_SANITIZE_STRING);
+            $userLastname = filter_input(INPUT_POST, "userLastname", FILTER_SANITIZE_STRING);
+            $userFirstname = filter_input(INPUT_POST, "userFirstname", FILTER_SANITIZE_STRING);
+            $userAddress1 = filter_input(INPUT_POST, "userAddress1", FILTER_SANITIZE_STRING);
+            $userAddress2 = filter_input(INPUT_POST, "userAddress2", FILTER_SANITIZE_STRING);
+            $userCity = filter_input(INPUT_POST, "userCity", FILTER_SANITIZE_STRING);
+            $userPostCode = filter_input(INPUT_POST, "userPostcode", FILTER_SANITIZE_STRING);
+            $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+            $userState = filter_input(INPUT_POST, "userState", FILTER_SANITIZE_STRING);
+
+            // first we have to check if the city already exists, if not to create it
+            $cityDAO = new CityDAO();
+            $city = new City();
+            $city = $cityDAO->doesCityExists($userCity); // we check if the city already exist
+            $userCityError = "";
+            if ($city->getIdCity() == null) { // if not we create it
+                $userCityError = $city->setCityName($userCity);
+                if ($userCityError == "") {
+                    $cityId = $cityDAO->createCity($userCity);
+                    $city->setIdCity($cityId);
+                }
+            }
+
+            $userEdit = $this->userDAO->getOneUser($idUser); // get all the info of the user from the database
+
+            $formerUserLastname = $userEdit->getLastname();
+            $formerUserFirstname = $userEdit->getFirstname();
+            $formerUserAddress1 = $userEdit->getAddress1();
+            $formerUserAddress2 = $userEdit->getAddress2();
+            $formerUserCity = $userEdit->getIdCity();
+            $formerUserPostCode = $userEdit->getPostcode();
+            $formerUserRoles = $userEdit->getRoles();
+            $formerUserState = $userEdit->getState();
+
+            $userLastnameError = $userEdit->setLastname($userLastname);
+            $userFirstnameError = $userEdit->setFirstname($userFirstname);
+            $userAddress1Error = $userEdit->setAddress1($userAddress1);
+            $userAddress2Error = $userEdit->setAddress2($userAddress2);
+            $userPostCodeError = $userEdit->setPostCode($userPostCode);
+            $userEdit->setIdCity($city->getIdCity());
+            $userEdit->setState($userState);
+            $userEdit->setRoles($userRoles);
+
+            $errorMessages = ['userLastname' => $userLastnameError, 'userFirstname' => $userFirstnameError, 'userAddress1' => $userAddress1Error, 'userAddress2' => $userAddress2Error, 'userPostcode' => $userPostCodeError, 'userCity' => $userCityError];
+            $data['errorMessages'] = $errorMessages;
+
+            // if all the datas inputed are correct, we do the query
+            // si bug, remettre null à la place de ""
+            if ($userLastnameError == "" && $userFirstnameError == ""  && $userAddress1Error == "" && $userAddress2Error == "" && $userPostCodeError == "" && $userCityError == "") {
+
+                if ($formerUserLastname != $userLastname) { // if the lastname changed
+                    $this->userDAO->editUser($userEdit, "lastname");
+                }
+                if ($formerUserFirstname != $userFirstname) { // if the firstname changed
+                    $this->userDAO->editUser($userEdit, "firstname");
+                }
+                if ($formerUserAddress1 != $userAddress1) { // if the address1 changed
+                    $this->userDAO->editUser($userEdit, "address1");
+                }
+                if ($formerUserAddress2 != $userAddress2) { // if the address2 changed
+                    $this->userDAO->editUser($userEdit, "address2");
+                }
+                if ($formerUserCity != $city->getIdCity()) { // if the city changed
+                    $this->userDAO->editUser($userEdit, "city");
+                }
+                if ($formerUserPostCode != $userPostCode) { // if the postcode changed
+                    $this->userDAO->editUser($userEdit, "postcode");
+                }
+                if ($formerUserRoles != $userRoles && $userRoles!=null) { // if the roles changed
+                    $roleDAO = new RoleDAO();
+                    foreach($userRoles as $role){ // check which role has been added
+                        if (array_search($role,$formerUserRoles)===false){ // if this role wasn't is the former list we add the role
+                            $roleDAO->editRoles($userEdit, $role);
+                        }
+                    } 
+                }
+                if ($formerUserState != $userState) { // if the states changed
+                    $this->userDAO->editUser($userEdit, "state");
+                }
+
+                $data['idUser'] = $userEdit->getIdUser();
+                $data['userLastname'] = $userEdit->getLastname();
+                $data['userFirstname'] = $userEdit->getFirstname();
+                $data['userEmail'] = $userEdit->getEmail();
+                $data['userUsername'] = $userEdit->getUsername();
+                $data['userPassword'] = $userEdit->getPassword();
+                $data['userConfirmPassword'] = $userEdit->getPassword();
+                $data['userAddress1'] = $userEdit->getAddress1();
+                $data['userAddress2'] = $userEdit->getAddress2();
+                $data['userCity'] = $userEdit->getCity()->getCityName();
+                $data['userPostcode'] = $userEdit->getPostCode();
+                $data['userRoles'] = $userEdit->getRoles();
+                $data['userState'] = $userEdit->getState();
+                $data['success'] = true;
+            }
         }
         echo json_encode($data);
         die;
