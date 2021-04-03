@@ -28,9 +28,10 @@ class PictureDAO extends ModelDAO
     {
         $req = self::$_bdd->prepare('SELECT * FROM pictures WHERE name=:name AND extension=:extension');
         $req->execute(array("name" => $pictureName,"extension" => $pictureExtension));
-        $picture =  $req->fetch();
         $pictureObject = new Picture();
-        $pictureObject->hydration($picture);
+        if($picture =  $req->fetch()){
+            $pictureObject->hydration($picture);
+        }        
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $pictureObject;
     }
