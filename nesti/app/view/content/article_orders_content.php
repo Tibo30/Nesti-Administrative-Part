@@ -77,6 +77,8 @@ if (!isset($orders)) {
     const ROOT = '<?= BASE_URL ?>';
     document.addEventListener("DOMContentLoaded", function() {
 
+         // -------------------------------- Display articles for an order --------------------------//  
+
         const myTable = document.querySelector("#allOrdersTable"); // get the table
         myTable.addEventListener('click', function() { // add event listener
             const orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
