@@ -1,6 +1,6 @@
 <?php
 class Comments{
-    private $id_comments;
+    private $idComment;
     private $commentTitle;
     private $commentContent;
     private $creationDate;
@@ -11,8 +11,8 @@ class Comments{
     
     public function hydration($data)
     {
-        $this->id_comments = $data['id_comments'];
-        $this->commentTitle = $data['comments_title'];
+        $this->idComment = $data['id_comments'];
+        $this->commentTitle = $data['comment_title'];
         $this->commentContent = $data['comment_content'];
         $this->creationDate = $data['creation_date'];
         $this->state = $data['state'];
@@ -163,23 +163,50 @@ class Comments{
         return $this;
     }
 
+
     /**
-     * Get the value of id_comments
+     * Get the value of idComment
      */ 
-    public function getId_comments()
+    public function getIdComment()
     {
-        return $this->id_comments;
+        return $this->idComment;
     }
 
     /**
-     * Set the value of id_comments
+     * Set the value of idComment
      *
      * @return  self
      */ 
-    public function setId_comments($id_comments)
+    public function setIdComment($idComment)
     {
-        $this->id_comments = $id_comments;
+        $this->idComment = $idComment;
 
         return $this;
     }
+
+    /**
+     * Get the recipe
+     */ 
+    public function getRecipe()
+    {
+        $recipeDAO = new RecipeDAO();
+        $recipe=$recipeDAO->getRecipe($this->idRecipe);
+        return $recipe;
+    }
+
+     // Display state for tables
+     public function getDisplayState()
+     {
+ 
+         if ($this->state == 'a') {
+             $state = 'Active';
+         }
+         if ($this->state == 'b') {
+             $state = 'Blocked';
+         }
+         if ($this->state == 'w') {
+             $state = 'Waiting';
+         }
+         return $state;
+     }
 }
