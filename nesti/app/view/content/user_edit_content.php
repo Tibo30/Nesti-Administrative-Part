@@ -14,7 +14,7 @@ if (!isset($user) || empty($user)) {
         <div class="col-4">
             <div class="d-flex flex-column">
                 <h2 class="mb-2 mt-2">User Edit</h2>
-                <form method="POST" action="" class="application">
+                <form method="POST" action="<?= BASE_URL ?>user/edituser" class="application" id="editUserForm">
 
                     <div class="row mb-2">
                         <label for="inputUserEditLastname">Lastname *</label>
@@ -56,19 +56,19 @@ if (!isset($user) || empty($user)) {
 
                         <div class="col-6">
                             <label for="inputUserEditRole">Role(s) *</label> <br>
-                            <input type="checkbox" id="admin" name="roles_user[]" value="admin" <?php foreach ($user->getRoles() as $role) {
+                            <input type="checkbox" id="admin" name="userRoles[]" value="admin" <?php foreach ($user->getRoles() as $role) {
                                                                                                     if ($role == 'admin') {
                                                                                                         echo 'checked';
                                                                                                     };
                                                                                                 }; ?>>
                             <label for="admin"> Administrator </label><br>
-                            <input type="checkbox" id="mod" name="roles_user[]" value="moderator" <?php foreach ($user->getRoles() as $role) {
+                            <input type="checkbox" id="mod" name="userRoles[]" value="moderator" <?php foreach ($user->getRoles() as $role) {
                                                                                                         if ($role == 'moderator') {
                                                                                                             echo 'checked';
                                                                                                         };
                                                                                                     }; ?>>
                             <label for="mod"> Moderator </label><br>
-                            <input type="checkbox" id="chief" name="roles_user[]" value="chief" <?php foreach ($user->getRoles() as $role) {
+                            <input type="checkbox" id="chief" name="userRoles[]" value="chief" <?php foreach ($user->getRoles() as $role) {
                                                                                                     if ($role == 'chief') {
                                                                                                         echo 'checked';
                                                                                                     };
@@ -92,7 +92,7 @@ if (!isset($user) || empty($user)) {
                         </div>
                     </div>
                     <br>
-
+                    <input type="text" class="form-control" name="id_user" id="idUser" value="<?= $user->getIdUser() ?>" hidden>
                     <div class="row d-flex justify-content-around">
                         <button id="submitEditUser" class="btn" type="submit">Submit</button>
                         <button id="cancelEditUser" class="btn" type="reset">Cancel</button>
@@ -368,11 +368,100 @@ if (!isset($user) || empty($user)) {
 <script>
     const ROOT = '<?= BASE_URL ?>';
 
+    // -------------------------------- Edit user --------------------------// 
+
+    var formEditUser = document.querySelector("#editUserForm"); // get the form used to edit the recipe
+    // Event listener on the form
+    formEditUser.addEventListener('submit', (function(e) {
+        event.preventDefault(); // stop the default action of the form
+        const idUser = document.querySelector('#idUser').value;
+        console.log(document.querySelector("#admin").checked);
+        console.log(document.querySelector("#mod").checked);
+        console.log(document.querySelector("#chief").checked);
+        editUser(this, idUser).then((response) => {
+            if (response) {
+                if (response.success) {
+                    document.querySelector("#inputUserEditLastname").value = response.userLastname;
+                    document.querySelector("#inputUserEditFirstname").value = response.userFirstname;
+                    document.querySelector("#inputUserEditAddress1").value = response.userAddress1;
+                    document.querySelector("#inputUserEditAddress2").value = response.userAddress2;
+                    document.querySelector("#inputUserEditCity").value = response.userCity;
+                    document.querySelector("#inputUserEditPostcode").value = response.userPostcode;
+                    if (response.userRoles.indexOf('admin') != -1) {
+                        document.querySelector("#admin").checked = true;
+                    }
+                    if (response.userRoles.indexOf('moderator') != -1) {
+                        document.querySelector("#mod").checked = true;
+                    }
+                    if (response.userRoles.indexOf('chief') != -1) {
+                        document.querySelector("#chief").checked = true;
+                    }
+                    if (response.userState == "a") {
+                        document.querySelector("#userEditState").options.selectedIndex = 0;
+                    } else if (response.userState == "b") {
+                        document.querySelector("#userEditState").options.selectedIndex = 1;
+                    } else if (response.userState == "w") {
+                        document.querySelector("#userEditState").options.selectedIndex = 2;
+                    }
+
+
+                    document.querySelector("#errorUserEditLastname").innerHTML = "";
+                    document.querySelector("#errorUserEditFirstname").innerHTML = "";
+                    document.querySelector("#errorUserEditAddress1").innerHTML = "";
+                    document.querySelector("#errorUserEditAddress2").innerHTML = "";
+                    document.querySelector("#errorUserEditCity").innerHTML = "";
+                    document.querySelector("#errorUserEditPostcode").innerHTML = "";
+
+                    alert("user edited");
+                } else {
+                    document.querySelector("#errorUserEditLastname").innerHTML = response.errorMessages['userLastname'];
+                    document.querySelector("#errorUserEditFirstname").innerHTML = response.errorMessages['userFirstname'];;
+                    document.querySelector("#errorUserEditAddress1").innerHTML = response.errorMessages['userAddress1'];
+                    document.querySelector("#errorUserEditAddress2").innerHTML = response.errorMessages['userAddress2'];
+                    document.querySelector("#errorUserEditCity").innerHTML = response.errorMessages['userCity'];
+                    document.querySelector("#errorUserEditPostcode").innerHTML = response.errorMessages['userPostcode'];
+
+                    console.log(response.errorMessages)
+                }
+            }
+        });
+    }))
+
+    /**
+     * Ajax Request to edit the user
+     * @param {form} obj, int idUser
+     * @returns mixed
+     */
+    async function editUser(obj, idUser) {
+        var myHeaders = new Headers();
+
+        let formData = new FormData(obj);
+        formData.append('id_user', idUser);
+
+        var myInit = {
+            method: 'POST',
+            headers: myHeaders,
+            mode: 'cors',
+            cache: 'default',
+            body: formData
+        };
+        let response = await fetch(ROOT + 'user/edituser', myInit);
+        try {
+            if (response.ok) {
+                return await response.json();
+            } else {
+                return false;
+            }
+        } catch (e) {
+            console.error(e.message);
+        }
+    }
+
     // -------------------------------- Display articles for an order --------------------------//  
 
     const myTable = document.querySelector("#allOrdersUserTable"); // get the table
     myTable.addEventListener('click', function() { // add event listener
-        const orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
+        var orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
         getOrderLines(orderId).then((response) => {
             if (response) {
                 const divList = document.querySelector("#listOrderLinesUser")
@@ -387,6 +476,9 @@ if (!isset($user) || empty($user)) {
                     const div = document.createElement("div");
                     div.innerHTML = "";
                     divList.appendChild(div); // if no response, empty the divList.
+                }
+                if (orderId==null){
+                    orderId="";
                 }
                 document.querySelector("#idOrderUser").innerHTML = "N°: " + orderId;
 
