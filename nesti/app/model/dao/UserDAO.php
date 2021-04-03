@@ -51,17 +51,17 @@ class UserDAO extends ModelDAO
         $reqAdmin->execute(array("id" => $idUser));
         $reqModerator->execute(array("id" => $idUser));
         if ($reqChief->rowcount() == 1) {
-            $role[] = "Chief";
+            $role[] = "chief";
         }
         if ($reqAdmin->rowcount() == 1) {
-            $role[] = "Admin";
+            $role[] = "admin";
         }
         if ($reqModerator->rowcount() == 1) {
-            $role[] = "Moderator";
+            $role[] = "moderator";
         }
-        if ($reqChief->rowcount() == 0 && $reqAdmin->rowcount() == 0 && $reqModerator->rowcount() == 0) {
-            $role[] = "User";
-        }
+
+        $role[] = "user";
+
         return $role;
     }
 
@@ -96,10 +96,11 @@ class UserDAO extends ModelDAO
     {
         $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.address1, u.address2, u.postcode, u.id_city FROM users u JOIN chief ch ON u.id_users = ch.id_users WHERE ch.id_users=:id');
         $req->execute(array("id" => $idChief));
-        $chief =  $req->fetch();
-        $chief['roles'] = "Chief";
         $chiefUser = new User();
-        $chiefUser->hydration($chief);
+        if ($chief =  $req->fetch()) {
+            $chief['roles'] = "Chief";
+            $chiefUser->hydration($chief);
+        }
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $chiefUser;
     }
