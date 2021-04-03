@@ -64,10 +64,10 @@ if (!isset($users)) {
                 echo '<td>' . $user->getLastname() . ' ' .  $user->getFirstname() . '</td>';
                 echo '<td>' . implode(" ",$user->getDisplayRoles()). '</td>';
                 echo '<td>'.   $user->getLog()->getConnectionDate().' </td>';
-                echo '<td>' . $user->getState() . '</td>';
+                echo '<td>' . $user->getDisplayState() . '</td>';
                 echo '<td>';
-                echo '<a href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . ' "data-id='.$user->getIdUser().'>Modify</br></a>';
-                echo '<a href="' . BASE_URL . 'user/delete/' . $user->getIdUser() . ' "data-id='.$user->getIdUser().'>Delete</a>';
+                echo '<a class="btn-modify-user" href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . ' "data-id='.$user->getIdUser().'>Modify</br></a>';
+                echo '<a class="btn-delete-user" href="' . BASE_URL . 'user/delete/' . $user->getIdUser() . ' "data-id='.$user->getIdUser().'>Delete</a>';
                 echo '</td>';
                 echo '</tr>';
             } ?>
