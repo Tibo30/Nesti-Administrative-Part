@@ -193,7 +193,7 @@ color: var(--classicColorGrey);
     width: 30%;
 }
 
-.listOrderLines{
+#listOrderLines{
     min-width: 400px;
     min-height: 200px;
 }
@@ -639,14 +639,19 @@ color: var(--classicColorGrey);
     color: var(--classicColorWhite);
 }
 
-#searchOrderUser{
+#searchOrderUser, #searchCommentUser{
     position: absolute;
     width: 10%;
     left : 2%;
 }
 
 
-#customSearchOrderUser{
+#customSearchOrderUser, #customSearchCommentUser{
     margin: 0;
     padding-left: 50px;
+}
+
+#listOrderLinesUser{
+    min-width: 400px;
+    min-height: 200px;
 }
