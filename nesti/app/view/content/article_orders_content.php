@@ -61,7 +61,7 @@ if (!isset($orders)) {
         <div class="d-flex flex-column">
             <div class="d-flex flex-row flex-wrap justify-content-between">
                 <h3>Details</h3>
-                <h4 id = "idOrder" className="mr-5">N°:</h4>
+                <h4 id="idOrder" className="mr-5">N°:</h4>
             </div>
 
             <div id="listOrderLines" class="d-flex flex-column justify-content-start w-100 p-2 bg-white border">
@@ -77,11 +77,11 @@ if (!isset($orders)) {
     const ROOT = '<?= BASE_URL ?>';
     document.addEventListener("DOMContentLoaded", function() {
 
-         // -------------------------------- Display articles for an order --------------------------//  
+        // -------------------------------- Display articles for an order --------------------------//  
 
         const myTable = document.querySelector("#allOrdersTable"); // get the table
         myTable.addEventListener('click', function() { // add event listener
-            const orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
+            var orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
             getOrderLines(orderId).then((response) => {
                 if (response) {
                     const divList = document.querySelector("#listOrderLines")
@@ -96,6 +96,9 @@ if (!isset($orders)) {
                         const div = document.createElement("div");
                         div.innerHTML = "";
                         divList.appendChild(div); // if no response, empty the divList.
+                    }
+                    if (orderId == null) {
+                        orderId = "";
                     }
                     document.querySelector("#idOrder").innerHTML = "N°: " + orderId;
 
