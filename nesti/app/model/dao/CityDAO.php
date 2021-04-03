@@ -26,9 +26,10 @@ class CityDAO extends ModelDAO
     {
         $req = self::$_bdd->prepare('SELECT * FROM city WHERE id_city=:id');
         $req->execute(array("id" => $idCity));
-        $city =  $req->fetch();
         $cityObject = new City();
-        $cityObject->hydration($city);
+        if ($city =  $req->fetch()){
+            $cityObject->hydration($city);
+        }
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $cityObject;
     }
