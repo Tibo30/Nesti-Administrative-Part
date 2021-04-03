@@ -173,7 +173,7 @@ if (!isset($ingredients)) {
 
     // -------------------------------- Edit recipe --------------------------//  
 
-    var formEditRecipe = document.querySelector("#editRecipeForm"); // get the form used to add the recipe
+    var formEditRecipe = document.querySelector("#editRecipeForm"); // get the form used to edit the recipe
     // Event listener on the form
     formEditRecipe.addEventListener('submit', (function(e) {
         event.preventDefault(); // stop the default action of the form
