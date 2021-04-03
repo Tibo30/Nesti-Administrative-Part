@@ -4,7 +4,7 @@ class CommentsDAO extends ModelDAO
     // get all comments for a moderator
     public function getCommentsModerator($idUser)
     {
-        $var=[];
+        $var = [];
         $req = self::$_bdd->prepare('SELECT * FROM comments WHERE id_moderator=:id');
         $req->execute(array("id" => $idUser));
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
@@ -21,7 +21,7 @@ class CommentsDAO extends ModelDAO
     // get all comments for a user
     public function getComments($idUser)
     {
-        $var=[];
+        $var = [];
         $req = self::$_bdd->prepare('SELECT * FROM comments WHERE id_users=:id');
         $req->execute(array("id" => $idUser));
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
@@ -34,4 +34,25 @@ class CommentsDAO extends ModelDAO
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $var;
     }
+
+    // get a comment according to its id
+    public function getComment($idComment)
+    {
+        $req = self::$_bdd->prepare('SELECT * FROM comments WHERE id_comments=:id');
+        $req->execute(array("id" => $idComment));
+        $comment = new Comments();
+        if ($data = $req->fetch()) {
+            $comment->hydration($data);
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $comment;
+    }
+
+     // edit state comment
+     public function editComment($idComment, $state)
+     {
+         $req = self::$_bdd->prepare('UPDATE comments SET state=:state WHERE id_comments=:id');
+         $req->execute(array("state" => $state, "id" => $idComment));
+         $req->closeCursor(); // release the server connection so it's possible to do other query
+     }
 }
