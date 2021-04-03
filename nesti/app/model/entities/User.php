@@ -78,7 +78,7 @@ class User
         if (empty($lastname)) {
             $userLastnameError = "Please enter a lastname";
         } else if (!preg_match("/^[a-z ,.'-]{3,20}+$/i", $lastname)) { // A MODIFIER
-            $this->userLastnameError = "The lastname is incorrect";
+            $userLastnameError = "The lastname is incorrect";
         } else {
             $this->lastname = $lastname;
         }
@@ -104,7 +104,7 @@ class User
         if (empty($firstname)) {
             $userFirstnameError = "Please enter a firstname";
         } else if (!preg_match("/^[a-z ,.'-]{3,20}+$/i", $firstname)) { // A MODIFIER
-            $this->userFirstnameError = "The firstname is incorrect";
+            $userFirstnameError = "The firstname is incorrect";
         } else {
             $this->firstname = $firstname;
         }
@@ -156,8 +156,8 @@ class User
         $userPasswordError = "";
         if (empty($password)) {
             $userPasswordError = 'Please enter a Password';
-        } else if (!preg_match("/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!?^&+=])(?=\\S+$).{12,}$/", $password)) {
-            $this->userPasswordError = "The password isn't strong enough or doesn't respect the conditions";
+        } else if (!preg_match("/^(?=.*?[A-Z])(?=(.*[a-z]))(?=(.*[\d]))(?=(.*[\W]))(?!.*\s).{12,}$/", $password)) {
+            $userPasswordError = "The password isn't strong enough or doesn't respect the conditions";
         } else {
             $this->password = $password;
         }
@@ -225,7 +225,7 @@ class User
         if (empty($username)) {
             $userUsernameError = 'Please enter a username';
         } else if (!preg_match("/^[a-zA-Z0-9._-]{3,20}$/", $username)) {
-            $this->userUsernameError = "The username doesn't respect the conditions";
+            $userUsernameError = "The username doesn't respect the conditions";
         } else {
             $this->username = $username;
         }
@@ -299,7 +299,7 @@ class User
         if (empty($postcode)) {
             $userPostCodeError = "Please enter a postcode";
         } else if (!preg_match("/^[0-9]{5}$/", $postcode)) {
-            $this->postcodeError = "Please enter a valid postcode (5 digits)";
+            $postcodeError = "Please enter a valid postcode (5 digits)";
         } else {
             $this->postcode = $postcode;
         }
@@ -371,22 +371,22 @@ class User
         return $city;
     }
 
-     // Display state for tables
-     public function getDisplayState()
-     {
- 
-         if ($this->state == 'a') {
-             $state = 'Active';
-         }
-         if ($this->state == 'b') {
-             $state = 'Blocked';
-         }
-         if ($this->state == 'w') {
-             $state = 'Waiting';
-         }
-         return $state;
-     }
-   
+    // Display state for tables
+    public function getDisplayState()
+    {
+
+        if ($this->state == 'a') {
+            $state = 'Active';
+        }
+        if ($this->state == 'b') {
+            $state = 'Blocked';
+        }
+        if ($this->state == 'w') {
+            $state = 'Waiting';
+        }
+        return $state;
+    }
+
     // Display roles for tables
     public function getDisplayRoles()
     {
@@ -402,6 +402,9 @@ class User
             if ($role == 'chief') {
                 $displayRoles[] = 'Chief';
             }
+            if ($role == 'user') {
+                $displayRoles[] = '';
+            }
         }
 
         if ($displayRoles == null) {
@@ -410,5 +413,88 @@ class User
 
         return $displayRoles;
     }
-     
+
+    // get orders for a user
+    public function getOrders()
+    {
+        $orderDAO = new OrderDAO();
+        $orders = $orderDAO->getOrdersUser($this->idUser);
+        return $orders;
+    }
+
+    // get total amount of orders for a user
+    public function getTotalAmountOrders()
+    {
+        $amount=0;
+        $orderDAO = new OrderDAO();
+        $articlePriceDAO = new ArticlePriceDAO();
+        $orders=$this->getOrders();
+        foreach($orders as $order){
+            $orderLines=$orderDAO->getOrderLines($order->getIdOrder());// get all the order lines for an order
+            foreach($orderLines as $orderLine){
+                $price=$articlePriceDAO -> getPrice($orderLine->getIdArticle()); // get the articlePrice object
+                $amount+=($orderLine->getQuantityOrdered())*($price->getPrice());
+            }
+        }       
+        return $amount;
+    }
+
+    // get last order for a user
+    public function getLastOrder()
+    {
+        $orderDAO = new OrderDAO();
+        $order = $orderDAO->getLastOrder($this->idUser);
+        return $order;
+    }
+
+    // get last import for an admin
+    public function getLastImport()
+    {
+        $importDAO = new ImportDAO();
+        $import = $importDAO->getLastImportUser($this->idUser);
+        return $import;
+    }
+
+    // get all imports for an admin
+    public function getImports()
+    {
+        $importDAO = new ImportDAO();
+        $imports = $importDAO->getImportsUser($this->idUser);
+        return $imports;
+    }
+
+    // get all comments for a moderator
+    public function getComments()
+    {
+        $approved=0;
+        $blocked=0;
+        $commentsDAO = new CommentsDAO();
+        $comments = $commentsDAO->getComments($this->idUser);
+        foreach($comments as $comment){
+            if ($comment->getState() == "a"){
+                $approved++;
+            } else if ($comment->getState() == "b"){
+                $blocked++;
+            }
+        }
+        $number["approved"]=$approved;
+        $number["blocked"]=$blocked;
+        return $number;
+    }
+
+    // get all recipes for a chief
+    public function getRecipes()
+    {
+        $recipeDAO = new recipeDAO();
+        $recipes = $recipeDAO->getRecipesChief($this->idUser);
+        return $recipes;
+    }
+
+    // get last recipe for a chief
+    public function getLastRecipe()
+    {
+        $recipeDAO = new recipeDAO();
+        $recipe = $recipeDAO->getLastRecipe($this->idUser);
+        return $recipe;
+    }
 }
