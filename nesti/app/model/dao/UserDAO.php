@@ -74,10 +74,10 @@ class UserDAO extends ModelDAO
         if ($data = $req->fetch()) {
             $roles = $this->getRole($data['id_users']);
             $data['roles'] = $roles;
-            $use = $user->hydration($data);
+            $user->hydration($data);
         }
         $req->closeCursor(); // release the server connection so it's possible to do other query
-        return $use;
+        return $user;
     }
 
     public function isEmailOrUsernameTaken($value)
@@ -115,5 +115,42 @@ class UserDAO extends ModelDAO
         }
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $city;
+    }
+
+    // edit user in database
+    public function editUser($userEdit, $change)
+    {
+        switch ($change) {
+            case "lastname":
+                $req = self::$_bdd->prepare('UPDATE users SET lastname=:lastname WHERE id_users=:id');
+                $req->execute(array("lastname" => ($userEdit->getLastName()), "id" => ($userEdit->getIdUser())));
+                break;
+            case "firstname":
+                $req = self::$_bdd->prepare('UPDATE users SET firstname=:firstname WHERE id_users=:id');
+                $req->execute(array("firstname" => ($userEdit->getFirstName()), "id" => ($userEdit->getIdUser())));
+                break;
+            case "address1":
+                $req = self::$_bdd->prepare('UPDATE users SET address1=:address1 WHERE id_users=:id');
+                $req->execute(array("address1" => ($userEdit->getAddress1()), "id" => ($userEdit->getIdUser())));
+                break;
+            case "address2":
+                $req = self::$_bdd->prepare('UPDATE users SET address2=:address2 WHERE id_users=:id');
+                $req->execute(array("address2" => ($userEdit->getAddress2()), "id" => ($userEdit->getIdUser())));
+                break;
+            case "city":
+                $req = self::$_bdd->prepare('UPDATE users SET id_city=:city WHERE id_users=:id');
+                $req->execute(array("city" => ($userEdit->getIdCity()), "id" => ($userEdit->getIdUser())));
+                break;
+            case "postcode":
+                $req = self::$_bdd->prepare('UPDATE users SET postcode=:postcode WHERE id_users=:id');
+                $req->execute(array("postcode" => ($userEdit->getPostCode()), "id" => ($userEdit->getIdUser())));
+                break;
+            case "state":
+                $req = self::$_bdd->prepare('UPDATE users SET state=:state WHERE id_users=:id');
+                $req->execute(array("state" => ($userEdit->getState()), "id" => ($userEdit->getIdUser())));
+                break;
+            default:
+                break;
+        }
     }
 }
