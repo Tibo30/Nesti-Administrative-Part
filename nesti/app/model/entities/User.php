@@ -463,13 +463,13 @@ class User
         return $imports;
     }
 
-    // get all comments for a moderator
-    public function getComments()
+    // get all comment numbers for a moderator
+    public function getCommentsNumber()
     {
         $approved=0;
         $blocked=0;
         $commentsDAO = new CommentsDAO();
-        $comments = $commentsDAO->getComments($this->idUser);
+        $comments = $commentsDAO->getCommentsModerator($this->idUser);
         foreach($comments as $comment){
             if ($comment->getState() == "a"){
                 $approved++;
@@ -480,6 +480,14 @@ class User
         $number["approved"]=$approved;
         $number["blocked"]=$blocked;
         return $number;
+    }
+
+    // get all comments for a moderator
+    public function getComments()
+    {
+        $commentsDAO = new CommentsDAO();
+        $comments = $commentsDAO->getComments($this->idUser);
+        return $comments;
     }
 
     // get all recipes for a chief
