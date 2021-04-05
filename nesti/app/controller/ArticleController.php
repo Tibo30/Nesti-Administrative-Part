@@ -16,12 +16,11 @@ class ArticleController extends BaseController
             $data =  $this->importedArticles();
         } else if (($this->_url) == "article_edit") {
             $idArticle = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
-            if (!empty($_POST)) { // if the article user name has been change (post method)
-                $this->editArticle($idArticle);
-            }
             if (isset($idArticle)) {
                 $data =  $this->article($idArticle);
             }
+        } else if (($this->_url) == "article_editarticle") {
+            $this->editArticle(); // this is the method called by the fetch API with the article/editarticle ROOT.
         } else if (($this->_url) == "article_picture") {
             $this->editPicture(); // this is the method called by the fetch API with the article/picture ROOT.
         } else if (($this->_url) == "article_delete") {
@@ -81,24 +80,47 @@ class ArticleController extends BaseController
     }
 
     /**
-     * This method is used to edit the article user name
+     * this is the Ajax method to edit an Article
      */
-    private function editArticle($idArticle)
+    private function editArticle()
     {
         $data = [];
+        $data['success'] = false;
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idArticle = filter_input(INPUT_POST, "id_article", FILTER_SANITIZE_STRING);
             $articleUserName = filter_input(INPUT_POST, "articleUserName", FILTER_SANITIZE_STRING);
-            $articleEdit = $this->articleDAO->getArticle($idArticle);
+            $articleState = filter_input(INPUT_POST, "articleState", FILTER_SANITIZE_STRING);
+
+            $articleEdit = $this->articleDAO->getArticle($idArticle); // get all the info of this article
+            $formerArticleState = $articleEdit->getState();
+            $formerArticleUserName = $articleEdit->getUserArticleName();
+
             $articleUserNameError = $articleEdit->setUserArticleName($articleUserName);
+            $articleEdit->setState($articleState);
+
             $errorMessages = ['articleUserName' => $articleUserNameError];
             $data['errorMessages'] = $errorMessages;
             // si bug, remettre null à la place de ""
             if ($articleUserNameError == "") {
-                $this->articleDAO->editArticle($articleEdit, "articleUserName");
-                // $data['articleEdit'] = $articleEdit;
+                if ($formerArticleUserName != $articleUserName) { // if the article user name changed
+                    $this->articleDAO->editArticle($articleEdit, "articleUserName");
+                }
+                if ($formerArticleState != $articleState) { // if the states changed
+                    $this->articleDAO->editArticle($articleEdit, "state");
+                }
+                
+                $data['articleEdit'] = $articleEdit;
+                $data['idArticle'] = $articleEdit->getIdArticle();
+                $data['articleFactoryName'] = $articleEdit->getQuantityPerUnit() . " " . $articleEdit->getUnitMeasure()->getName() . " de " .  $articleEdit->getProduct()->getProductName();
+                $data['articleUserName'] = $articleEdit->getUserArticleName();
+                $data['articlePrice'] = round(($articleEdit->getPrice()->getPrice()), 2);
+                $data['articleStock'] = $articleEdit->getStock();
+                $data['articleState'] = $articleEdit->getState();
+                $data['success'] = true;
             }
         }
-        // return $data;
+        echo json_encode($data);
+        die;
     }
 
 
@@ -124,10 +146,10 @@ class ArticleController extends BaseController
                 $data['articles'][$index]['selling_price'] = round(($article->getPrice()->getPrice()), 2);
                 $data['articles'][$index]['type'] = $article->getType();
                 $data['articles'][$index]['last_import'] = $article->getLastImport()->getImportDate();
-                $data['articles'][$index]['state'] = $article->getState();
+                $data['articles'][$index]['state'] = $article->getDisplayState();
                 $data['articles'][$index]['stock'] = $article->getStock();
-                $data['articles'][$index]['action'] = '<a href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id=' . $article->getIdArticle() . '>Modify</br></a>
-                <a id="allArticlesDelete" class="btn-delete-article" onclick="allArticlesDelete()" data-id=' . $article->getIdArticle() . '>Delete</a>';
+                $data['articles'][$index]['action'] = '<a class="btn-modify-article" href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id=' . $article->getIdArticle() . '>Modify</br></a>
+                <a class="btn-delete-article" onclick="allArticlesDelete()" data-id=' . $article->getIdArticle() . '>Delete</a>';
                 $index++;
             }
             $data['success'] = true;
