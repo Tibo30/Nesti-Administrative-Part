@@ -149,6 +149,10 @@ class UserDAO extends ModelDAO
                 $req = self::$_bdd->prepare('UPDATE users SET state=:state WHERE id_users=:id');
                 $req->execute(array("state" => ($userEdit->getState()), "id" => ($userEdit->getIdUser())));
                 break;
+            case "password":
+                $req = self::$_bdd->prepare('UPDATE users SET password=:psw WHERE id_users=:id');
+                $req->execute(array("psw" => (password_hash($userEdit->getPassword(), PASSWORD_BCRYPT)), "id" => ($userEdit->getIdUser())));
+                break;
             default:
                 break;
         }
