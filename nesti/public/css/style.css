@@ -32,6 +32,12 @@ body{
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.15);   
 }
 
+/*------------------------------------  a trier -------------------------------*/
+
+p{
+    margin: 0 !important;
+}
+
 h2{
     font-weight: bolder;
     color: #00595a;
@@ -76,49 +82,12 @@ h4{
 color: var(--classicColorGrey);
 }
 
-#connectionPage{
-    background-image:url("../pictures/icons/bg-nesti.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    position:absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    width: 100%;
-    height: 100%;
-}
-
-#logoNesti>img{
-    width: 50%;
-    height: 50%;
-}
-
-#connectionPage button{
-    background-color: var(--colorButtonInformation);
-    width: 40%;
-}
-
-
-
-
-
-
-
-
-
-
-
 
 
 #deleteEditArticle{
     background-color:var(    --colorButtonDanger);
     color: var(--classicColorWhite);
 }
-
-
-
-
-
 
   .custom-file-input ~ .custom-file-label::after {
     content: "choisir";
@@ -132,6 +101,18 @@ color: var(--classicColorGrey);
 
 #file-upload-button{
     content:"chose a file";
+}
+
+
+
+
+
+
+/*------------------------------------ common -------------------------------*/
+
+.titleAccessForbidden{
+    margin-top: 50px;
+    color:var(--primaryDarkColor);
 }
 
 
@@ -179,6 +160,24 @@ color: var(--classicColorGrey);
 .btn-delete-article, .btn-modify-article{
     color:var(--colorButtonInformation);
     cursor: pointer;
+}
+
+#articleDeletedSuccess{
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonValidate);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
+}
+
+#confirm-delete-article{
+    background-color:var( --colorButtonValidate);
 }
 
 
@@ -240,6 +239,11 @@ color: var(--classicColorGrey);
     cursor: pointer;
 }
 
+#articleOrderId{
+    min-width: 80px;
+    background-color: var(--secondaryLightColor) ;
+}
+
 /*------------------------------------ article edit -------------------------------*/
 
 #articleEditPage .underLink>a,#articleEditPage .underLink>p{
@@ -263,6 +267,7 @@ color: var(--classicColorGrey);
     border-radius: 5px;
     text-align: center;
     vertical-align: center;
+    cursor: pointer;
 }
 .articlePictureBin img{
     width: 20px;
@@ -274,6 +279,43 @@ color: var(--classicColorGrey);
     color:black;
 }
 #submitEditArticle, #btn-edit-article-picture{
+    background-color:var( --colorButtonValidate);
+}
+
+#cancelEditArticle{
+    background-color:var( --colorButtonInformation);
+    color: var(--classicColorWhite);
+}
+
+#articleEditSuccess, #articlePictureEditSuccess, #articlePictureDeleteSuccess{
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonValidate);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
+}
+
+#articlePictureEditMessage {
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonAlert);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
+}
+
+#confirm-edit-picture-article, #confirm-edit-article, #confirm-delete-picture-article{
     background-color:var( --colorButtonValidate);
 }
 
@@ -317,6 +359,24 @@ color: var(--classicColorGrey);
 .btn-delete-recipe, .btn-modify-recipe{
     color:var(--colorButtonInformation);
     cursor: pointer;
+}
+
+#recipeDeletedSuccess{
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonValidate);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
+}
+
+#confirm-delete-recipe{
+    background-color:var( --colorButtonValidate);
 }
 
 /*------------------------------------ recipe add content -------------------------------*/
@@ -523,7 +583,6 @@ color: var(--classicColorGrey);
   cursor: pointer;
 }
 
-
 .recipePictureBin{
     width: 30px;
     height: 30px;
@@ -531,11 +590,44 @@ color: var(--classicColorGrey);
     border-radius: 5px;
     text-align: center;
     vertical-align: center;
+    cursor: pointer;
 }
 .recipePictureBin img{
     width: 20px;
     height: 20px;
     background-color: red;
+}
+
+#recipeEditSuccess, #recipePictureEditSuccess, #recipePictureDeleteSuccess, #recipeEditIngredientEditSuccess, #recipeEditIngredientDeletedSuccess{
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonValidate);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
+}
+
+#recipePictureEditMessage {
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonAlert);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
+}
+
+#confirm-edit-picture-recipe, #confirm-edit-recipe, #confirm-delete-picture-recipe{
+    background-color:var( --colorButtonValidate);
 }
 
 /*------------------------------------ users content -------------------------------*/
@@ -578,6 +670,24 @@ color: var(--classicColorGrey);
 .btn-delete-user, .btn-modify-user{
     color:var(--colorButtonInformation);
     cursor: pointer;
+}
+
+#userDeletedSuccess{
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonValidate);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
+}
+
+#confirm-delete-user{
+    background-color:var( --colorButtonValidate);
 }
 
 
@@ -624,10 +734,6 @@ color: var(--classicColorGrey);
     color:var(--primaryLightColor);
 }
 
-#submitEditUser, #confirm-approve, #confirm-block{
-    background-color:var( --colorButtonValidate);
-}
-
 #cancelEditUser {
     background-color:var( --colorButtonInformation);
     color: var(--classicColorWhite);
@@ -651,11 +757,93 @@ color: var(--classicColorGrey);
 }
 
 #listOrderLinesUser{
-    min-width: 400px;
+    min-width: 300px;
     min-height: 200px;
 }
 
 .btn-block-comment, .btn-approve-comment{
     color:var(--colorButtonInformation);
     cursor: pointer;
+}
+
+#commentApprovedSuccess, #commentBlockedSuccess{
+    position:absolute;
+    right: 0;
+    top:0;
+    background-color: var(--colorButtonValidate);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index: 100;
+}
+
+
+#userEditSuccess, #userPasswordResetSuccess {
+    position:absolute;
+    right: 0;
+    background-color: var(--colorButtonValidate);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index: 100;
+}
+
+#userOrderId{
+    min-width: 80px;
+    background-color: var(--secondaryLightColor) ;
+}
+
+#submitEditUser, #confirm-approve, #confirm-block, #confirm-edit, #confirm-reset-password{
+    background-color:var( --colorButtonValidate);
+}
+
+/*------------------------------------ connection content -------------------------------*/
+
+
+#disconnectSuccess {
+    position:absolute;
+    right: 0;
+    left: 0;
+    top:50px;
+    margin-left: auto; 
+    margin-right: auto; 
+    background-color: var(--colorButtonValidate);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index: 100;
+}
+
+#connectionPage{
+    background-image:url("../pictures/icons/bg-nesti.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 100%;
+    height: 100%;
+}
+
+#logoNesti>img{
+    width: 50%;
+    height: 50%;
+}
+
+#connectionPage button{
+    background-color: var(--colorButtonInformation);
+    width: 40%;
 }
