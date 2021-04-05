@@ -34,9 +34,9 @@ class RecipeIngredients
     {
         $quantityError = "";
         if (empty($quantity)) {
-            $quantityError = 'Please enter a Number';
+            $quantityError = 'Please enter a Quantity number';
         } else if (!preg_match("/^[0-9]/", $quantity)) {
-            $quantityError = "Only numbers allowed";
+            $quantityError = "Only numbers allowed for the quantity";
         } else {
             $this->quantity = $quantity;
         }
