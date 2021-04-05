@@ -40,9 +40,9 @@ class RecipeDAO extends ModelDAO
         $req = self::$_bdd->prepare('SELECT * FROM recipes WHERE id_chief=:id ORDER BY creation_date DESC LIMIT 1');
         $req->execute(array("id" => $idUser));
         $lastRecipe = new Recipe();
-        if($recipe =  $req->fetch()){
+        if ($recipe =  $req->fetch()) {
             $lastRecipe->hydration($recipe);
-        }       
+        }
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $lastRecipe;
     }
@@ -67,7 +67,7 @@ class RecipeDAO extends ModelDAO
         $req = self::$_bdd->prepare('SELECT r.id_recipes,r.creation_date,r.recipe_name,r.difficulty,r.number_of_people,r.state,r.time,r.id_pictures,r.id_chief FROM recipes r WHERE r.id_recipes=:id');
         $req->execute(array("id" => $idRecipe));
         $itemRecipe = new Recipe();
-        if($recipe = $req->fetch()){
+        if ($recipe = $req->fetch()) {
             $itemRecipe->hydration($recipe);
         }
         $req->closeCursor(); // release the server connection so it's possible to do other query
@@ -139,6 +139,10 @@ class RecipeDAO extends ModelDAO
             case "time":
                 $req = self::$_bdd->prepare('UPDATE recipes SET time=:time WHERE id_recipes=:id');
                 $req->execute(array("time" => ($recipeEdit->getTimeDatabase()), "id" => ($recipeEdit->getIdRecipe())));
+                break;
+            case "state":
+                $req = self::$_bdd->prepare('UPDATE recipes SET state=:state WHERE id_recipes=:id');
+                $req->execute(array("state" => ($recipeEdit->getState()), "id" => ($recipeEdit->getIdRecipe())));
                 break;
             default:
                 break;
