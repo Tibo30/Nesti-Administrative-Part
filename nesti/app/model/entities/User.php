@@ -35,7 +35,9 @@ class User
         $this->address2 = $data['address2'];
         $this->postcode = $data['postcode'];
         $this->idCity = $data['id_city'];
-        $this->roles = $data['roles'];
+        if (isset($data['roles'])){
+            $this->roles = $data['roles'];
+        }
         return $this;
     }
 
@@ -161,7 +163,6 @@ class User
         } else {
             $this->password = $password;
         }
-
         return  $userPasswordError;
     }
 
