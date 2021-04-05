@@ -14,108 +14,120 @@ if (!isset($listAllIngredients)) {
     }
 }
 ?>
-<div class="container bg-white align-items-left" id="recipeAddPage">
-    <div class="d-flex flex-row underLink">
-        <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>
-        </a>
-        <p> &nbsp > Create</p>
-    </div>
-    <h2 class="mb-2 mt-2">Recipe Creation</h2>
-    <div class="d-flex flex-row justify-content-around">
-        <div class="d-flex flex-column">
 
-            <form method="post" id="addRecipeForm">
-                <div class="form-group">
-                    <label for="inputAddRecipeName">Recipe name</label>
-                    <input type="text" class="form-control p-0" id="inputAddRecipeName" name="recipeName" value="">
-                    <small id="recipeAddChiefName" class="form-text text-muted">Recipe Chief : <?= $_SESSION["lastname"] . " " . $_SESSION["firstname"] ?></small>
+<?php if (array_search("chief", $_SESSION["roles"]) !== false || array_search("admin", $_SESSION["roles"]) !== false) {
+
+?>
+    <div class="container bg-white align-items-left" id="recipeAddPage">
+        <div class="d-flex flex-row underLink">
+            <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>
+            </a>
+            <p> &nbsp > Create</p>
+        </div>
+        <h2 class="mb-2 mt-2">Recipe Creation</h2>
+        <div class="d-flex flex-row justify-content-around">
+            <div class="d-flex flex-column">
+
+                <form method="post" id="addRecipeForm">
+                    <div class="form-group">
+                        <label for="inputAddRecipeName">Recipe name</label>
+                        <input type="text" class="form-control p-0" id="inputAddRecipeName" name="recipeName" value="">
+                        <small id="recipeAddChiefName" class="form-text text-muted">Recipe Chief : <?= $_SESSION["lastname"] . " " . $_SESSION["firstname"] ?></small>
+                    </div>
+                    <span class="text-danger" id="errorRecipeName"></span>
+                    <div class="mx-0 p-0 form-group row justify-content-between">
+                        <label for="inputAddDifficulty">Difficulty (grade on 5)</label>
+                        <div class="col-2 p-0"><input type="text" class="form-control" id="inputAddDifficulty" name="difficulty" value=""></div>
+                    </div>
+                    <span class="text-danger" id="errorDifficulty"></span>
+                    <div class="mx-0 p-0 form-group row justify-content-between">
+                        <label for="inputAddNumberOfPeople">Number of people</label>
+                        <div class="col-2 p-0"><input type="text" class="form-control" id="inputAddNumberOfPeople" name="numberOfPeople" value=""></div>
+                    </div>
+                    <span class="text-danger" id="errorNumberPeople"></span>
+                    <div class="mx-0 p-0 form-group row justify-content-between">
+                        <label for="inputAddPreparationTime">Preparation time in minutes</label>
+                        <div class="col-2 p-0"><input type="text" class="form-control" id="inputAddPreparationTime" name="preparationTime" value=""></div>
+                    </div>
+                    <span class="text-danger" id="errorTime"></span>
+                    <div class="d-flex flex-row">
+                        <button id="submitNewRecipe" type="submit" class="btn mr-5">Submit</button>
+                        <button id="cancelNewRecipe" type="reset" class="btn">Cancel</button>
+                    </div>
+                </form>
+                <input type="text" class="form-control" name="idRecipe" id="idRecipe" value="" hidden>
+            </div>
+
+            <!-- changer le 2eme visible to invisible  -->
+            <div class="invisible" id="addPicture">
+                <div id="recipePictureAdd" class="bg-light border mb-2"></div>
+                <div class=" d-flex flex-row justify-content-between">
+                    <p class="recipePictureAddName"></p>
                 </div>
-                <span class="text-danger" id="errorRecipeName"></span>
-                <div class="mx-0 p-0 form-group row justify-content-between">
-                    <label for="inputAddDifficulty">Difficulty (grade on 5)</label>
-                    <div class="col-2 p-0"><input type="text" class="form-control" id="inputAddDifficulty" name="difficulty" value=""></div>
+                <label class="form-label" for="customFile">Download a new picture</label>
+
+                <div class="custom-file">
+                    <form id="formAddRecipeImage" action="" enctype="multipart/form-data" method="post">
+                        <div class="d-flex flex-column">
+                            <input type="file" class="custom-file-input" id="InputFileAddRecipe" name="image">
+                            <!-- le name dans le input se retrouve dans le $_FILES['image'] -->
+                            <button type="submit" class="align-self-end mt-1 btn" id="btn-add-recipe-picture">OK</button>
+                        </div>
+                        <label class="custom-file-label" for="InputFileAddRecipe" data-browse="Browse"></label>
+                    </form>
                 </div>
-                <span class="text-danger" id="errorDifficulty"></span>
-                <div class="mx-0 p-0 form-group row justify-content-between">
-                    <label for="inputAddNumberOfPeople">Number of people</label>
-                    <div class="col-2 p-0"><input type="text" class="form-control" id="inputAddNumberOfPeople" name="numberOfPeople" value=""></div>
-                </div>
-                <span class="text-danger" id="errorNumberPeople"></span>
-                <div class="mx-0 p-0 form-group row justify-content-between">
-                    <label for="inputAddPreparationTime">Preparation time in minutes</label>
-                    <div class="col-2 p-0"><input type="text" class="form-control" id="inputAddPreparationTime" name="preparationTime" value=""></div>
-                </div>
-                <span class="text-danger" id="errorTime"></span>
-                <div class="d-flex flex-row">
-                    <button id="submitNewRecipe" type="submit" class="btn mr-5">Submit</button>
-                    <button id="cancelNewRecipe" type="reset" class="btn">Cancel</button>
-                </div>
-            </form>
-            <input type="text" class="form-control" name="idRecipe" id="idRecipe" value="" hidden>
+            </div>
         </div>
 
         <!-- changer le 2eme visible to invisible  -->
-        <div class="invisible" id="addPicture">
-            <div id="recipePictureAdd" class="bg-light border mb-2"></div>
-            <div class=" d-flex flex-row justify-content-between">
-                <p class="recipePictureAddName"></p>
-            </div>
-            <label class="form-label" for="customFile">Download a new picture</label>
-
-            <div class="custom-file">
-                <form id="formAddRecipeImage" action="" enctype="multipart/form-data" method="post">
-                    <div class="d-flex flex-column">
-                        <input type="file" class="custom-file-input" id="InputFileAddRecipe" name="image">
-                        <!-- le name dans le input se retrouve dans le $_FILES['image'] -->
-                        <button type="submit" class="align-self-end mt-1 btn" id="btn-add-recipe-picture">OK</button>
+        <div class="container px-0 mx-0 mt-5 bg-light d-flex flex-row justify-content-between invisible" id="hiddenContentAddRecipe">
+            <div class="col-7">
+                <h3 class="mb-2 mt-2">Preparation</h3>
+                <div class="form-group">
+                    <div id="paragraphsAddRecipe" class="d-flex flex-column"></div>
+                    <div class="d-flex flex-column align-items-center">
+                        <button id="addParagraphNewRecipe" class="btn" onclick="addParagraph()">
+                            <div class="fas fa-plus"></div>
+                        </button>
+                        <button id="okParagraphAddRecipe" type="submit" class="btn">SAVE</button>
                     </div>
-                    <label class="custom-file-label" for="InputFileAddRecipe" data-browse="Browse"></label>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- changer le 2eme visible to invisible  -->
-    <div class="container px-0 mx-0 mt-5 bg-light d-flex flex-row justify-content-between invisible" id="hiddenContentAddRecipe">
-        <div class="col-7">
-            <h3 class="mb-2 mt-2">Preparation</h3>
-            <div class="form-group">
-                <div id="paragraphsAddRecipe" class="d-flex flex-column"></div>
-                <div class="d-flex flex-column align-items-center">
-                    <button id="addParagraphNewRecipe" class="btn" onclick="addParagraph()">
-                        <div class="fas fa-plus"></div>
-                    </button>
-                    <button id="okParagraphAddRecipe" type="submit" class="btn">SAVE</button>
                 </div>
             </div>
-        </div>
-        <div class="col-4">
-            <h3 class="mb-2 mt-2">Ingredient List</h3>
-            <div class="form-group">
-                <div id="addIngredientListAddRecipe" class="d-flex flex-column justify-content-between w-100 p-2 bg-white border">
-                </div>
-                <div class="col-12 p-0 mb-3">
+            <div class="col-4">
+                <h3 class="mb-2 mt-2">Ingredient List</h3>
+                <div class="form-group">
+                    <div id="addIngredientListAddRecipe" class="d-flex flex-column justify-content-between w-100 p-2 bg-white border">
+                    </div>
+                    <div class="col-12 p-0 mb-3">
 
-                    <label for="inputIngredientNameAddRecipe">Add an ingredient</label>
-                    <input list="ingredientsAdd" type="text" class="form-control p-0" id="inputIngredientNameAddRecipe" name="ingredient">
-                    <datalist id="ingredientsAdd">
-                        <?php
-                        foreach ($listAllIngredients as $ingredients) {
-                            echo '<option value="' . ($ingredients->getProductName()) . '">';
-                        }
-                        ?>
-                    </datalist>
-                </div>
-                <div class="mx-0 p-0 form-group row justify-content-between">
-                    <div class="col-4 p-0"><input type="text" class="form-control" placeholder="Quantity" name="quantity" id="inputIngredientQuantityAddRecipe"></div>
-                    <div class="col-2 p-0"><input type="text" class="form-control" placeholder="Unit of Measure" name="unitMeasure" id="inputIngredientUnitAddRecipe"></div>
-                    <button id="okIngredientAddRecipe" type="submit" class="btn mr-5">OK</button>
+                        <label for="inputIngredientNameAddRecipe">Add an ingredient</label>
+                        <input list="ingredientsAdd" type="text" class="form-control p-0" id="inputIngredientNameAddRecipe" name="ingredient">
+                        <datalist id="ingredientsAdd">
+                            <?php
+                            foreach ($listAllIngredients as $ingredients) {
+                                echo '<option value="' . ($ingredients->getProductName()) . '">';
+                            }
+                            ?>
+                        </datalist>
+                        <span class="text-danger" id="errorRecipeAddIngredient"></span>
+                    </div>
+                    <div class="mx-0 p-0 form-group row justify-content-between">
+                        <div class="col-4 p-0"><input type="text" class="form-control" placeholder="Quantity" name="quantity" id="inputIngredientQuantityAddRecipe"></div>
+                        <div class="col-2 p-0"><input type="text" class="form-control" placeholder="Unit of Measure" name="unitMeasure" id="inputIngredientUnitAddRecipe"></div>
+                        <button id="okIngredientAddRecipe" type="submit" class="btn mr-5">OK</button>
+                        <span class="text-danger" id="errorRecipeAddQuantity"></span>
+                        <span class="text-danger" id="errorRecipeAddUnit"></span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+<?php } else { ?>
+    <div class="container">
+        <h2 class="titleAccessForbidden">Access forbidden</h2>
+        <p class="textAccessForbidden">You don't have the rights to access this page</p>
+    </div>
+<?php } ?>
 <script>
     const ROOT_ICONS = '<?= BASE_URL . PATH_ICONS ?>';
     const ROOT = '<?= BASE_URL ?>';
@@ -265,8 +277,18 @@ if (!isset($listAllIngredients)) {
                     if (response.success) {
                         divList.innerHTML += response.recipeIngredient;
                         alert('Ingredient added');
+                        document.querySelector("#errorRecipeAddQuantity").innerHTML = "";
+                        document.querySelector("#errorRecipeAddIngredient").innerHTML = "";
+                        document.querySelector("#errorRecipeAddUnit").innerHTML = "";
+
+                        document.querySelector("#inputIngredientNameAddRecipe").value = "";
+                        document.querySelector("#inputIngredientQuantityAddRecipe").value = "";
+                        document.querySelector("#inputIngredientUnitAddRecipe").value = "";
                     } else {
                         console.log(response.errorMessages)
+                        document.querySelector("#errorRecipeAddQuantity").innerHTML = response.errorMessages['quantity'];
+                        document.querySelector("#errorRecipeAddIngredient").innerHTML = response.errorMessages['productName'];
+                        document.querySelector("#errorRecipeAddUnit").innerHTML = response.errorMessages['unitName'];
                     }
                 }
             });
@@ -471,7 +493,7 @@ if (!isset($listAllIngredients)) {
                     idParagraph = event.target.parentNode.parentNode.getAttribute("data-id");
                     const idRecipe = document.querySelector('#idRecipe').value;
                     if (idParagraph != null) {
-                        deleteParagrapheFromDB(idParagraph,idRecipe).then((response) => {
+                        deleteParagrapheFromDB(idParagraph, idRecipe).then((response) => {
                             if (response) {
                                 if (response.success) {
                                     console.log("ok")
