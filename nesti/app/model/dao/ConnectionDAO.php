@@ -21,4 +21,16 @@ class ConnectionDAO extends ModelDAO
         $req->execute(array("id" => $idUser));
         $req->fetch();
     }
+
+    public function getPassword($email)
+    {
+        $user = new User();
+        $req = self::$_bdd->prepare('SELECT * FROM users WHERE email=:email OR username=:username');
+        $req->execute(array("email" => $email, "username" => $email));
+        if ($data =  $req->fetch()) {
+            $user->hydration($data);
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $user;
+    }
 }
