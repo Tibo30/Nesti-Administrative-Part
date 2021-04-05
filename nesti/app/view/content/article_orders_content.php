@@ -9,6 +9,15 @@ if (!isset($orders)) {
 }
 ?>
 
+<?php if (array_search("admin", $_SESSION["roles"]) === false) {
+
+?>
+    <div class="container">
+        <h2 class="titleAccessForbidden">Access forbidden</h2>
+        <p class="textAccessForbidden">You don't have the rights to access this page</p>
+    </div>
+<?php } else { ?>
+
 <div class="container bg-light border d-flex flex-column align-items-left" id="ordersPage">
     <div class="d-flex flex-row underLink">
         <a href="<?= BASE_URL ?>article"><u>Articles</u>
@@ -61,10 +70,13 @@ if (!isset($orders)) {
         <div class="d-flex flex-column">
             <div class="d-flex flex-row flex-wrap justify-content-between">
                 <h3>Details</h3>
-                <h4 id="idOrder" className="mr-5">N°:</h4>
+                <div id="articleOrderId" class="d-flex justify-content-center align-items-center orderId">
+                    <h4 id="idOrder" className="mr-5">N°:</h4>
+                </div>
+
             </div>
 
-            <div id="listOrderLines" class="d-flex flex-column justify-content-start w-100 p-2 bg-white border">
+            <div id="listOrderLines" class="d-flex flex-column justify-content-start p-2 bg-white border">
 
             </div>
 
@@ -72,6 +84,8 @@ if (!isset($orders)) {
         </div>
     </div>
 </div>
+
+<?php } ?>
 
 <script>
     const ROOT = '<?= BASE_URL ?>';
