@@ -42,6 +42,8 @@ class RecipeController extends BaseController
             $this->addIngredient(); // this is the method called by the fetch API with the recipe/editaddingredient ROOT.
         } else if (($this->_url) == "recipe_editdeleteingredient") {
             $this->deleteIngredient(); // this is the method called by the fetch API with the recipe/editdeleteingredient ROOT.
+        } else if (($this->_url) == "recipe_delete") {
+            $this->deleteRecipe(); // this is the method called by the fetch API with the recipe/delete ROOT.
         }
         $data["title"] = "Recipes";
         $data["url"] = $this->_url;
@@ -148,8 +150,14 @@ class RecipeController extends BaseController
                 $productNameError = $ingredient->setProductName($nameIngredient);
                 if ($productNameError == "") {
                     $ingredientId = $ingredientDAO->createProductIngredient($nameIngredient);
+                    $ingredient->setIdProduct($ingredientId);
                 }
-                $ingredient->setIdProduct($ingredientId);
+            }
+
+            foreach($recipeIngredients as $recipeIngredient){ // then we check if this ingredient is already in the recipeIngredients list for this recipe
+                if ($recipeIngredient->getIDIngredient()==$ingredient->getIdProduct()){
+                    $productNameError = "This ingredient is already on the list. Please delete it before adding it again";
+                }
             }
 
             $unitDAO = new UnitMeasureDAO();
@@ -161,8 +169,8 @@ class RecipeController extends BaseController
                 $unitNameError = $unit->setName($unitName);
                 if ($unitNameError == "") {
                     $unitId = $unitDAO->createUnitMeasure($unitName);
+                    $unit->setIdUnitMeasure($unitId);
                 }
-                $unit->setIdUnitMeasure($unitId);
             }
 
             $quantity = filter_input(INPUT_POST, "quantity_ingredient", FILTER_SANITIZE_STRING); // we get the quantity
@@ -173,6 +181,8 @@ class RecipeController extends BaseController
             $recipeIngredient->setIdRecipe($idRecipe);
             $recipeIngredient->setIDUnitMeasure($unit->getIdUnitMeasure());
             $recipeIngredient->setIDIngredient($ingredient->getIdProduct());
+
+
 
             $errorMessages = ['productName' => $productNameError, 'unitName' => $unitNameError, 'quantity' => $quantityError];
             $data['errorMessages'] = $errorMessages;
@@ -377,17 +387,20 @@ class RecipeController extends BaseController
             $difficulty = filter_input(INPUT_POST, "difficulty", FILTER_SANITIZE_STRING);
             $numberOfPeople = filter_input(INPUT_POST, "numberOfPeople", FILTER_SANITIZE_STRING);
             $preparationTime = filter_input(INPUT_POST, "preparationTime", FILTER_SANITIZE_STRING);
+            $recipeState = filter_input(INPUT_POST, "recipeState", FILTER_SANITIZE_STRING);
 
             $recipeEdit = $this->recipeDAO->getRecipe($idRecipe); // get all the info of the recipe from the database
             $formerRecipeName = $recipeEdit->getRecipeName();
             $formerDifficulty = $recipeEdit->getDifficulty();
             $formerNumberOfPeople = $recipeEdit->getNumberOfPeople();
             $formerPreparationTime = $recipeEdit->getTime();
+            $formerRecipeState = $recipeEdit->getState();
 
             $RecipeNameError = $recipeEdit->setRecipeName($recipeName);
             $DifficultyError = $recipeEdit->setDifficulty($difficulty);
             $NumberOfPeopleError = $recipeEdit->setNumberOfPeople($numberOfPeople);
             $PreparationTimeError =  $recipeEdit->setTime($preparationTime);
+            $recipeEdit->setState($recipeState);
            
 
             if ($recipeEdit->getRecipeName()!= $formerRecipeName && $this->recipeDAO->recipeDoesExist($recipeName) == true) { // if the new name of the recipe is already taken
@@ -410,15 +423,53 @@ class RecipeController extends BaseController
                 if ($formerPreparationTime !=$preparationTime){ // if the preparation time changed
                     $idRecipe = $this->recipeDAO->editRecipe($recipeEdit, "time");
                 }
+                if ($formerRecipeState != $recipeState) { // if the states changed
+                    $this->recipeDAO->editRecipe($recipeEdit, "state");
+                }
 
-                $data['recipeAdd'] = $recipeEdit;
+                $data['recipeEdit'] = $recipeEdit;
                 $data['idRecipe'] = $recipeEdit->getIdRecipe();
                 $data['nameRecipe'] = $recipeEdit->getRecipeName();
                 $data['difficultyRecipe'] = $recipeEdit->getDifficulty();
                 $data['numberPeopleRecipe'] = $recipeEdit->getNumberOfPeople();
                 $data['timeRecipe'] = $recipeEdit->getTime();
+                $data['recipeState'] = $recipeEdit->getState();
                 $data['success'] = true;
             }
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the Ajax method to delete a Recipe (change state to Blocked)
+     */
+    private function deleteRecipe()
+    {
+        $data = [];
+        $data['success'] = false;
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idRecipe = $_POST["idRecipe"]; // first we get the id of the recipe
+            $recipeEdit = $this->recipeDAO->getRecipe($idRecipe); // we get the recipe from the database
+            $recipeEdit->setState("b"); // we change is state in local
+            $this->recipeDAO->editRecipe($recipeEdit, "state"); // we change its state in the database
+            $recipes = $this->recipeDAO->getRecipes(); // we get back all the recipes from the database
+            $index = 0;
+            // in this loop we prepare the return data from the fetch
+            foreach ($recipes as $recipe) {
+                $data['recipes'][$index]['id'] = $recipe->getIdRecipe();
+                $data['recipes'][$index]['name'] = $recipe->getRecipeName();
+                $data['recipes'][$index]['difficulty'] = $recipe->getDifficulty();
+                $data['recipes'][$index]['number'] = $recipe->getNumberOfPeople();
+                $data['recipes'][$index]['time'] = $recipe->getTime();
+                $data['recipes'][$index]['chief'] = $recipe->getChief()->getLastname();
+                $data['recipes'][$index]['state'] = $recipe->getDisplayState();
+                $data['recipes'][$index]['action'] = '<a class="btn-modify-recipe" href="' . BASE_URL . 'recipe/edit/' .  $recipe->getIdRecipe() . ' "data-id=' . $recipe->getIdRecipe() . '>Modify</br></a>
+                <a class="btn-delete-recipe" onclick="allRecipesDelete()" data-id=' . $recipe->getIdRecipe() . '>Delete</a>';
+                $index++;
+            }
+            $data['success'] = true;
         }
         echo json_encode($data);
         die;
