@@ -29,4 +29,7 @@ if (!isset($title)) {
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
   <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
+
+  <!-- Toast UI -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
 </head>
