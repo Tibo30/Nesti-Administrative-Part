@@ -27,7 +27,11 @@ class UserController extends BaseController
         } else if (($this->_url) == "user_usercomment") {
             $this->changeStateComment(); // this is the method called by the fetch API with the user/usercomment ROOT.
         } else if (($this->_url) == "user_edituser") {
-            $this->editUserDatabase(); // this is the method called by the fetch API with the recipe/edituser ROOT.
+            $this->editUserDatabase(); // this is the method called by the fetch API with the user/edituser ROOT.
+        } else if (($this->_url) == "user_delete") {
+            $this->deleteUser(); // this is the method called by the fetch API with the user/delete ROOT.
+        } else if (($this->_url) == "user_resetpassword") {
+            $this->resetPassword(); // this is the method called by the fetch API with the user/resetpassword ROOT.
         }
         $data["title"] = "Users";
         $data["url"] = $this->_url;
@@ -278,13 +282,13 @@ class UserController extends BaseController
                 if ($formerUserPostCode != $userPostCode) { // if the postcode changed
                     $this->userDAO->editUser($userEdit, "postcode");
                 }
-                if ($formerUserRoles != $userRoles && $userRoles!=null) { // if the roles changed
+                if ($formerUserRoles != $userRoles && $userRoles != null) { // if the roles changed
                     $roleDAO = new RoleDAO();
-                    foreach($userRoles as $role){ // check which role has been added
-                        if (array_search($role,$formerUserRoles)===false){ // if this role wasn't is the former list we add the role
+                    foreach ($userRoles as $role) { // check which role has been added
+                        if (array_search($role, $formerUserRoles) === false) { // if this role wasn't is the former list we add the role
                             $roleDAO->editRoles($userEdit, $role);
                         }
-                    } 
+                    }
                 }
                 if ($formerUserState != $userState) { // if the states changed
                     $this->userDAO->editUser($userEdit, "state");
@@ -304,6 +308,74 @@ class UserController extends BaseController
                 $data['userRoles'] = $userEdit->getRoles();
                 $data['userState'] = $userEdit->getState();
                 $data['success'] = true;
+            }
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the Ajax method to delete a User (change state to Blocked)
+     */
+    private function deleteUser()
+    {
+        $data = [];
+        $data['success'] = false;
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idUser = $_POST["idUser"]; // first we get the id of the user
+            $userEdit = $this->userDAO->getOneUser($idUser); // we get the user from the database
+            $userEdit->setState("b"); // we change is state in local
+            $this->userDAO->editUser($userEdit, "state"); // we change its state in the database
+            $users = $this->userDAO->getUsers(); // we get back all the users from the database
+            $index = 0;
+            $data['test'] = $userEdit->getIdUser();
+            // in this loop we prepare the return data from the fetch
+            foreach ($users as $user) {
+                $data['users'][$index]['id'] = $user->getIdUser();
+                $data['users'][$index]['username'] = $user->getUsername();
+                $data['users'][$index]['name'] = $user->getLastname() . ' ' .  $user->getFirstname();
+                $data['users'][$index]['role'] = implode(" ", $user->getDisplayRoles());
+                $data['users'][$index]['connection'] = $user->getLog()->getConnectionDate();
+                $data['users'][$index]['state'] = $user->getDisplayState();
+                $data['users'][$index]['action'] = '<a class="btn-modify-user" href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . ' "data-id=' . $user->getIdUser() . '>Modify</br></a>
+                <a class="btn-delete-user" data-id=' . $user->getIdUser() . ' data-toggle="modal" data-target="#modalDeleteUser">Delete</a>';
+                $index++;
+            }
+            $data['success'] = true;
+        }
+        echo json_encode($data);
+        die;
+    }
+
+    /**
+     * this is the Ajax method to reset the password of a User
+     */
+    private function resetPassword()
+    {
+        $data = [];
+        $data['success'] = false;
+
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+            $idUser = $_POST["id_user"]; // first we get the id of the user
+            $userEdit = $this->userDAO->getOneUser($idUser); // we get the user from the database
+
+            $list = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZabcefghijklmnopqrstuvwxyz@!$%#';
+            $password = substr(str_shuffle($list), 0, 15); // get a random password
+
+            do { // while the password doesn't match the regex we change it
+                $password = substr(str_shuffle($list), 0, 15);
+            } while (!preg_match("/^(?=.*?[A-Z])(?=(.*[a-z]))(?=(.*[\d]))(?=(.*[\W]))(?!.*\s).{12,}$/", $password));
+
+
+            $passwordError = $userEdit->setPassword($password);
+            $errorMessages = ['password' => $passwordError];
+            $data['errorMessages'] = $errorMessages;
+
+            if ($passwordError == "") {
+                $this->userDAO->editUser($userEdit, "password");
+                $data['success'] = true;
+                $data['password'] = $password;
             }
         }
         echo json_encode($data);
