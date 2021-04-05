@@ -9,9 +9,21 @@ if (!isset($articles)) {
 }
 ?>
 
-<div class="container d-flex flex-column align-items-left" id="allArticlesPage">
-    <h2 class="mb-5 mt-5">Article</h2>
+<?php if (array_search("admin", $_SESSION["roles"]) === false) {
 
+?>
+    <div class="container">
+        <h2 class="titleAccessForbidden">Access forbidden</h2>
+        <p class="textAccessForbidden">You don't have the rights to access this page</p>
+    </div>
+<?php } else { ?>
+
+<div class="container d-flex flex-column align-items-left position-relative" id="allArticlesPage">
+    <!-- div notif article delete -->
+    <div id="articleDeletedSuccess" class="notifications" hidden>
+        <p>The article has been deleted (blocked)</p>
+    </div>
+    <h2 class="mb-5 mt-5">Article</h2>
     <div class="d-flex flex-row justify-content-between">
         <nav class="navbar navbar-white bg-white pl-0">
             <form class="form-inline">
@@ -58,43 +70,69 @@ if (!isset($articles)) {
                 echo '<td>' . $article->getDisplayState() . '</td>';
                 echo '<td>' . $article->getStock() . '</td>';
                 echo '<td>';
-                echo '<a id="allArticlesModify" class="btn-modify-article" href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id=' . $article->getIdArticle() . '>Modify</br></a>';
-                echo '<a id="allArticlesDelete" class="btn-delete-article" onclick="allArticlesDelete()" data-id=' . $article->getIdArticle() . '>Delete</a>';
+                echo '<a class="btn-modify-article" href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id=' . $article->getIdArticle() . '>Modify</br></a>';
+                echo '<a class="btn-delete-article" data-id=' . $article->getIdArticle() . ' data-toggle="modal" data-target="#modalDeleteArticle' . $article->getIdArticle() . '">Delete</a>';
                 echo '</td>';
                 echo '</tr>';
+                echo '  <div class="modal fade" id="modalDeleteArticle' . $article->getIdArticle() . '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Do you really want to delete this article ?</h5>
+                            <button type="button" class="close" id="closeModalDelete' . $article->getIdArticle() . '" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <!-- <div class="modal-body">
+                                                            ...
+                                                        </div> -->
+                        <div class="modal-footer">
+                            <button id="confirm-delete-article" type="button" class="btn" data-id="' . $article->getIdArticle() . '" onclick="allArticlesDelete()" s>Confirm</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>';
             } ?>
         </tbody>
     </table>
 </div>
 
+<?php } ?>
+
 <script>
     const ROOT = '<?= BASE_URL ?>';
 
+    // hide the notification after a click
+    var notifs = document.querySelectorAll(".notifications");
+    notifs.forEach(element =>
+        element.addEventListener('click', (function(e) {
+            element.hidden = true;
+        }))
+    )
+
     function allArticlesDelete() {
         let idArticle = event.target.getAttribute('data-id');
-        if (confirm('Are you sure you want to delete this article ?')) {
-            deleteArticle(idArticle).then((response) => {
-                if (response) {
-                    if (response.success) {
-                        const tbody = document.querySelector("#allArticlesTbody");
-                        tbody.innerHTML=""; // we empty the tbody
-                        // then we fill it with the new articles got from the fetch
-                        response['articles'].forEach(element => {
-                            const tr = document.createElement("tr");
-                            tr.innerHTML = "<td>" + element.id + "</td><td>" + element.name + "</td><td>" + element.selling_price + "</td><td>" + element.type + "</td><td>" + element.last_import + "</td><td>" + element.state + "</td><td>" + element.stock + "</td><td>" + element.action + "</td>";
-                            tbody.appendChild(tr); // We add the new lines to the tbody
-                        })
-                        alert('This article has been deleted from the database !');
-                    }
+        deleteArticle(idArticle).then((response) => {
+            if (response) {
+                if (response.success) {
+                    const tbody = document.querySelector("#allArticlesTbody");
+                    tbody.innerHTML = ""; // we empty the tbody
+                    // then we fill it with the new articles got from the fetch
+                    response['articles'].forEach(element => {
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = "<td>" + element.id + "</td><td>" + element.name + "</td><td>" + element.selling_price + "</td><td>" + element.type + "</td><td>" + element.last_import + "</td><td>" + element.state + "</td><td>" + element.stock + "</td><td>" + element.action + "</td>";
+                        tbody.appendChild(tr); // We add the new lines to the tbody
+                    })
+                    document.querySelector("#closeModalDelete" + idArticle).click();
+                    document.querySelector("#articleDeletedSuccess").hidden = false;
                 }
-            })
-        } else {
-            alert('The article has not been deleted from the database !');
-        }
+            }
+        })
     }
 
 
-     /**
+    /**
      * Ajax Request to delete the Article (change the status to blocked)
      * @param int idArticle
      * @returns mixed
@@ -112,7 +150,7 @@ if (!isset($articles)) {
             cache: 'default',
             body: formData
         };
-        
+
         // Use the fetch API to access the database (the method is called in the ArticleController)
         let response = await fetch(ROOT + 'article/delete', myInit);
         try {
