@@ -182,4 +182,21 @@ class RecipeDAO extends ModelDAO
         $req->execute(array("idParagraph" => $idParagraph));
         $req->closeCursor(); // release the server connection so it's possible to do other query
     }
+
+    
+    // get all grades for a recipe
+    public function getGrades($idRecipe)
+    {
+        $var = [];
+        $req = self::$_bdd->prepare('SELECT * FROM grade WHERE id_recipes=:id');
+        $req->execute(array("id" => $idRecipe));
+        if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($data as $row) {
+                $grade = new Grade();
+                $var[] = $grade->hydration($row);
+            }
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $var;
+    }
 }
