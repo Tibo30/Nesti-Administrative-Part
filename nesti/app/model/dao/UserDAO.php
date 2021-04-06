@@ -157,4 +157,20 @@ class UserDAO extends ModelDAO
                 break;
         }
     }
+
+    public function getChiefs()
+    {
+        $var = [];
+        $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.address1, u.address2, u.postcode, u.id_city FROM users u JOIN chief ch ON u.id_users = ch.id_users');
+        $req->execute();
+        if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($data as $row) {
+                $chiefUser = new User();
+                $chief['roles'] = "Chief";
+                $var[] = $chiefUser->hydration($row);
+            }
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $var;
+    }
 }
