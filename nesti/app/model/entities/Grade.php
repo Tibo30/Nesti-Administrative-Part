@@ -4,6 +4,15 @@ class Grade {
     private $idRecipe;
     private $grade;
 
+    public function hydration($data)
+    {
+        $this->idUser = $data['id_users'];
+        $this->idRecipe = $data['id_recipes'];
+        $this->grade = $data['grade'];
+
+        return $this;
+    }
+
     /**
      * Get the value of idUser
      */ 
