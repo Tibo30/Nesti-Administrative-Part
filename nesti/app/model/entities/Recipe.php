@@ -321,4 +321,24 @@ class Recipe
          }
          return $state;
      }
+
+     /**
+     * Get the grades for the recipe
+     */
+    public function getGrade()
+    {
+        $result=0;
+        $total=0;
+        $recipeDAO = new RecipeDAO();
+        $grades = $recipeDAO->getGrades($this->idRecipe);
+
+        foreach ($grades as $grade) { // get the total of the grades
+            $total += $grade->getGrade();
+        }
+
+        if(count($grades)!=0){ // get the average grade
+            $result = $total/count($grades);
+        }
+        return $result;
+    }
 }
