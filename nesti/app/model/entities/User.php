@@ -360,9 +360,19 @@ class User
      */
     public function getLog()
     {
-        $logDAO = new UserDAO();
+        $logDAO = new UserLogsDAO();
         $log = $logDAO->getLog($this->idUser);
         return $log;
+    }
+
+       /**
+     * Get the logs of a user
+     */
+    public function getLogs()
+    {
+        $logDAO = new UserLogsDAO();
+        $logs = $logDAO->getLogsUser($this->idUser);
+        return $logs;
     }
 
     public function getCity()
