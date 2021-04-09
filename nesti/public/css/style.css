@@ -43,6 +43,11 @@ h2{
     color: #00595a;
 }
 
+h1{
+    font-weight: bolder;
+    color: #00595a;
+}
+
 h3{
     font-weight: bold;
     color: #00595a;
@@ -486,6 +491,49 @@ color: var(--classicColorGrey);
     cursor: pointer;
 }
 
+#recipeCreatedSuccess, #recipePictureAddSuccess, #recipeIngredientAddSuccess, #recipeIngredientDeletedSuccess, #recipeParagraphDeletedSuccess, #recipeParagraphMovedSuccess, #recipeParagraphSavedSuccess{
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonValidate);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
+}
+
+#recipePictureAddInfo{
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonAlert);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
+}
+
+#recipePictureAddError{
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonDanger);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
+}
+
+
 /*------------------------------------ recipe edit content -------------------------------*/
 
 #recipeEditPage .underLink>a,#recipeAddPage .underLink>p{
@@ -598,7 +646,7 @@ color: var(--classicColorGrey);
     background-color: red;
 }
 
-#recipeEditSuccess, #recipePictureEditSuccess, #recipePictureDeleteSuccess, #recipeEditIngredientEditSuccess, #recipeEditIngredientDeletedSuccess{
+#recipeEditSuccess, #recipePictureEditSuccess, #recipePictureDeleteSuccess, #recipeEditIngredientEditSuccess, #recipeEditIngredientDeletedSuccess, #recipeEditParagraphDeletedSuccess, #recipeEditParagraphMovedSuccess, #recipeEditParagraphSavedSuccess{
     position: absolute;
     right: 0;
     background-color: var(--colorButtonValidate);
@@ -626,7 +674,7 @@ color: var(--classicColorGrey);
     z-index:100;
 }
 
-#confirm-edit-picture-recipe, #confirm-edit-recipe, #confirm-delete-picture-recipe{
+#confirm-edit-picture-recipe, #confirm-edit-recipe, #confirm-delete-picture-recipe, #confirm-edit-recipe-delete-paragraph{
     background-color:var( --colorButtonValidate);
 }
 
@@ -726,6 +774,20 @@ color: var(--classicColorGrey);
 #passwordVerification {
     font-size: small;
     line-height: 1rem;
+}
+
+#userCreatedSuccess{
+    position: absolute;
+    right: 0;
+    background-color: var(--colorButtonValidate);
+    width: 50%;
+    min-width: 200px;
+    min-height: 100px;
+    border-radius: 5px;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    z-index:100;
 }
 
 /*------------------------------------ user edit content -------------------------------*/
@@ -846,4 +908,50 @@ color: var(--classicColorGrey);
 #connectionPage button{
     background-color: var(--colorButtonInformation);
     width: 40%;
+}
+
+/*------------------------------------ statistics -------------------------------*/
+
+#statisticsPage{
+    max-width: 80%;
+}
+
+.btn-see-user{
+    color:var(--colorButtonInformation);
+    cursor: pointer;
+}
+
+.btn-see-order{
+    color:var(--colorButtonInformation);
+    cursor: pointer;
+}
+
+.btn-see-recipe{
+    color:var(--colorButtonInformation);
+    cursor: pointer;
+}
+
+#topChief{
+    min-height: 250px;
+}
+
+#topRecipe{
+    min-width: 300px;
+    min-height: 80%;
+}
+
+#statisticsPage thead{
+    background-color:var(--primaryColor) ;
+    color: var(--classicColorWhite);
+}
+
+.btn-see-articleOutOfStock{
+    color:var(--colorButtonInformation);
+    cursor: pointer;
+}
+
+
+#statisticsPage .fixed-table-container,#topRecipe, #topChief, #biggestOrders,#mostConnectedUsers {
+    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.25), 0 5px 7px 0 rgba(0, 0, 0, 0.25);  
+    
 }
