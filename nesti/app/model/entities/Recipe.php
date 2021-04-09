@@ -323,7 +323,7 @@ class Recipe
      }
 
      /**
-     * Get the grades for the recipe
+     * Get the average grade for the recipe
      */
     public function getGrade()
     {
@@ -339,6 +339,7 @@ class Recipe
         if(count($grades)!=0){ // get the average grade
             $result = $total/count($grades);
         }
+        
         return $result;
     }
 }
