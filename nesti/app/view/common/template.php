@@ -37,6 +37,7 @@ if (!isset($url)) {
     <script src="<?php echo BASE_URL ?>public/js/script.js"></script>
       <!-- Toast UI -->
     <script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
+    <script src="<?php echo BASE_URL ?>public/js/tui-chart.js"></script>
 
 </body>
 
