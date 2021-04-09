@@ -82,5 +82,21 @@ class OrderDAO extends ModelDAO
         return $lastOrder;
     }
 
+    // get all the orders by day
+    public function getOrdersByDay($day)
+    {
+        $var = [];
+        $req = self::$_bdd->prepare('SELECT * FROM order_request WHERE creation_date LIKE :date"%" AND state="a"');
+        $req->execute(array("date" => $day));
+        if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($data as $row) {
+                $order = new Order();
+                $order->hydration($row);
+                $var[] = $order;
+            }
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $var;
+    }
 
 }
