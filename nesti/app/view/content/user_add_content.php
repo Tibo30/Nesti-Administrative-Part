@@ -11,7 +11,11 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 <?php if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("admin", $_SESSION["roles"]) !== false) {
 
 ?>
-    <div class="container bg-white align-items-left" id="userAddPage">
+    <div class="container bg-white align-items-left position-relative" id="userAddPage">
+        <!-- div notif user created -->
+        <div id="userCreatedSuccess" class="notifications" hidden>
+            <p>The user has been successfully created </p>
+        </div>
         <div class="d-flex flex-row underLink">
             <a href="<?= BASE_URL ?>user"><u>Users</u>
             </a>
@@ -160,6 +164,14 @@ if (!isset($errorMessages) || empty($errorMessages)) {
     const ROOT_ICONS = '<?= BASE_URL . PATH_ICONS ?>';
     const ROOT = '<?= BASE_URL ?>';
 
+    // hide the notification after a click
+    var notifs = document.querySelectorAll(".notifications");
+    notifs.forEach(element =>
+        element.addEventListener('click', (function(e) {
+            element.hidden = true;
+        }))
+    )
+
     // -------------------------------- Add user --------------------------//  
 
     var formAddUser = document.querySelector("#addUserForm"); // get the form used to add the user
@@ -197,7 +209,6 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                         document.querySelector("#userState").options.selectedIndex = 2;
                     }
 
-
                     document.querySelector("#errorUserLastname").innerHTML = "";
                     document.querySelector("#errorUserFirstname").innerHTML = "";
                     document.querySelector("#errorUserEmail").innerHTML = "";
@@ -209,7 +220,8 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                     document.querySelector("#errorUserCity").innerHTML = "";
                     document.querySelector("#errorUserPostcode").innerHTML = "";
 
-                    alert("user added");
+                    document.querySelector("#userCreatedSuccess").hidden = false;
+
                 } else {
                     document.querySelector("#errorUserLastname").innerHTML = response.errorMessages['userLastname'];
                     document.querySelector("#errorUserFirstname").innerHTML = response.errorMessages['userFirstname'];
