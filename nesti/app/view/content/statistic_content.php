@@ -6,55 +6,225 @@
         <p class="textAccessForbidden">You don't have the rights to access this page</p>
     </div>
 <?php } else { ?>
-    <h1>Stats</h1>
-    
-    <div class="button">
+    <div id="statisticsPage" class="container">
+        <div class="d-flex flex-column">
+            <h1>Stats</h1>
 
+            <div class="d-flex flex-row flex-wrap justify-content-between mb-3">
+                <div class="d-flex flex-column">
+                    <h2>Orders</h2>
+                    <div id="toastOrders"> </div>
+                    <p>Biggest orders</p>
+                    <div id="biggestOrders" class="border p-3">
+                        <?php foreach ($biggestOrders as $biggestOrder) {
+                            echo '<div class="d-flex flex-row justify-content-between mb-3"><div class="mr-2"> Commande n° ' . $biggestOrder->getIdOrder() . '</div><a class="btn-see-order" href="' . BASE_URL . 'article/orders' . '">see</a></div>';
+                        } ?>
+                    </div>
+                </div>
+                <div class="d-flex flex-column">
+                    <h2>Website Consultation</h2>
+                    <div id="toastPieConnection"> </div>
+                </div>
+                <div class="d-flex flex-column ">
+                    <p>TOP 10 Users</p>
+                    <div id="mostConnectedUsers" class="border p-3">
+                        <?php foreach ($mostConnectedUsers as $mostConnectedUser) {
+                            echo '<div class="d-flex flex-row justify-content-between mb-3"><div class="mr-2">' . $mostConnectedUser["name"] . '</div><a class="btn-see-user" href="' . BASE_URL . 'user/edit/' . $mostConnectedUser["id"] . '">see</a></div>';
+                        } ?>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex flex-row flex-wrap justify-content-between">
+                <div class="d-flex flex-column">
+                    <h2>Recipes</h2>
+                    <div class="d-flex flex-row flex-wrap justify-content-around">
+                        <div>
+                            <p>TOP 10 Chiefs</p>
+                            <div id="topChief" class="border p-3">
+                                <?php foreach ($topChiefs as $topChief) {
+                                    echo '<div class="d-flex flex-row justify-content-between mb-3"><div class="mr-2">' . $topChief->getLastName() . " " . $topChief->getFirstName() . '</div><a class="btn-see-user" href="' . BASE_URL . 'user/edit/' . $topChief->getIdUser() . '">see</a></div>';
+                                } ?>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p>TOP 10 Recipes</p>
+                            <div id="topRecipe" class="border p-3">
+                                <?php foreach ($topRecipes as $recipe) {
+                                    echo '<div class="d-flex flex-row justify-content-between mb-3"><a class="mr-2 btn-see-recipe" href="' . BASE_URL . 'recipe/edit/' . $recipe->getIdRecipe() . '">' . $recipe->getRecipeName() . '</a><div>by ' . $recipe->getChief()->getLastName() . " " . $recipe->getChief()->getFirstName() . '</div></div>';
+                                } ?>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="d-flex flex-column mb-3">
+                    <h2>Articles</h2>
+                    <p>Articles for sales : <?php echo count($articles); ?></p>
+                    <div id="toastArticles"> </div>
+                    <p>Out of stock</p>
+                    <table class="table-borderless table-striped" id="table" data-toggle="table" data-sortable="true">
+                        <thead>
+                            <th>Name</th>
+
+                            <th>Quantity sold</th>
+
+                            <th>Benefits</th>
+
+                            <th>Action</th>
+
+                        </thead>
+                        <tbody id="allOutOfStockArticles">
+                            <?php
+                            foreach ($articleOutOfStock as $article) {
+                                echo '<tr>';
+                                echo '<td>' . $article->getProduct()->getProductName() ." (".$article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() ." )". '</td>';
+                                echo '<td>' . $article->getQuantitySold() . '</td>';
+                                echo '<td>' . $article->getBenefits() . '</td>';
+                                echo '<td>';
+                                echo '<a class="btn-see-articleOutOfStock" href="' . BASE_URL . 'article/edit/' . $article->getIdArticle() .'">see</br></a>';
+                                echo '</td>';
+                                echo '</tr>';
+                            } ?>
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
 <?php } ?>
 
+
 <script>
-const data = [
-            { "nomHaras": "Emma", "ville": "Montpellier", "dateCreation": "2016", "surface": "85h", "active": "true" },
-            { "nomHaras": "Copeland", "ville": "Oppido Mamertina", "dateCreation": "2009", "surface": 231, "active": false }, { "nomHaras": "Mercer", "ville": "Caerphilly", "dateCreation": "1979", "surface": 65, "active": false },
-            { "nomHaras": "Atkins", "ville": "Nocera Umbra", "dateCreation": "1969", "surface": 109, "active": true }, { "nomHaras": "Blackwell", "ville": "Rattray", "dateCreation": "1979", "surface": 74, "active": false }, { "nomHaras": "Jarvis", "ville": "Essex", "dateCreation": "1986", "surface": 183, "active": false },
-            { "nomHaras": "Tate", "ville": "Kelowna", "dateCreation": "2011", "surface": 178, "active": true },
-            { "nomHaras": "Jarvis", "ville": "Lutsel K'e", "dateCreation": "2001", "surface": 120, "active": false }, { "nomHaras": "Crane", "ville": "Istres", "dateCreation": "1996", "surface": 159, "active": true },
-            { "nomHaras": "Parsons", "ville": "Uyo", "dateCreation": "1968", "surface": 226, "active": true },
-            { "nomHaras": "Kidd", "ville": "Laja", "dateCreation": "1965", "surface": 48, "active": false },
-            { "nomHaras": "Velazquez", "ville": "Akhisar", "dateCreation": "1996", "surface": 173, "active": true }, { "nomHaras": "West", "ville": "Pınarbaşı", "dateCreation": "2012", "surface": 98, "active": false },
-            { "nomHaras": "Morris", "ville": "Richmond Hill", "dateCreation": "1991", "surface": 142, "active": true },
-            { "nomHaras": "Wise", "ville": "King Township", "dateCreation": "2018", "surface": 140, "active": true }, { "nomHaras": "Simpson", "ville": "Swansea", "dateCreation": "1966", "surface": 64, "active": true }, { "nomHaras": "Stevenson", "ville": "Worcester", "dateCreation": "1965", "surface": 166, "active": true }, { "nomHaras": "Caldwell", "ville": "Leganés", "dateCreation": "1992", "surface": 114, "active": false }, { "nomHaras": "Fields", "ville": "Lamorteau", "dateCreation": "2009", "surface": 26, "active": true }, { "nomHaras": "Gray", "ville": "Kapolei", "dateCreation": "2004", "surface": 197, "active": true },
-            { "nomHaras": "Patel", "ville": "Busan", "dateCreation": "1991", "surface": 64, "active": false },
-            { "nomHaras": "Nguyen", "ville": "Puno", "dateCreation": "1977", "surface": 58, "active": true }, { "nomHaras": "Melendez", "ville": "Pochep", "dateCreation": "1996", "surface": 78, "active": true }, { "nomHaras": "Larson", "ville": "Guadalupe", "dateCreation": "1986", "surface": 127, "active": true }, { "nomHaras": "Randolph", "ville": "Yorkton", "dateCreation": "1969", "surface": 175, "active": true }
-        ]
+    // ---------------------------- Orders -----------------------------//
+    const el = document.getElementById('toastOrders');
+    var totalPurchasedPerDay = <?php echo json_encode($totalPurchasedPerDay) ?>;
+    var totalSoldPerDay = <?php echo json_encode($totalSoldPerDay) ?>;
+
+    const data = {
+
+        categories: [
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9'
+        ],
+
+        series: [{
+            name: 'Cost',
+            data: totalPurchasedPerDay,
+        }, {
+            name: 'Sells',
+            data: totalSoldPerDay,
+        }],
+    };
+
+    const options = {
+        chart: {
+            title: '',
+            width: 600,
+            height: 400
+        },
+        xAxis: {
+            pointOnColumn: false,
+            title: {
+                text: ''
+            }
+        },
+        yAxis: {
+            title: ''
+        },
+    };
+
+    const chartLog = toastui.Chart.lineChart({
+        el,
+        data,
+        options
+    });
 
 
-        //localStorage.setItem("Hara1",JSON.stringify(data[0]));
-        //alert("data 1 : "+localStorage.getItem("Hara1"));
-        var div = document.querySelector(".button");
 
-        for (var i = 0; i < data.length; i++) {
-            var button = document.createElement("button");
-            var haravalue = "Hara " + (i + 1);
-            localStorage.setItem(haravalue, JSON.stringify(data[i]));
-            button.setAttribute("data-hara", haravalue);
-            button.innerHTML = haravalue;
-            div.appendChild(button);
+    // ---------------------------- Website Consultation -----------------------------//
+    const el1 = document.getElementById('toastPieConnection');
+    var connectionPerHour = <?php echo json_encode($connectionPerHour) ?>;
+    const dataConnectionLogPerHour = {
+        categories: ['Connection'],
+        series: connectionPerHour
+    }
+    const optionsConnectionLog = {
+        chart: {
+            title: '',
+            width: 400,
+            height: 400
+        },
+        legend: {
+            visible: false
+        },
+        series: {
+            dataLabels: {
+                visible: true,
+                anchor: 'outer',
+                formatter: (value) => value,
+                pieSeriesName: {
+                    visible: true,
+                },
+            },
+            radiusRange: {
+                inner: '60%',
+                outer: '100%',
+            }
         }
 
-        var listButton = document.querySelectorAll("button");
+    };
+    const chartConection = toastui.Chart.pieChart({
+        el: el1,
+        data: dataConnectionLogPerHour,
+        options: optionsConnectionLog
+    });
 
-        for (var i = 0; i < listButton.length; i++) {
-            var haravalue = "Hara " + (i + 1);
-            var button = document.querySelector("button[data-hara='" + haravalue + "']");
-            console.log(button);
-            button.addEventListener('click', function () {
-                alert(button.dataset.hara + " " + localStorage.getItem(haravalue))
-            });
-        }
+    // ---------------------------- Articles -----------------------------//
+    const el2 = document.getElementById('toastArticles');
+    var articleSold = <?php echo json_encode($articleSold) ?>;
+    var articleBought = <?php echo json_encode($articleBought) ?>;
+    var articles = <?php echo json_encode($articles) ?>;
+    var articleInStock = <?php echo json_encode($articleInStock) ?>;
+    var clésDenses = Object.keys(articles);
+    console.log(articles);
 
-        //alert("hara 2 " + localStorage.getItem("Hara 2"));
-        //alert("hara 5 " + localStorage.getItem("Hara 5"));
+    const dataArticle = {
+        categories: clésDenses,
+        series: [{
+                name: 'cost amount',
+                data: articleBought,
+            },
+            {
+                name: 'sold amount',
+                data: articleSold,
+            }
+        ],
+    };
+    const optionsArticle = {
+        chart: {
+            title: "",
+            width: 900,
+            height: 400
+        },
+    };
 
-
+    const chartArticle = toastui.Chart.columnChart({
+        el: el2,
+        data: dataArticle,
+        options: optionsArticle
+    });
 </script>
