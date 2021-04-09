@@ -87,7 +87,7 @@ if (!isset($articles)) {
                                                             ...
                                                         </div> -->
                         <div class="modal-footer">
-                            <button id="confirm-delete-article" type="button" class="btn" data-id="' . $article->getIdArticle() . '" onclick="allArticlesDelete()" s>Confirm</button>
+                            <button id="confirm-delete-article" type="button" class="btn" data-id="' . $article->getIdArticle() . '" onclick="allArticlesDelete()">Confirm</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                         </div>
                     </div>
