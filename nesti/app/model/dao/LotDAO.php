@@ -27,5 +27,22 @@ class LotDAO extends ModelDAO
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $lot;
     }
+
+    // get all the lots by day
+    public function getLotsByDay($day)
+    {
+        $var = [];
+        $req = self::$_bdd->prepare('SELECT * FROM lots WHERE received_date LIKE :date"%"');
+        $req->execute(array("date" => $day));
+        if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($data as $row) {
+                $lot = new Lot();
+                $lot->hydration($row);
+                $var[] = $lot;
+            }
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $var;
+    }
     
 }
