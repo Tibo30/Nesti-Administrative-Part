@@ -32,4 +32,10 @@ if (!isset($title)) {
 
   <!-- Toast UI -->
   <link rel="stylesheet" href="https://uicdn.toast.com/chart/latest/toastui-chart.min.css" />
+  <link href="<?php echo BASE_URL ?>public/css/tui-chart.css" rel="stylesheet">
+
+  <!-- Toast UI -->
+  <script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
+  <script src="<?php echo BASE_URL ?>public/js/tui-chart.js"></script>
+
 </head>
