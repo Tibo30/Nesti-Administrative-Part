@@ -26,16 +26,15 @@ class StatisticController extends BaseController
 
         foreach ($allLogs as $log) {
             $format = 'Y-m-d H:i:s';
-            $logDate = DateTime::createFromFormat($format, $log->getConnectionDate()); // fromat each connection date
-            //var_dump( $logDate);
+            $logDate = DateTime::createFromFormat($format, $log->getConnectionDate()); // format each connection date
             $hoursLog[$logDate->format('H')][] = $log; // sort the list of the logs by hours (hour is the key of the array $hoursLog)
         }
-        //var_dump($hoursLog);
 
         foreach ($hoursLog as $key => $logs) {
-            $connexionByHour[] = (object) array("hour" => $key, "number" => count($logs)); // count the number of logs for a given hour
+            $connectionPerHour[] = (object) array('name' => $key, 'data' => count($logs)); // count the number of logs for a given hour
         }
-        //var_dump($connexionByHour);
+
+        array_multisort($connectionPerHour, SORT_ASC);
 
 
         //  ------------------------------ GET ALL THE USERS --------------------------------- //
@@ -46,52 +45,107 @@ class StatisticController extends BaseController
         usort($users, function ($u1, $u2) { // sort the array DESC according to the number of logs for each user
             return count($u2->getLogs()) <=> count($u1->getLogs());
         });
-        var_dump($users);
         $users = array_slice($users, 0, 10); // we keep the first 10
 
-        $mostConectedUsers = [];
+        $mostConnectedUsers = [];
         foreach ($users as $user) {
-            $mostConectedUsers[] = ["id" => $user->getIdUser(), "name" => $user->getLastName() . ' ' . $user->getFirstName()];
+            $mostConnectedUsers[] = ["id" => $user->getIdUser(), "name" => $user->getLastName() . ' ' . $user->getFirstName()];
         }
-        // FormatUtil::dump($allOrders);
-        $startDate = new DateTime;
-        $startDate->add(DateInterval::createFromDateString("-10 days"));
 
-
-        //  ------------------------------ GET ALL THE CHIEFS --------------------------------- //
+        //  ------------------------------ GET THE TOP CHIEFS --------------------------------- //
 
         $chiefs = $userDAO->getChiefs();
-        usort($chiefs, function ($c1, $c2) { // sort the array DESC according to the number of recipes for each chief
-            return count($c2->getRecipes()) <=> count($c1->getRecipes());
+        usort($chiefs, function ($c1, $c2) { // sort the array DESC according to the average grade of recipes for each chief
+            return $c2->getAverageGrade() <=> $c1->getAverageGrade();
         });
-        var_dump($chiefs);
         $chiefs = array_slice($chiefs, 0, 10); // we keep the first 10
-
 
         //  ------------------------------ GET ALL THE RECIPES --------------------------------- //
         $recipeDAO = new RecipeDAO();
         $recipes = $recipeDAO->getRecipes();
         usort($recipes, function ($r1, $r2) { // sort the array DESC according to the grade of the recipe
-            return count($r2->getGrade()) <=> count($r1->getGrade());
+            return $r2->getGrade() <=> $r1->getGrade();
         });
-        var_dump($recipes);
         $recipes = array_slice($recipes, 0, 10); // we keep the first 10
 
 
-        //  ------------------------------ GET ALL THE RECIPES --------------------------------- //
+        //  ------------------------------ GET ALL THE ORDERS --------------------------------- //
         $orderDAO = new OrderDAO();
         $orders = $orderDAO->getOrders();
         usort($orders, function ($o1, $o2) { // sort the array DESC according to the price of the order
-            return count($o2->getAmount()) <=> count($o1->getAmount());
+            return $o2->getAmount() <=> $o1->getAmount();
         });
-        var_dump($orders);
-        $orders = array_slice($orders, 0, 10); // we keep the first 10
+        $orders = array_slice($orders, 0, 3); // we keep the first 3
 
 
+        //  ------------------------------ GET ALL THE ORDERS REQUEST COST/LOTS RECEIVED COST --------------------------------- //
+        $startDate = new DateTime;
+        $startDate->add(DateInterval::createFromDateString("-10 days"));
+
+        $today = date('Y-m-d');
+        $yesterday = date('Y-m-d', strtotime("-1 days"));
+
+        $totalSoldPerDay = [];
+        $totalPurchasedPerDay = [];
+        $lotDAO = new LotDAO();
+
+        for ($i = 9; $i >= 0; $i--) {
+            $dayDate = date('Y-m-d', strtotime("-" . $i . " days"));
+
+            $ordersByDay = $orderDAO->getOrdersByDay($dayDate);
+            $lotsByDay = $lotDAO->getLotsByDay($dayDate);
+
+            $totalSold = 0;
+            $totalPurchased = 0;
+            foreach ($ordersByDay as $order) {
+                $totalSold += $order->getAmount();
+            }
+            foreach ($lotsByDay as $lot) {
+                $totalPurchased += $lot->getUnitCost() * $lot->getBoughtQuantity();
+            }
+            $totalPurchasedPerDay[] = $totalPurchased;
+            $totalSoldPerDay[] = $totalSold;
+        }
 
 
+        //  ------------------------------ GET ALL THE ORDERS/LOTS --------------------------------- //
+        $articleDAO = new ArticleDAO();
+        $articles = $articleDAO->getArticles();
+        $articlesWithKey = [];
+
+        $articleOutOfStock = [];
+        $articleInStock = [];
+        foreach ($articles as $article) {
+            if ($article->getStock() == 0) {
+                $articleOutOfStock[] = $article;
+            } else {
+                $articleInStock[] = $article;
+            }
+            $articlesWithKey[$article->getProduct()->getProductName()] = $article;
+        }
+
+        $articleSold = [];
+        $articleBought = [];
+        foreach ($articles as $article) {
+            $articleSold[] = $article->getTotalSales();
+            $articleBought[] = $article->getTotalBought();
+        }
 
         $this->_view = new View('Statistic');
-        $this->_data = ['statistic' => $statistic, 'url' => $this->_url, "title" => "Statistic"];
+        $data["mostConnectedUsers"]=$mostConnectedUsers;
+        $data["biggestOrders"]=$orders;
+        $data["topChiefs"]=$chiefs;
+        $data["topRecipes"]=$recipes;
+        $data["connectionPerHour"] = $connectionPerHour;
+        $data["totalPurchasedPerDay"] = $totalPurchasedPerDay;
+        $data["totalSoldPerDay"] = $totalSoldPerDay;
+        $data["articles"] = $articlesWithKey;
+        $data["articleInStock"] = $articleInStock;
+        $data["articleOutOfStock"] = $articleOutOfStock;
+        $data["articleSold"] = $articleSold;
+        $data["articleBought"] = $articleBought;
+        $data["title"] = "Statistic";
+        $data["url"] = $this->_url;
+        $this->_data = $data;
     }
 }
