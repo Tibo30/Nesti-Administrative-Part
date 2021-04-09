@@ -180,6 +180,18 @@ if (!isset($ingredients)) {
         </div>
 
         <div class="container px-0 mx-0 mt-5 bg-light d-flex flex-row justify-content-between position-relative">
+            <!-- div notif paragraph deleted -->
+            <div id="recipeEditParagraphDeletedSuccess" class="notifications" hidden>
+                <p>The paragraph has been successfully deleted from the recipe. Please don't forget to save ! </p>
+            </div>
+            <!-- div notif paragraph moved-->
+            <div id="recipeEditParagraphMovedSuccess" class="notifications" hidden>
+                <p>Please don't forget to save ! </p>
+            </div>
+            <!-- div notif paragraph saved-->
+            <div id="recipeEditParagraphSavedSuccess" class="notifications" hidden>
+                <p>The paragraphs have been saved in the database </p>
+            </div>
             <!-- div notif ingredient added -->
             <div id="recipeEditIngredientEditSuccess" class="notifications" hidden>
                 <p>The recipe ingredient has been successfully added</p>
@@ -198,29 +210,49 @@ if (!isset($ingredients)) {
                         $index = 0;
                         $paragraphs = $recipe->getParagraphs();
                         foreach ($paragraphs as $paragraph) {
+                            echo '<div class="paragraphEditRecipeLine d-flex flex-row flex-wrap justify-content-between" order="' . $paragraph->getOrder() . '" data-id="' . $paragraph->getIdParagraph() . '">';
                             if ($index == 0) { // if this is the first paragraph
                                 if (count($paragraphs) > 1) { // if there is more than 1 paragraph
-                                    echo '<div class="paragraphEditRecipeLine d-flex flex-row flex-wrap justify-content-between" order="' . $paragraph->getOrder() . '" data-id="' . $paragraph->getIdParagraph() . '">
-                        <div class="paragraphIcons"><img class="downSvg" src="' . BASE_URL . PATH_ICONS . 'down-svg.png" alt="arrow down icon" ><img class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
+                                    echo '<div class="paragraphIcons"><img class="downSvg" src="' . BASE_URL . PATH_ICONS . 'down-svg.png" alt="arrow down icon" ><img data-toggle="modal" data-target="#modalEditRecipeDeleteParagraph' . ($index + 1) . '" class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
                         <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" max-length="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
-                        </div>';
+                        ';
                                 } else { // if there is only 1 paragraph
-                                    echo '<div class="paragraphEditRecipeLine d-flex flex-row flex-wrap justify-content-between" order="' . $paragraph->getOrder() . '" data-id="' . $paragraph->getIdParagraph() . '">
-                        <div class="paragraphIcons"><img class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
+                                    echo '                        <div class="paragraphIcons"><img data-toggle="modal" data-target="#modalEditRecipeDeleteParagraph' . ($index + 1) . '" class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
                         <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" max-length="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
-                        </div>';
+                        ';
                                 }
                             } else if ($index == count($paragraphs) - 1 && count($paragraphs) > 1) { // if this is the last paragraph and there is more than one
-                                echo '<div class="paragraphEditRecipeLine d-flex flex-row flex-wrap justify-content-between" order="' . $paragraph->getOrder() . '" data-id="' . $paragraph->getIdParagraph() . '">
-                        <div class="paragraphIcons"><img class="upSvg" src="' . BASE_URL . PATH_ICONS . 'up-svg.png" alt="arrow up icon" ><img class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
+                                echo '                        <div class="paragraphIcons"><img class="upSvg" src="' . BASE_URL . PATH_ICONS . 'up-svg.png" alt="arrow up icon" ><img data-toggle="modal" data-target="#modalEditRecipeDeleteParagraph' . ($index + 1) . '" class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
                         <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" max-length="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
-                        </div>';
+                        ';
                             } else {
-                                echo '<div class="paragraphEditRecipeLine d-flex flex-row flex-wrap justify-content-between" order="' . $paragraph->getOrder() . '" data-id="' . $paragraph->getIdParagraph() . '">
-                            <div class="paragraphIcons"><img class="upSvg" src="' . BASE_URL . PATH_ICONS . 'up-svg.png" alt="arrow up icon" ><img class="downSvg" src="' . BASE_URL . PATH_ICONS . 'down-svg.png" alt="arrow down icon" ><img class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
+                                echo '                        <div class="paragraphIcons"><img class="upSvg" src="' . BASE_URL . PATH_ICONS . 'up-svg.png" alt="arrow up icon" ><img class="downSvg" src="' . BASE_URL . PATH_ICONS . 'down-svg.png" alt="arrow down icon" ><img data-toggle="modal" data-target="#modalEditRecipeDeleteParagraph' . ($index + 1) . '" class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
                             <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" max-length="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
-                            </div>';
+                            ';
                             }
+
+
+                            echo '  <div id="test"><div class="modal fade" id="modalEditRecipeDeleteParagraph' . ($index + 1) . '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Do you really want to delete this paragraph ?</h5>
+                            <button type="button" class="close" id="closeModalEditRecipeDeleteParagraph' . $paragraph->getIdParagraph() . '" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <!-- <div class="modal-body">
+                                                            ...
+                                                        </div> -->
+                        <div class="modal-footer">
+                            <button id="confirm-edit-recipe-delete-paragraph" type="button" class="btn" data-id="' . $paragraph->getIdParagraph() . '" >Confirm</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            </div>';
                             $index++;
                         }
                         ?>
@@ -609,6 +641,8 @@ if (!isset($ingredients)) {
 
     function addParagraph() {
 
+        document.querySelector("#recipeEditParagraphMovedSuccess").hidden = false;
+
         createEntitiesParagraph();
 
         addButtons();
@@ -647,25 +681,25 @@ if (!isset($ingredients)) {
 
     function addListenerButtons() {
         // We add then evenListener on each svg type (still in the addParagraph listener because this is where there are created)
-        var bins = document.querySelectorAll(".deleteSvg");
+        var bins = document.querySelectorAll("#confirm-edit-recipe-delete-paragraph");
         if (bins != null) {
             bins.forEach(bin =>
                 bin.addEventListener('click', function() {
-                    idParagraph = event.target.parentNode.parentNode.getAttribute("data-id");
+                    var idParagraph = event.target.getAttribute("data-id");
                     const idRecipe = document.querySelector('#idRecipe').value;
                     if (idParagraph != null) {
                         deleteParagrapheFromDB(idParagraph, idRecipe).then((response) => {
                             if (response) {
                                 if (response.success) {
-                                    console.log("ok")
-                                    alert("Paragraph deleted from Database. Please don't forget to save");
+                                    document.querySelector("#recipeEditParagraphDeletedSuccess").hidden = false;
                                 } else {
                                     console.log(response.errorMessages)
                                 }
                             }
                         });
                     }
-                    event.target.parentNode.parentNode.remove();
+                    document.querySelector("#closeModalEditRecipeDeleteParagraph" + idParagraph).click();
+                    event.target.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.remove();
                     var paragraphLines = document.querySelectorAll(".paragraphEditRecipeLine"); // get the list of the remain paragraphs
 
                     paragraphLines.forEach(function(element, index) { // we change the attribute order
@@ -685,9 +719,7 @@ if (!isset($ingredients)) {
 
                     var currentOrder = Number(currentParagraph.getAttribute('order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
                     currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
-                    console.log(currentParagraph);
                     var nextParagraph = event.target.parentNode.parentNode.nextElementSibling;
-                    console.log(nextParagraph);
 
                     nextParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) - 1);
 
@@ -696,7 +728,7 @@ if (!isset($ingredients)) {
                     paragraphLines[currentOrder].parentNode.insertBefore(paragraphLines[currentOrder], paragraphLines[currentOrder + 1].nextSibling); // = insert after
 
                     addButtons(); // we do again the addButtons function
-                    alert("Please don't forget to save");
+                    document.querySelector("#recipeEditParagraphMovedSuccess").hidden = false;
                 })
             )
         }
@@ -719,7 +751,7 @@ if (!isset($ingredients)) {
                     paragraphLines[currentOrder].parentNode.insertBefore(paragraphLines[currentOrder], paragraphLines[currentOrder - 1]);
 
                     addButtons(); // we do again the addButtons function
-                    alert("Please don't forget to save");
+                    document.querySelector("#recipeEditParagraphMovedSuccess").hidden = false;
                 })
             )
         }
@@ -749,6 +781,30 @@ if (!isset($ingredients)) {
             svgDelete.className = "deleteSvg";
             svgDelete.src = ROOT_ICONS + 'delete-svg.png';
             svgDelete.alt = "delete icon";
+
+            // we have to recreate the modal with the id of paragraphs
+            svgDelete.setAttribute("data-toggle", "modal");
+            svgDelete.setAttribute("data-target", "#modalEditRecipeDeleteParagraph" + paragraphLines[i].getAttribute("order"));
+
+            if (paragraphLines[i].children[2] != null) {
+                var modal = paragraphLines[i].children[2];
+                //console.log(modal);
+                paragraphLines[i].removeChild(modal);
+            }
+            var divModal = document.createElement("div");
+            console.log(paragraphLines[i].getAttribute("data-id"));
+
+            var newModal = '<div class="modal fade" id="modalEditRecipeDeleteParagraph' + Number(i + 1) + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" ' +
+                'aria-hidden="true"><div class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content">' +
+                '<div class="modal-header"> <h5 class = "modal-title" id = "exampleModalLongTitle" > Do you really want to delete this paragraph ? </h5> <button type = "button" ' +
+                'class = "close" id = "closeModalEditRecipeDeleteParagraph' + paragraphLines[i].getAttribute("data-id") + '" data-dismiss = "modal" aria-label = "Close"> ' +
+                '<span aria-hidden="true"> &times; </span> </button> </div>  <div class = "modal-footer" >' +
+                '<button id = "confirm-edit-recipe-delete-paragraph" type = "button" class = "btn" data-id = "' + paragraphLines[i].getAttribute("data-id") + '"> Confirm </button> ' +
+                '<button type = "button" class = "btn btn-danger" data-dismiss = "modal" > Cancel </button> </div> </div> </div> </div>';
+
+            divModal.innerHTML = newModal;
+            paragraphLines[i].appendChild(divModal);
+
 
             if (i == 0) { // if this is the first paragraph
                 if (paragraphLines.length > 1) { // if there is more than 1 paragraph
@@ -826,7 +882,7 @@ if (!isset($ingredients)) {
                 }
             }))
             if (error == "") {
-                alert('Paragraphes saved');
+                document.querySelector("#recipeEditParagraphSavedSuccess").hidden = false;
             }
 
         }
