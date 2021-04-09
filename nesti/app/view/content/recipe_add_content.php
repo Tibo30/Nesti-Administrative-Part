@@ -18,7 +18,23 @@ if (!isset($listAllIngredients)) {
 <?php if (array_search("chief", $_SESSION["roles"]) !== false || array_search("admin", $_SESSION["roles"]) !== false) {
 
 ?>
-    <div class="container bg-white align-items-left" id="recipeAddPage">
+    <div class="container bg-white align-items-left position-relative" id="recipeAddPage">
+        <!-- div notif recipe created -->
+        <div id="recipeCreatedSuccess" class="notifications" hidden>
+            <p>The recipe has been successfully created </p>
+        </div>
+        <!-- div notif picture added -->
+        <div id="recipePictureAddSuccess" class="notifications" hidden>
+            <p>The picture has been successfully added </p>
+        </div>
+        <!-- div notif picture added but same name -->
+        <div id="recipePictureAddInfo" class="notifications" hidden>
+            <p> </p>
+        </div>
+        <!-- div notif picture error-->
+        <div id="recipePictureAddError" class="notifications" hidden>
+            <p> </p>
+        </div>
         <div class="d-flex flex-row underLink">
             <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>
             </a>
@@ -80,7 +96,27 @@ if (!isset($listAllIngredients)) {
         </div>
 
         <!-- changer le 2eme visible to invisible  -->
-        <div class="container px-0 mx-0 mt-5 bg-light d-flex flex-row justify-content-between invisible" id="hiddenContentAddRecipe">
+        <div class="container px-0 mx-0 mt-5 bg-light d-flex flex-row justify-content-between invisible position-relative" id="hiddenContentAddRecipe">
+            <!-- div notif paragraph deleted -->
+            <div id="recipeParagraphDeletedSuccess" class="notifications" hidden>
+                <p>The paragraph has been successfully deleted from the recipe. Please don't forget to save ! </p>
+            </div>
+            <!-- div notif paragraph moved-->
+            <div id="recipeParagraphMovedSuccess" class="notifications" hidden>
+                <p>Please don't forget to save ! </p>
+            </div>
+             <!-- div notif paragraph saved-->
+             <div id="recipeParagraphSavedSuccess" class="notifications" hidden>
+                <p>The paragraphs have been saved in the database </p>
+            </div>
+            <!-- div notif ingredient added -->
+            <div id="recipeIngredientAddSuccess" class="notifications" hidden>
+                <p>The ingredient has been successfully added to the recipe </p>
+            </div>
+            <!-- div notif ingredient deleted -->
+            <div id="recipeIngredientDeletedSuccess" class="notifications" hidden>
+                <p>The ingredient has been successfully deleted from the recipe </p>
+            </div>
             <div class="col-7">
                 <h3 class="mb-2 mt-2">Preparation</h3>
                 <div class="form-group">
@@ -132,6 +168,14 @@ if (!isset($listAllIngredients)) {
     const ROOT_ICONS = '<?= BASE_URL . PATH_ICONS ?>';
     const ROOT = '<?= BASE_URL ?>';
 
+    // hide the notification after a click
+    var notifs = document.querySelectorAll(".notifications");
+    notifs.forEach(element =>
+        element.addEventListener('click', (function(e) {
+            element.hidden = true;
+        }))
+    )
+
     // -------------------------------- Add recipe --------------------------//  
 
     var formAddRecipe = document.querySelector("#addRecipeForm"); // get the form used to add the recipe
@@ -158,7 +202,8 @@ if (!isset($listAllIngredients)) {
                     document.querySelector("#addPicture").classList.add("visible");
                     document.querySelector("#hiddenContentAddRecipe").classList.remove("invisible");
                     document.querySelector("#hiddenContentAddRecipe").classList.add("visible");
-                    alert("recipe added");
+
+                    document.querySelector("#recipeCreatedSuccess").hidden = false;
                 } else {
                     document.querySelector("#errorRecipeName").innerHTML = response.errorMessages['recipeName'];
                     document.querySelector("#errorDifficulty").innerHTML = response.errorMessages['difficulty'];
@@ -216,13 +261,17 @@ if (!isset($listAllIngredients)) {
                         namePicture.innerHTML = response["picture"]; // change the name of the picture
                         divPicture.style.backgroundImage = "url(" + response["urlPicture"] + ")"; // change the background image of the div with the new picture
                         if (response.MessageDb != null) { // if there is a message from the Db (if the name of the picture is already taken)
-                            alert(response.MessageDb);
+                            var notifInfoPicture = document.querySelector("#recipePictureAddInfo");
+                            notifInfoPicture.hidden = false;
+                            notifInfoPicture.children[0].innerHTML = response.MessageDb;
                         } else {
-                            alert('Picture changed');
+                            document.querySelector("#recipePictureAddSuccess").hidden = false;
                         }
                     } else {
                         if (response.errorMove != null) { // if the picture has not been moved
-                            alert(response.errorMove);
+                            var notifErrorPicture = document.querySelector("#recipePictureAddError");
+                            notifErrorPicture.hidden = false;
+                            notifErrorPicture.children[0].innerHTML = response.errorMove;
                         }
                     }
                 }
@@ -276,7 +325,6 @@ if (!isset($listAllIngredients)) {
                 if (response) {
                     if (response.success) {
                         divList.innerHTML += response.recipeIngredient;
-                        alert('Ingredient added');
                         document.querySelector("#errorRecipeAddQuantity").innerHTML = "";
                         document.querySelector("#errorRecipeAddIngredient").innerHTML = "";
                         document.querySelector("#errorRecipeAddUnit").innerHTML = "";
@@ -284,6 +332,8 @@ if (!isset($listAllIngredients)) {
                         document.querySelector("#inputIngredientNameAddRecipe").value = "";
                         document.querySelector("#inputIngredientQuantityAddRecipe").value = "";
                         document.querySelector("#inputIngredientUnitAddRecipe").value = "";
+
+                        document.querySelector("#recipeIngredientAddSuccess").hidden = false;
                     } else {
                         console.log(response.errorMessages)
                         document.querySelector("#errorRecipeAddQuantity").innerHTML = response.errorMessages['quantity'];
@@ -349,7 +399,7 @@ if (!isset($listAllIngredients)) {
                             div.innerHTML = element.all;
                             divList.appendChild(div); // add the recipeIngredients to the divList
                         })
-                        alert('Ingredient deleted');
+                        document.querySelector("#recipeIngredientDeletedSuccess").hidden = false;
                     } else {
                         console.log(response.errorMessages)
                     }
@@ -400,6 +450,7 @@ if (!isset($listAllIngredients)) {
     var order = 0;
 
     function addParagraph() {
+        document.querySelector("#recipeParagraphMovedSuccess").hidden = false;
 
         createEntitiesParagraph();
 
@@ -460,6 +511,7 @@ if (!isset($listAllIngredients)) {
             svgDelete.className = "deleteSvg";
             svgDelete.src = ROOT_ICONS + 'delete-svg.png';
             svgDelete.alt = "delete icon";
+            
 
             if (i == 0) { // if this is the first paragraph
                 if (paragraphLines.length > 1) { // if there is more than 1 paragraph
@@ -496,8 +548,7 @@ if (!isset($listAllIngredients)) {
                         deleteParagrapheFromDB(idParagraph, idRecipe).then((response) => {
                             if (response) {
                                 if (response.success) {
-                                    console.log("ok")
-                                    alert("Paragraph deleted from Database. Please don't forget to save");
+                                    document.querySelector("#recipeParagraphDeletedSuccess").hidden = false;
                                 } else {
                                     console.log(response.errorMessages)
                                 }
@@ -532,7 +583,7 @@ if (!isset($listAllIngredients)) {
                     paragraphLines[currentOrder].parentNode.insertBefore(paragraphLines[currentOrder], paragraphLines[currentOrder + 1].nextSibling); // = insert after
 
                     addButtons(); // we do again the addButtons function
-                    alert("Please don't forget to save");
+                    document.querySelector("#recipeParagraphMovedSuccess").hidden = false;
                 })
             )
         }
@@ -555,7 +606,7 @@ if (!isset($listAllIngredients)) {
                     paragraphLines[currentOrder].parentNode.insertBefore(paragraphLines[currentOrder], paragraphLines[currentOrder - 1]);
 
                     addButtons(); // we do again the addButtons function
-                    alert("Please don't forget to save");
+                    document.querySelector("#recipeParagraphMovedSuccess").hidden = false;
                 })
             )
         }
@@ -615,7 +666,7 @@ if (!isset($listAllIngredients)) {
                 }
             }))
             if (error == "") {
-                alert('Paragraphes saved');
+               document.querySelector("#recipeParagraphSavedSuccess").hidden = false;
             }
         }
     }))
