@@ -516,4 +516,22 @@ class User
         $recipe = $recipeDAO->getLastRecipe($this->idUser);
         return $recipe;
     }
+
+    // get average grade for a chief
+    public function getAverageGrade()
+    {
+        $recipeDAO = new recipeDAO();
+        $recipes = $recipeDAO->getRecipesChief($this->idUser);
+        $totalgradeChief = 0;
+        $count=0;
+        foreach ($recipes as $recipe) {
+            $totalgradeChief += $recipe->getGrade();
+            if ($recipe->getGrade()!=null){
+                $count++;
+            }
+        }
+        $averageGrade=$totalgradeChief/$count;
+        return $averageGrade;
+    }
+    
 }
