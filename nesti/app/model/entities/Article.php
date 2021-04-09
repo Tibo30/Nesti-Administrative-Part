@@ -317,8 +317,45 @@ class Article
         foreach($lots as $lot){
             $quantityBought += $lot->getBoughtQuantity();
         }
-        $stock=$quantityBought;
-        return $stock;
+        return $quantityBought;
+    }
+
+    public function getQuantitySold()
+    {
+        $orderDAO = new OrderDAO();
+        $orderLines = $orderDAO->getOrderLinesArticle($this->idArticle); // get all the order lines for an article
+        $quantitySold= 0;
+        foreach ($orderLines as $orderLine) {
+            $quantitySold += $orderLine->getQuantityOrdered();
+        }
+        return $quantitySold;
+    }
+
+    public function getTotalSales()
+    {
+        $orderDAO = new OrderDAO();
+        $orderLines = $orderDAO->getOrderLinesArticle($this->idArticle); // get all the order lines for an article
+        $totalSales= 0;
+        foreach ($orderLines as $orderLine) {
+            $totalSales += $orderLine->getQuantityOrdered() * $this->getPrice()->getPrice();
+        }
+        return $totalSales;
+    }
+
+    public function getTotalBought()
+    {
+        $lotDAO = new LotDAO();
+        $lots = $lotDAO->getLots($this->idArticle); // get all the lots for an article
+        $totalBought=0;
+        foreach($lots as $lot){
+            $totalBought += $lot->getBoughtQuantity() * $lot->getUnitCost();
+        }
+        return $totalBought;
+    }
+
+    public function getBenefits(){
+        $benefits = $this->getTotalSales() - $this->getTotalBought();
+        return $benefits;
     }
 
  
