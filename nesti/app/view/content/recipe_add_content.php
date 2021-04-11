@@ -105,8 +105,8 @@ if (!isset($listAllIngredients)) {
             <div id="recipeParagraphMovedSuccess" class="notifications" hidden>
                 <p>Please don't forget to save ! </p>
             </div>
-             <!-- div notif paragraph saved-->
-             <div id="recipeParagraphSavedSuccess" class="notifications" hidden>
+            <!-- div notif paragraph saved-->
+            <div id="recipeParagraphSavedSuccess" class="notifications" hidden>
                 <p>The paragraphs have been saved in the database </p>
             </div>
             <!-- div notif ingredient added -->
@@ -175,6 +175,56 @@ if (!isset($listAllIngredients)) {
             element.hidden = true;
         }))
     )
+
+    // create the modal needed on a click on the bin svg
+    function createModal(order, id) {
+
+        var divModal = document.createElement("div"); //create a div
+        divModal.style.position = "absolute";
+        var para = event.target.parentNode.parentNode; // get the paragraphline
+
+        var newModal = '<div class="modal fade" id="modalEditRecipeDeleteParagraph' + Number(order) + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" ' +
+            'aria-hidden="true"><div class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content">' +
+            '<div class="modal-header"> <h5 class = "modal-title" id = "exampleModalLongTitle" > Do you really want to delete this paragraph ? </h5> <button type = "button" ' +
+            'class = "close" id = "closeModalEditRecipeDeleteParagraph' + id + '" data-dismiss = "modal" aria-label = "Close"> ' +
+            '<span aria-hidden="true"> &times; </span> </button> </div>  <div class = "modal-footer" >' +
+            '<button id = "confirm-edit-recipe-delete-paragraph" type = "button" class = "btn" data-id = "' + id + '"> Confirm </button> ' +
+            '<button type = "button" class = "btn btn-danger" data-dismiss = "modal" > Cancel </button> </div> </div> </div> </div>';
+
+        divModal.innerHTML = newModal;
+        para.appendChild(divModal); // add the div to the paragraphline
+
+        var opener = document.getElementById("openModal" + Number(order)); // get the hidden div that can open the modal
+        opener.click(); // simulate a click on this button
+
+        // add event listener on the modal confirm button
+        var confirmBin = document.querySelector("#confirm-edit-recipe-delete-paragraph");
+        if (confirmBin != null) {
+            confirmBin.addEventListener('click', function() {
+                var idParagraph = id;
+                const idRecipe = document.querySelector('#idRecipe').value;
+                if (idParagraph != null) {
+                    deleteParagrapheFromDB(idParagraph, idRecipe).then((response) => {
+                        if (response) {
+                            if (response.success) {
+                                document.querySelector("#recipeEditParagraphDeletedSuccess").hidden = false;
+                            } else {
+                                console.log(response.errorMessages)
+                            }
+                        }
+                    });
+                }
+                document.querySelector("#closeModalEditRecipeDeleteParagraph" + idParagraph).click(); // simulate a click on the close modal button
+                para.remove(); // get the lineparagraph entity and remove it
+                var paragraphLines = document.querySelectorAll(".paragraphEditRecipeLine"); // get the list of the remain paragraphs
+
+                paragraphLines.forEach(function(element, index) { // we change the attribute order
+                    element.setAttribute('order', index + 1)
+                });
+                addButtons(); // we do again the addButtons function
+            })
+        }
+    }
 
     // -------------------------------- Add recipe --------------------------//  
 
@@ -511,7 +561,16 @@ if (!isset($listAllIngredients)) {
             svgDelete.className = "deleteSvg";
             svgDelete.src = ROOT_ICONS + 'delete-svg.png';
             svgDelete.alt = "delete icon";
-            
+            svgDelete.setAttribute("onclick", "createModal(" + Number(i + 1) + "," + paragraphLines[i].getAttribute("data-id") + ")");
+
+            // create the open modal div
+            var openModal = document.createElement("div");
+            openModal.setAttribute("id", "openModal" + Number(i + 1));
+            openModal.hidden = true;
+            openModal.setAttribute("data-toggle", "modal");
+            openModal.setAttribute("data-target", "#modalEditRecipeDeleteParagraph" + Number(i + 1));
+
+
 
             if (i == 0) { // if this is the first paragraph
                 if (paragraphLines.length > 1) { // if there is more than 1 paragraph
@@ -532,39 +591,22 @@ if (!isset($listAllIngredients)) {
                 divIcons[i].appendChild(svgDown);
                 divIcons[i].appendChild(svgDelete);
             }
+            
+            // if there is already a modal created
+            if (paragraphLines[i].children[3]!== undefined){
+                paragraphLines[i].children[3].remove();
+            }
+            // if there is already an openModal div
+            if (paragraphLines[i].children[2]!== undefined){
+                paragraphLines[i].children[2].remove();
+            } 
+            paragraphLines[i].appendChild(openModal);
         }
         addListenerButtons();
     }
 
     function addListenerButtons() {
-        // We add then evenListener on each svg type (still in the addParagraph listener because this is where there are created)
-        var bins = document.querySelectorAll(".deleteSvg");
-        if (bins != null) {
-            bins.forEach(bin =>
-                bin.addEventListener('click', function() {
-                    idParagraph = event.target.parentNode.parentNode.getAttribute("data-id");
-                    const idRecipe = document.querySelector('#idRecipe').value;
-                    if (idParagraph != null) {
-                        deleteParagrapheFromDB(idParagraph, idRecipe).then((response) => {
-                            if (response) {
-                                if (response.success) {
-                                    document.querySelector("#recipeParagraphDeletedSuccess").hidden = false;
-                                } else {
-                                    console.log(response.errorMessages)
-                                }
-                            }
-                        });
-                    }
-                    event.target.parentNode.parentNode.remove();
-                    var paragraphLines = document.querySelectorAll(".paragraphAddRecipeLine"); // get the list of the remain paragraphs
-
-                    paragraphLines.forEach(function(element, index) { // we change the attribute order
-                        element.setAttribute('order', index + 1)
-                    });
-                    addButtons(); // we do again the addButtons function
-                })
-            )
-        }
+        // We add then evenListener down and up svg (still in the addParagraph listener because this is where there are created)
 
         var downs = document.querySelectorAll(".downSvg");
         if (downs != null) {
@@ -666,7 +708,7 @@ if (!isset($listAllIngredients)) {
                 }
             }))
             if (error == "") {
-               document.querySelector("#recipeParagraphSavedSuccess").hidden = false;
+                document.querySelector("#recipeParagraphSavedSuccess").hidden = false;
             }
         }
     }))
