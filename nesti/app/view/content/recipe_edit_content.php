@@ -790,10 +790,12 @@ if (!isset($ingredients)) {
             svgDelete.alt = "delete icon";
             svgDelete.setAttribute("onclick", "createModal(" + Number(i + 1) + "," + paragraphLines[i].getAttribute("data-id") + ")");
 
-            // we have to update the modald with the new orders of paragraphs
-            //svgDelete.setAttribute("data-toggle", "modal");
-            //svgDelete.setAttribute("data-target", "#modalEditRecipeDeleteParagraph" + paragraphLines[i].getAttribute("order"));
-            //  paragraphLines[i].children[2].setAttribute("id", "modalEditRecipeDeleteParagraph"+paragraphLines[i].getAttribute("order")); // change the id of the modal (order of paragraph)
+            // create the open modal div
+            var openModal = document.createElement("div");
+            openModal.setAttribute("id", "openModal"+Number(i+1));
+            openModal.hidden=true;
+            openModal.setAttribute("data-toggle", "modal");
+            openModal.setAttribute("data-target", "#modalEditRecipeDeleteParagraph" + Number(i+1));
 
             if (i == 0) { // if this is the first paragraph
                 if (paragraphLines.length > 1) { // if there is more than 1 paragraph
@@ -814,6 +816,16 @@ if (!isset($ingredients)) {
                 divIcons[i].appendChild(svgDown);
                 divIcons[i].appendChild(svgDelete);
             }
+            
+            // if there is already a modal created
+            if (paragraphLines[i].children[3]!== undefined){
+                paragraphLines[i].children[3].remove();
+            }
+            // if there is already an openModal div
+            if (paragraphLines[i].children[2]!== undefined){
+                paragraphLines[i].children[2].remove();
+            } 
+            paragraphLines[i].appendChild(openModal);
         }
         addListenerButtons();
     }
