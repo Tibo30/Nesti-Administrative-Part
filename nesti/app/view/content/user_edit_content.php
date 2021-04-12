@@ -139,8 +139,8 @@ if (!isset($user) || empty($user)) {
 
                     <div class="list border w-100">
 
-                        <p> Creation Date : <?= $user->getCreationDate() ?> <br>
-                            Last connection : <?= $user->getLog()->getConnectionDate() ?></p>
+                        <p> Creation Date : <?= $user->getDisplayDate() ?> <br>
+                            Last connection : <?= $user->getLog()->getDisplayDate() ?></p>
 
                         <?php $userRoles = $user->getRoles() ?>
                         <?php
@@ -166,7 +166,7 @@ if (!isset($user) || empty($user)) {
                             <p>
                             <h5> Administrator </h5>
                             Number of import : <?= count($user->getImports()) ?> <br>
-                            Last import : <?= $user->getLastImport()->getImportDate() ?> </p>
+                            Last import : <?= $user->getLastImport()->getDisplayDate() ?> </p>
 
 
                         <?php
@@ -247,6 +247,8 @@ if (!isset($user) || empty($user)) {
 
                                     <th>Amount</th>
 
+                                    <th>Number of articles</th>
+
                                     <th>Date</th>
 
                                     <th>State</th>
@@ -260,7 +262,8 @@ if (!isset($user) || empty($user)) {
                                         echo '<td>' . $order->getIdOrder() . '</td>';
                                         echo '<td>' . $order->getUser()->getFirstName() . " " . $order->getUser()->getLastName() . '</td>';
                                         echo '<td>' . round(($order->getAmount()), 2) . '</td>';
-                                        echo '<td>' . $order->getCreationDate() . '</td>';
+                                        echo '<td>' . $order->getNumberOfArticle() . '</td>';
+                                        echo '<td>' . $order->getDisplayDate() . '</td>';
                                         echo '<td>' . $order->getDisplayState() . '</td>';
                                         echo '</tr>';
                                     } ?>
@@ -339,22 +342,22 @@ if (!isset($user) || empty($user)) {
                                         <?= $comment->getCommentContent() ?>
                                     </td>
                                     <td>
-                                        <?= $comment->getCreationDate() ?>
+                                        <?= $comment->getDisplayDate() ?>
                                     </td>
                                     <td>
                                         <?= $comment->getDisplayState(); ?>
                                     </td>
 
                                     <td>
-                                        <a class="btn-approve-comment" data-toggle="modal" data-target="#modalApproveComment">
+                                        <a class="btn-approve-comment" data-toggle="modal" data-target="#modalApproveComment<?= $comment->getIdComment() ?>">
                                             Approve
                                         </a>
-                                        <div class="modal fade" id="modalApproveComment" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                        <div class="modal fade" id="modalApproveComment<?= $comment->getIdComment() ?>" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLongTitle">Do you want to approve this comment ?</h5>
-                                                        <button type="button" class="close" id="closeModalApprove" data-dismiss="modal" aria-label="Close">
+                                                        <button type="button" class="close" id="closeModalApprove<?= $comment->getIdComment() ?>" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
@@ -370,15 +373,15 @@ if (!isset($user) || empty($user)) {
                                         </div>
 
                                         </br>
-                                        <a class="btn-block-comment" data-toggle="modal" data-target="#modalBlockComment">
+                                        <a class="btn-block-comment" data-toggle="modal" data-target="#modalBlockComment<?= $comment->getIdComment() ?>">
                                             Block
                                         </a>
-                                        <div class="modal fade" id="modalBlockComment" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                        <div class="modal fade" id="modalBlockComment<?= $comment->getIdComment() ?>" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title" id="exampleModalLongTitle">Do you want to block this comment ?</h5>
-                                                        <button type="button" class="close" id="closeModalBlock" data-dismiss="modal" aria-label="Close">
+                                                        <button type="button" class="close" id="closeModalBlock<?= $comment->getIdComment() ?>" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
@@ -407,15 +410,8 @@ if (!isset($user) || empty($user)) {
         </div>
 
     </div>
-<?php } else { ?>
 
-
-    <div class="container">
-        <h2 class="titleAccessForbidden">Access forbidden</h2>
-        <p class="textAccessForbidden">You don't have the rights to access this page</p>
-    </div>
-<?php } ?>
-<script>
+    <script>
     const ROOT = '<?= BASE_URL ?>';
 
     // hide the notification after a click
@@ -632,12 +628,14 @@ if (!isset($user) || empty($user)) {
 
     function changeState(state) {
         const idComment = event.target.getAttribute('data-id'); // get the id of the event target
+        console.log(event.target);
         const td = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.previousSibling; // get td of state for this comment
+        console.log(td);
         var btnclose; // get the btn close of the modal
         if (state == "a") {
-            btnclose = document.querySelector("#closeModalApprove");
+            btnclose = document.querySelector("#closeModalApprove"+idComment);
         } else if (state == "b") {
-            btnclose = document.querySelector("#closeModalBlock");
+            btnclose = document.querySelector("#closeModalBlock"+idComment);
         }
 
         changeStateComment(state, idComment).then((response) => {
@@ -688,3 +686,12 @@ if (!isset($user) || empty($user)) {
 
     }
 </script>
+
+<?php } else { ?>
+
+
+    <div class="container">
+        <h2 class="titleAccessForbidden">Access forbidden</h2>
+        <p class="textAccessForbidden">You don't have the rights to access this page</p>
+    </div>
+<?php } ?>
