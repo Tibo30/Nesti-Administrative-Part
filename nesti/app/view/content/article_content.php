@@ -66,7 +66,7 @@ if (!isset($articles)) {
                 echo '<td>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " de " .  $article->getProduct()->getProductName() . '</td>';
                 echo '<td>' . round(($article->getPrice()->getPrice()), 2) . '</td>';
                 echo '<td>' . $article->getType() . '</td>';
-                echo '<td>' . $article->getLastImport()->getImportDate() . '</td>';
+                echo '<td>' . $article->getLastImport()->getDisplayDate() . '</td>';
                 echo '<td>' . $article->getDisplayState() . '</td>';
                 echo '<td>' . $article->getStock() . '</td>';
                 echo '<td>';
@@ -98,7 +98,6 @@ if (!isset($articles)) {
     </table>
 </div>
 
-<?php } ?>
 
 <script>
     const ROOT = '<?= BASE_URL ?>';
@@ -164,3 +163,5 @@ if (!isset($articles)) {
         }
     }
 </script>
+
+<?php } ?>

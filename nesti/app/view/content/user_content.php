@@ -58,7 +58,7 @@ if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("adm
                     echo '<td>' . $user->getUsername() . '</td>';
                     echo '<td>' . $user->getLastname() . ' ' .  $user->getFirstname() . '</td>';
                     echo '<td>' . implode(" ", $user->getDisplayRoles()) . '</td>';
-                    echo '<td>' .   $user->getLog()->getConnectionDate() . ' </td>';
+                    echo '<td>' .   $user->getLog()->getDisplayDate() . ' </td>';
                     echo '<td>' . $user->getDisplayState() . '</td>';
                     echo '<td>';
                     echo '<a class="btn-modify-user" href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . ' "data-id=' . $user->getIdUser() . '>Modify</br></a>';
@@ -91,17 +91,7 @@ if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("adm
 
     </div>
 
-<?php } else { ?>
-
-
-    <div class="container">
-        <h2 class="titleAccessForbidden">Access forbidden</h2>
-        <p class="textAccessForbidden">You don't have the rights to access this page</p>
-    </div>
-<?php
-} ?>
-
-<script>
+    <script>
     const ROOT = '<?= BASE_URL ?>';
 
     // hide the notification after a click
@@ -166,3 +156,13 @@ if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("adm
         }
     }
 </script>
+
+<?php } else { ?>
+
+
+    <div class="container">
+        <h2 class="titleAccessForbidden">Access forbidden</h2>
+        <p class="textAccessForbidden">You don't have the rights to access this page</p>
+    </div>
+<?php
+} ?>

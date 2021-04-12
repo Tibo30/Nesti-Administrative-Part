@@ -58,7 +58,7 @@ if (!isset($orders)) {
                         echo '<td>' . $order->getIdOrder() . '</td>';
                         echo '<td>' . $order->getUser()->getFirstName() . " " . $order->getUser()->getLastName() . '</td>';
                         echo '<td>' . round(($order->getAmount()), 2) . '</td>';
-                        echo '<td>' . $order->getCreationDate() . '</td>';
+                        echo '<td>' . $order->getDisplayDate() . '</td>';
                         echo '<td>' . $order->getState() . '</td>';
                         echo '</tr>';
                     } ?>
@@ -85,7 +85,6 @@ if (!isset($orders)) {
     </div>
 </div>
 
-<?php } ?>
 
 <script>
     const ROOT = '<?= BASE_URL ?>';
@@ -154,3 +153,5 @@ if (!isset($orders)) {
 
     });
 </script>
+
+<?php } ?>

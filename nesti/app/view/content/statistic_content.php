@@ -97,10 +97,8 @@
         </div>
 
     </div>
-<?php } ?>
 
-
-<script>
+    <script>
     // ---------------------------- Orders -----------------------------//
     const el = document.getElementById('toastOrders');
     var totalPurchasedPerDay = <?php echo json_encode($totalPurchasedPerDay) ?>;
@@ -228,3 +226,5 @@
         options: optionsArticle
     });
 </script>
+
+<?php } ?>

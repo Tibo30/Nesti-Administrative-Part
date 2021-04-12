@@ -158,13 +158,8 @@ if (!isset($listAllIngredients)) {
             </div>
         </div>
     </div>
-<?php } else { ?>
-    <div class="container">
-        <h2 class="titleAccessForbidden">Access forbidden</h2>
-        <p class="textAccessForbidden">You don't have the rights to access this page</p>
-    </div>
-<?php } ?>
-<script>
+
+    <script>
     const ROOT_ICONS = '<?= BASE_URL . PATH_ICONS ?>';
     const ROOT = '<?= BASE_URL ?>';
 
@@ -750,3 +745,10 @@ if (!isset($listAllIngredients)) {
         }
     }
 </script>
+
+<?php } else { ?>
+    <div class="container">
+        <h2 class="titleAccessForbidden">Access forbidden</h2>
+        <p class="textAccessForbidden">You don't have the rights to access this page</p>
+    </div>
+<?php } ?>

@@ -167,7 +167,6 @@ if (!isset($errorMessages) || empty($errorMessages)) {
     </div>
 </div>
 
-<?php } ?>
 
 <script>
     const ROOT = '<?= BASE_URL ?>';
@@ -361,3 +360,5 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 
     }
 </script>
+
+<?php } ?>
