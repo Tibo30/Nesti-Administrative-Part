@@ -165,15 +165,13 @@ class UserController extends BaseController
             $orderLines = $ordersDAO->getOrderLines($idOrder); // we get all the orderLines for this order
             if (count($orderLines) > 0) { // if there is at least one orderLine
                 $data['success'] = true;
-                $articles = [];
+                
                 $articleDAO = new ArticleDAO();
-                foreach ($orderLines as $orderLine) { // we get all the articles of the orderLines
-                    $articles[] = $articleDAO->getArticle($orderLine->getIdArticle());
-                }
                 $index = 0;
                 // in this loop we prepare the return data from the fetch
-                foreach ($articles as $article) {
-                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . '</div>' . '<a id="seeArticle" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
+                foreach ($orderLines as $orderLine) { // we get all the articles of the orderLines
+                    $article = $articleDAO->getArticle($orderLine->getIdArticle());
+                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . " x " . $orderLine->getQuantityOrdered() . '</div>' . '<a id="seeArticle" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
                     $index++;
                 }
             }
@@ -336,7 +334,7 @@ class UserController extends BaseController
                 $data['users'][$index]['username'] = $user->getUsername();
                 $data['users'][$index]['name'] = $user->getLastname() . ' ' .  $user->getFirstname();
                 $data['users'][$index]['role'] = implode(" ", $user->getDisplayRoles());
-                $data['users'][$index]['connection'] = $user->getLog()->getConnectionDate();
+                $data['users'][$index]['connection'] = $user->getLog()->getDisplayDate();
                 $data['users'][$index]['state'] = $user->getDisplayState();
                 $data['users'][$index]['action'] = '<a class="btn-modify-user" href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . ' "data-id=' . $user->getIdUser() . '>Modify</br></a>
                 <a class="btn-delete-user" data-id=' . $user->getIdUser() . ' data-toggle="modal" data-target="#modalDeleteUser">Delete</a>';
