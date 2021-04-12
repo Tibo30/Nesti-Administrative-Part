@@ -64,6 +64,19 @@ class Order{
         return $this->creationDate;
     }
 
+       /**
+     * Get the display date
+     */ 
+    public function getDisplayDate()
+    {
+        $date = new DateTime($this->creationDate);
+        $displayDate = "";
+        if ($this->creationDate!=null){
+            $displayDate= $date->format('j F Y \a\t H\hi');
+        } 
+        return $displayDate;
+    }
+
     /**
      * Set the value of creationDate
      *
@@ -114,15 +127,31 @@ class Order{
         return $amount;
     }
 
+    public function getOrderLines(){
+        $ordersDAO = new OrderDAO();
+        $orderLines = $ordersDAO->getOrderLines($this->idOrder);
+        return $orderLines;
+    }
+
+    public function getNumberOfArticle(){
+        $number=0;
+        $ordersDAO = new OrderDAO();
+        $orderLines = $ordersDAO->getOrderLines($this->idOrder);
+        foreach($orderLines as $orderline){
+            $number+=$orderline->getQuantityOrdered();
+        }
+        return $number;
+    }
+
     // Display state for tables
     public function getDisplayState()
     {
 
         if ($this->state == 'a') {
-            $state = 'Active';
+            $state = 'Paid';
         }
         if ($this->state == 'b') {
-            $state = 'Blocked';
+            $state = 'Cancelled';
         }
         if ($this->state == 'w') {
             $state = 'Waiting';

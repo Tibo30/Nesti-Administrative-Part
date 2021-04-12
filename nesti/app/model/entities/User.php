@@ -35,7 +35,7 @@ class User
         $this->address2 = $data['address2'];
         $this->postcode = $data['postcode'];
         $this->idCity = $data['id_city'];
-        if (isset($data['roles'])){
+        if (isset($data['roles'])) {
             $this->roles = $data['roles'];
         }
         return $this;
@@ -193,6 +193,19 @@ class User
     public function getCreationDate()
     {
         return $this->creationDate;
+    }
+
+    /**
+     * Get the display date
+     */
+    public function getDisplayDate()
+    {
+        $date = new DateTime($this->creationDate);
+        $displayDate = "";
+        if ($this->creationDate!=null){
+            $displayDate= $date->format('j F Y \a\t H\hi');
+        } 
+        return $displayDate;
     }
 
     /**
@@ -365,7 +378,7 @@ class User
         return $log;
     }
 
-       /**
+    /**
      * Get the logs of a user
      */
     public function getLogs()
@@ -436,17 +449,17 @@ class User
     // get total amount of orders for a user
     public function getTotalAmountOrders()
     {
-        $amount=0;
+        $amount = 0;
         $orderDAO = new OrderDAO();
         $articlePriceDAO = new ArticlePriceDAO();
-        $orders=$this->getOrders();
-        foreach($orders as $order){
-            $orderLines=$orderDAO->getOrderLines($order->getIdOrder());// get all the order lines for an order
-            foreach($orderLines as $orderLine){
-                $price=$articlePriceDAO -> getPrice($orderLine->getIdArticle()); // get the articlePrice object
-                $amount+=($orderLine->getQuantityOrdered())*($price->getPrice());
+        $orders = $this->getOrders();
+        foreach ($orders as $order) {
+            $orderLines = $orderDAO->getOrderLines($order->getIdOrder()); // get all the order lines for an order
+            foreach ($orderLines as $orderLine) {
+                $price = $articlePriceDAO->getPrice($orderLine->getIdArticle()); // get the articlePrice object
+                $amount += ($orderLine->getQuantityOrdered()) * ($price->getPrice());
             }
-        }       
+        }
         return $amount;
     }
 
@@ -477,19 +490,19 @@ class User
     // get all comment numbers for a moderator
     public function getCommentsNumber()
     {
-        $approved=0;
-        $blocked=0;
+        $approved = 0;
+        $blocked = 0;
         $commentsDAO = new CommentsDAO();
         $comments = $commentsDAO->getCommentsModerator($this->idUser);
-        foreach($comments as $comment){
-            if ($comment->getState() == "a"){
+        foreach ($comments as $comment) {
+            if ($comment->getState() == "a") {
                 $approved++;
-            } else if ($comment->getState() == "b"){
+            } else if ($comment->getState() == "b") {
                 $blocked++;
             }
         }
-        $number["approved"]=$approved;
-        $number["blocked"]=$blocked;
+        $number["approved"] = $approved;
+        $number["blocked"] = $blocked;
         return $number;
     }
 
@@ -523,15 +536,14 @@ class User
         $recipeDAO = new recipeDAO();
         $recipes = $recipeDAO->getRecipesChief($this->idUser);
         $totalgradeChief = 0;
-        $count=0;
+        $count = 0;
         foreach ($recipes as $recipe) {
             $totalgradeChief += $recipe->getGrade();
-            if ($recipe->getGrade()!=null){
+            if ($recipe->getGrade() != null) {
                 $count++;
             }
         }
-        $averageGrade=$totalgradeChief/$count;
+        $averageGrade = $totalgradeChief / $count;
         return $averageGrade;
     }
-    
 }

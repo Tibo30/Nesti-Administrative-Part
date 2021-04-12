@@ -71,6 +71,20 @@ class Comments{
         return $this->creationDate;
     }
 
+    
+    /**
+     * Get the display date
+     */
+    public function getDisplayDate()
+    {
+        $date = new DateTime($this->creationDate);
+        $displayDate = "";
+        if ($this->creationDate!=null){
+            $displayDate= $date->format('j F Y \a\t H\hi');
+        } 
+        return $displayDate;
+    }
+
     /**
      * Set the value of creationDate
      *

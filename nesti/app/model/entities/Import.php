@@ -64,6 +64,19 @@ class Import
     }
 
     /**
+     * Get the display date
+     */
+    public function getDisplayDate()
+    {
+        $date = new DateTime($this->importDate);
+        $displayDate = "";
+        if ($this->importDate!=null){
+            $displayDate= $date->format('j F Y \a\t H\hi');
+        } 
+        return $displayDate;
+    }
+
+    /**
      * Set the value of importDate
      *
      * @return  self
@@ -105,7 +118,7 @@ class Import
         return $article;
     }
 
-     /**
+    /**
      * Get lot
      */
     public function getLot()
