@@ -42,6 +42,7 @@ class ImportDAO extends ModelDAO
 
     public function getImportsUser($idUser)
     {
+        $var=[];
         $req = self::$_bdd->prepare('SELECT * FROM import WHERE id_admin=:id ');
         $req->execute(array("id" => $idUser));
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
