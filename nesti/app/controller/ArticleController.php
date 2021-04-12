@@ -30,7 +30,7 @@ class ArticleController extends BaseController
         } else if (($this->_url) == "article_orders") {
             $data = $this->orders();
         } else if (($this->_url) == "article_order") {
-            $data = $this->order(); // this is the method called by the fetch API with the article/order ROOT.
+            $this->order(); // this is the method called by the fetch API with the article/order ROOT.
         }
         $data["title"] = "Articles";
         $data["url"] = $this->_url;
@@ -108,7 +108,7 @@ class ArticleController extends BaseController
                 if ($formerArticleState != $articleState) { // if the states changed
                     $this->articleDAO->editArticle($articleEdit, "state");
                 }
-                
+
                 $data['articleEdit'] = $articleEdit;
                 $data['idArticle'] = $articleEdit->getIdArticle();
                 $data['articleFactoryName'] = $articleEdit->getQuantityPerUnit() . " " . $articleEdit->getUnitMeasure()->getName() . " de " .  $articleEdit->getProduct()->getProductName();
@@ -145,7 +145,7 @@ class ArticleController extends BaseController
                 $data['articles'][$index]['name'] = $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " de " .  $article->getProduct()->getProductName();
                 $data['articles'][$index]['selling_price'] = round(($article->getPrice()->getPrice()), 2);
                 $data['articles'][$index]['type'] = $article->getType();
-                $data['articles'][$index]['last_import'] = $article->getLastImport()->getImportDate();
+                $data['articles'][$index]['last_import'] = $article->getLastImport()->getDisplayDate();
                 $data['articles'][$index]['state'] = $article->getDisplayState();
                 $data['articles'][$index]['stock'] = $article->getStock();
                 $data['articles'][$index]['action'] = '<a class="btn-modify-article" href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id=' . $article->getIdArticle() . '>Modify</br></a>
@@ -173,14 +173,12 @@ class ArticleController extends BaseController
             $orderLines = $ordersDAO->getOrderLines($idOrder); // we get all the orderLines for this order
             if (count($orderLines) > 0) { // if there is at least one orderLine
                 $data['success'] = true;
-                $articles = [];
-                foreach ($orderLines as $orderLine) { // we get all the articles of the orderLines
-                    $articles[] = $this->articleDAO->getArticle($orderLine->getIdArticle());
-                }
+
                 $index = 0;
                 // in this loop we prepare the return data from the fetch
-                foreach ($articles as $article) {
-                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . '</div>' . '<a id="seeArticle" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
+                foreach ($orderLines as $orderLine) { // we get all the articles of the orderLines
+                    $article = $this->articleDAO->getArticle($orderLine->getIdArticle());
+                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . " x " . $orderLine->getQuantityOrdered() . '</div>' . '<a id="seeArticle" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
                     $index++;
                 }
             }
