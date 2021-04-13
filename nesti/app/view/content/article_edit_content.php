@@ -76,7 +76,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                                             }; ?>>Waiting</option>
                     </select>
                 </div>
-                <div class="d-flex flex-row">
+                <div class="d-flex flex-row mb-3 mb-lg-0 justify-content-center">
                     <button id="submitEditArticle" data-toggle="modal" type="button" data-target="#modalEditArticle" class="btn mr-5">Submit</button>
                     <button id="cancelEditArticle" class="btn" type="reset">Cancel</button>
                 </div>
@@ -102,7 +102,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
             </form>
         </div>
         <div>
-            <div id="articlePictureEdit" class="bg-light border mb-2" style='background-image:url("<?= $article->getIdPicture() != null ? BASE_URL . PATH_PICTURES . $article->getPicture()->getName() . "." . $article->getPicture()->getExtension() : "" ?>")'></div>
+            <div id="articlePictureEdit" class="bg-light border mb-2 mt-2 mt-xl-0" style='background-image:url("<?= $article->getIdPicture() != null ? BASE_URL . PATH_PICTURES . $article->getPicture()->getName() . "." . $article->getPicture()->getExtension() : "" ?>")'></div>
 
             <div class=" d-flex flex-row justify-content-between">
                 <p class="articlePictureEditName"><?= $article->getIdPicture() != null ? ($article->getPicture()->getName() . "." . $article->getPicture()->getExtension()) : "" ?></p>
