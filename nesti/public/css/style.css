@@ -197,11 +197,6 @@ color: var(--classicColorGrey);
     width: 30%;
 }
 
-#listOrderLines{
-    min-width: 400px;
-    min-height: 200px;
-}
-
 .btn-edit-article{
     color:var(--colorButtonInformation);
     cursor: pointer;
@@ -230,7 +225,7 @@ color: var(--classicColorGrey);
 }
 
 #listOrderLines{
-    min-width: 400px;
+    width: 100%;
     min-height: 200px;
 }
 
@@ -674,7 +669,7 @@ color: var(--classicColorGrey);
     z-index:100;
 }
 
-#confirm-edit-picture-recipe, #confirm-edit-recipe, #confirm-delete-picture-recipe, #confirm-edit-recipe-delete-paragraph{
+#confirm-edit-picture-recipe, #confirm-edit-recipe, #confirm-delete-picture-recipe, #confirm-edit-recipe-delete-paragraph, #confirm-edit-recipe-delete-ingredient,#confirm-add-recipe-delete-ingredient{
     background-color:var( --colorButtonValidate);
 }
 
