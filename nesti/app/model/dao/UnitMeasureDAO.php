@@ -34,4 +34,20 @@ class UnitMeasureDAO extends ModelDAO
         return $last_id;
     }
 
+    public function getUnits()
+    {
+        $var = [];
+        $req = self::$_bdd->prepare('SELECT * FROM unit_measures');
+        $req->execute();
+        if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {
+            foreach ($data as $row) {
+                $unit = new UnitMeasure();
+                $unit->hydration($row);
+                $var[] = $unit;
+            }
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $var;
+    }
+
 }
