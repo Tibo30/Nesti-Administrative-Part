@@ -10,7 +10,7 @@ if (!isset($users)) {
 
 ?>
 
-<?php 
+<?php
 if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("admin", $_SESSION["roles"]) !== false) {
 ?>
     <div class="container bg-white d-flex flex-column align-items-left position-relative" id="allUserPage">
@@ -19,7 +19,7 @@ if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("adm
             <p>The user has been deleted (blocked)</p>
         </div>
         <h2 class="mb-2 mt-2">Users</h2>
-        <div class="d-flex flex-row justify-content-between">
+        <div class="d-flex flex-row justify-content-xl-between justify-content-center flex-wrap">
             <nav class="navbar navbar-white bg-white pl-0">
                 <form class="form-inline">
                     <input class="form-control mr-sm-2" id="customSearchUser" type="search" placeholder="Search" aria-label="Search">
@@ -63,27 +63,27 @@ if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("adm
                     echo '<td>';
                     echo '<a class="btn-modify-user" href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . ' "data-id=' . $user->getIdUser() . '>Modify</br></a>';
                     echo '<a class="btn-delete-user" data-id=' . $user->getIdUser() . ' data-toggle="modal" data-target="#modalDeleteUser' . $user->getIdUser() . '">Delete</a>';
-                    echo '</td>';
-                    echo '</tr>';
                     echo '  <div class="modal fade" id="modalDeleteUser' . $user->getIdUser() . '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Do you really want to delete this user ?</h5>
-                            <button type="button" class="close" id="closeModalDelete' . $user->getIdUser() . '" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <!-- <div class="modal-body">
-                                                            ...
-                                                        </div> -->
-                        <div class="modal-footer">
-                            <button id="confirm-delete-user" type="button" class="btn" data-id="' . $user->getIdUser() . '" onclick="allUserDelete()">Confirm</button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Do you really want to delete this user ?</h5>
+                                <button type="button" class="close" id="closeModalDelete' . $user->getIdUser() . '" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <!-- <div class="modal-body">
+                                                                ...
+                                                            </div> -->
+                            <div class="modal-footer">
+                                <button id="confirm-delete-user" type="button" class="btn" data-id="' . $user->getIdUser() . '" onclick="allUserDelete()">Confirm</button>
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>';
+                </div>';
+                    echo '</td>';
+                    echo '</tr>';
                 } ?>
             </tbody>
         </table>
@@ -92,70 +92,63 @@ if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("adm
     </div>
 
     <script>
-    const ROOT = '<?= BASE_URL ?>';
+        const ROOT = '<?= BASE_URL ?>';
 
-    // hide the notification after a click
-    var notifs = document.querySelectorAll(".notifications");
-    notifs.forEach(element =>
-        element.addEventListener('click', (function(e) {
-            element.hidden = true;
-        }))
-    )
+        // hide the notification after a click
+        var notifs = document.querySelectorAll(".notifications");
+        notifs.forEach(element =>
+            element.addEventListener('click', (function(e) {
+                element.hidden = true;
+            }))
+        )
 
-    function allUserDelete() {
-        let idUser = event.target.getAttribute('data-id');
-        deleteUser(idUser).then((response) => {
-            if (response) {
-                if (response.success) {
-                    const tbody = document.querySelector("#allUsersTbody");
-                    tbody.innerHTML = ""; // we empty the tbody
-                    // then we fill it with the new users got from the fetch
-                    console.log(response)
-                    response['users'].forEach(element => {
-                        const tr = document.createElement("tr");
-                        tr.innerHTML = "<td>" + element.id + "</td><td>" + element.username + "</td><td>" + element.name + "</td><td>" + element.role + "</td><td>" + element.connection + "</td><td>" + element.state + "</td><td>" + element.action + "</td>";
-                        tbody.appendChild(tr); // We add the new lines to the tbody
-                    })
-                    document.querySelector("#closeModalDelete" + idUser).click();
-                    document.querySelector("#userDeletedSuccess").hidden = false;
+        function allUserDelete() {
+            let idUser = event.target.getAttribute('data-id');
+            const td = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.previousElementSibling; // get td of state for this user
+            deleteUser(idUser).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        td.innerHTML = response.state;
+                        document.querySelector("#closeModalDelete" + idUser).click();
+                        document.querySelector("#userDeletedSuccess").hidden = false;
+                    }
                 }
-            }
-        })
-    }
-
-
-    /**
-     * Ajax Request to delete the User (change the status to blocked)
-     * @param int idUser
-     * @returns mixed
-     */
-    async function deleteUser(idUser) {
-
-        var myHeaders = new Headers();
-
-        let formData = new FormData();
-        formData.append('idUser', idUser);
-        var myInit = {
-            method: 'POST',
-            headers: myHeaders,
-            mode: 'cors',
-            cache: 'default',
-            body: formData
-        };
-
-        // Use the fetch API to access the database (the method is called in the UserController)
-        let response = await fetch(ROOT + 'user/delete', myInit);
-        try {
-            if (response.ok) {
-                return await response.json();
-            } else {
-                return false;
-            }
-        } catch (e) {
-            console.error(e.message);
+            })
         }
-    }
-</script>
+
+
+        /**
+         * Ajax Request to delete the User (change the status to blocked)
+         * @param int idUser
+         * @returns mixed
+         */
+        async function deleteUser(idUser) {
+
+            var myHeaders = new Headers();
+
+            let formData = new FormData();
+            formData.append('idUser', idUser);
+            var myInit = {
+                method: 'POST',
+                headers: myHeaders,
+                mode: 'cors',
+                cache: 'default',
+                body: formData
+            };
+
+            // Use the fetch API to access the database (the method is called in the UserController)
+            let response = await fetch(ROOT + 'user/delete', myInit);
+            try {
+                if (response.ok) {
+                    return await response.json();
+                } else {
+                    return false;
+                }
+            } catch (e) {
+                console.error(e.message);
+            }
+        }
+    </script>
 
 <?php } else { ?>
 
