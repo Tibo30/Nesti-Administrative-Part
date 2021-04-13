@@ -325,21 +325,7 @@ class UserController extends BaseController
             $userEdit = $this->userDAO->getOneUser($idUser); // we get the user from the database
             $userEdit->setState("b"); // we change is state in local
             $this->userDAO->editUser($userEdit, "state"); // we change its state in the database
-            $users = $this->userDAO->getUsers(); // we get back all the users from the database
-            $index = 0;
-            $data['test'] = $userEdit->getIdUser();
-            // in this loop we prepare the return data from the fetch
-            foreach ($users as $user) {
-                $data['users'][$index]['id'] = $user->getIdUser();
-                $data['users'][$index]['username'] = $user->getUsername();
-                $data['users'][$index]['name'] = $user->getLastname() . ' ' .  $user->getFirstname();
-                $data['users'][$index]['role'] = implode(" ", $user->getDisplayRoles());
-                $data['users'][$index]['connection'] = $user->getLog()->getDisplayDate();
-                $data['users'][$index]['state'] = $user->getDisplayState();
-                $data['users'][$index]['action'] = '<a class="btn-modify-user" href="' . BASE_URL . 'user/edit/' . $user->getIdUser() . ' "data-id=' . $user->getIdUser() . '>Modify</br></a>
-                <a class="btn-delete-user" data-id=' . $user->getIdUser() . ' data-toggle="modal" data-target="#modalDeleteUser">Delete</a>';
-                $index++;
-            }
+            $data["state"]=$userEdit->getDisplayState();
             $data['success'] = true;
         }
         echo json_encode($data);
