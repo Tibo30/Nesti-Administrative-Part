@@ -22,11 +22,11 @@ if (!isset($user) || empty($user)) {
             </a>
             <p> &nbsp > Edit</p>
         </div>
-        <div class="d-flex flex-row justify-content-between">
-            <div class="col-4">
+        <div class="d-flex flex-row justify-content-lg-between justify-content-center flex-wrap">
+            <div class="col-lg-4 col-12">
                 <div class="d-flex flex-column">
                     <h2 class="mb-2 mt-2">User Edit</h2>
-                    <form method="POST" action="<?= BASE_URL ?>user/edituser" class="application" id="editUserForm">
+                    <form method="POST" action="<?= BASE_URL ?>user/edituser" class="application px-5 px-md-0" id="editUserForm">
 
                         <div class="row mb-2">
                             <label for="inputUserEditLastname">Lastname *</label>
@@ -64,48 +64,61 @@ if (!isset($user) || empty($user)) {
                         </div>
                         <span class="text-danger" id="errorUserEditPostcode"></span>
 
-                        <div class="row">
+                        <div class="row justify-content-around">
 
-                            <div class="col-6">
-                                <label for="inputUserEditRole">Role(s) *</label> <br>
-                                <input type="checkbox" id="admin" name="userRoles[]" value="admin" <?php foreach ($user->getRoles() as $role) {
-                                                                                                        if ($role == 'admin') {
-                                                                                                            echo 'checked';
-                                                                                                        };
-                                                                                                    }; ?>>
-                                <label for="admin"> Administrator </label><br>
-                                <input type="checkbox" id="mod" name="userRoles[]" value="moderator" <?php foreach ($user->getRoles() as $role) {
-                                                                                                            if ($role == 'moderator') {
+                            <div class="d-flex flex-column">
+                                <div>
+                                    <label for="inputUserEditRole">Role(s) *</label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="admin" name="userRoles[]" value="admin" <?php foreach ($user->getRoles() as $role) {
+                                                                                                            if ($role == 'admin') {
                                                                                                                 echo 'checked';
                                                                                                             };
                                                                                                         }; ?>>
-                                <label for="mod"> Moderator </label><br>
-                                <input type="checkbox" id="chief" name="userRoles[]" value="chief" <?php foreach ($user->getRoles() as $role) {
-                                                                                                        if ($role == 'chief') {
-                                                                                                            echo 'checked';
-                                                                                                        };
-                                                                                                    }; ?>>
-                                <label for="chief"> Chief </label><br>
+
+
+                                    <label for="admin"> Administrator </label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="mod" name="userRoles[]" value="moderator" <?php foreach ($user->getRoles() as $role) {
+                                                                                                                if ($role == 'moderator') {
+                                                                                                                    echo 'checked';
+                                                                                                                };
+                                                                                                            }; ?>>
+                                    <label for="mod"> Moderator </label>
+                                </div>
+                                <div>
+                                    <input type="checkbox" id="chief" name="userRoles[]" value="chief" <?php foreach ($user->getRoles() as $role) {
+                                                                                                            if ($role == 'chief') {
+                                                                                                                echo 'checked';
+                                                                                                            };
+                                                                                                        }; ?>>
+                                    <label for="chief"> Chief </label>
+                                </div>
                             </div>
 
-                            <div class="col-6">
-                                <label for="inputUserEditState">State *</label> <br>
-                                <select name="userState" id="userEditState">
-                                    <option value="a" <?php if ($user->getState() == 'a') {
-                                                            echo 'selected';
-                                                        }; ?>>Active</option>
-                                    <option value="b" <?php if ($user->getState() == 'b') {
-                                                            echo 'selected';
-                                                        }; ?>>Blocked</option>
-                                    <option value="w" <?php if ($user->getState() == 'w') {
-                                                            echo 'selected';
-                                                        }; ?>>Waiting</option>
-                                </select>
+                            <div class="d-flex flex-column">
+                                <div>
+                                    <label for="inputUserEditState">State *</label>
+                                </div>
+                                <div>
+                                    <select name="userState" id="userEditState">
+                                        <option value="a" <?php if ($user->getState() == 'a') {
+                                                                echo 'selected';
+                                                            }; ?>>Active</option>
+                                        <option value="b" <?php if ($user->getState() == 'b') {
+                                                                echo 'selected';
+                                                            }; ?>>Blocked</option>
+                                        <option value="w" <?php if ($user->getState() == 'w') {
+                                                                echo 'selected';
+                                                            }; ?>>Waiting</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <br>
                         <input type="text" class="form-control" name="id_user" id="idUser" value="<?= $user->getIdUser() ?>" hidden>
-                        <div class="row d-flex justify-content-around">
+                        <div class="row d-flex justify-content-around mt-2">
                             <button id="submitEditUser" class="btn" data-toggle="modal" type="button" data-target="#modalEditUser">Submit</button>
                             <div class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -131,52 +144,52 @@ if (!isset($user) || empty($user)) {
                     </form>
                 </div>
             </div>
-            <div class="col-6 p-0">
+            <div class="col-12 col-lg-6 p-0 mt-4 mt-lg-0">
                 <div class="d-flex flex-column justify-content-center align-items-start mb-2">
 
 
                     <h2>Informations</h2>
 
-                    <div class="list border w-100">
+                    <div class="list border w-100 d-flex flex-column pl-2 pt-2 pb-2">
 
-                        <p> Creation Date : <?= $user->getDisplayDate() ?> <br>
-                            Last connection : <?= $user->getLog()->getDisplayDate() ?></p>
+                        <p> Creation Date : <?= $user->getDisplayDate() ?> </p>
+                        <p> Last connection : <?= $user->getLog()->getDisplayDate() ?></p>
 
                         <?php $userRoles = $user->getRoles() ?>
                         <?php
                         if (array_search('chief', $userRoles) !== false) { ?>
 
-                            <p>
-                            <h5> Chief </h5>
-                            Number of recipes : <?= count($user->getRecipes()) ?> <br>
-                            Last recipe : <?= $user->getLastRecipe()->getRecipeName() ?> </p>
+
+                            <p class="font-weight-bold"> Chief </p>
+                            <p>Number of recipes : <?= count($user->getRecipes()) ?> </p>
+                            <p>Last recipe : <?= $user->getLastRecipe()->getRecipeName() ?> </p>
 
                         <?php
                         }
                         if (array_search('user', $userRoles) !== false) { ?>
-                            <p>
-                            <h5> User </h5>
-                            Number of orders : <?= count($user->getOrders()) ?><br>
-                            Total amount of orders : <?= $user->getTotalAmountOrders() ?> €<br>
-                            Last order : <?= $user->getLastOrder()->getAmount() ?> €</p>
+
+                            <p class="font-weight-bold"> User </p>
+                            <p>Number of orders : <?= count($user->getOrders()) ?></p>
+                            <p>Total amount of orders : <?= $user->getTotalAmountOrders() ?> €</p>
+                            <p> Last order : <?= $user->getLastOrder()->getAmount() ?> €</p>
 
                         <?php
                         }
                         if (array_search('admin', $userRoles) !== false) { ?>
-                            <p>
-                            <h5> Administrator </h5>
-                            Number of import : <?= count($user->getImports()) ?> <br>
-                            Last import : <?= $user->getLastImport()->getDisplayDate() ?> </p>
+
+                            <p class="font-weight-bold"> Administrator </p>
+                            <p> Number of import : <?= count($user->getImports()) ?> </p>
+                            <p> Last import : <?= $user->getLastImport()->getDisplayDate() ?> </p>
 
 
                         <?php
                         }
                         if (array_search('moderator', $userRoles) !== false) { ?>
 
-                            <p>
-                            <h5> Moderator </h5>
-                            Number of approved comments : <?= $user->getCommentsNumber()["approved"] ?> <br>
-                            Number of blocked comments : <?= $user->getCommentsNumber()["blocked"] ?> </p>
+
+                            <p class="font-weight-bold"> Moderator </p>
+                            <p>Number of approved comments : <?= $user->getCommentsNumber()["approved"] ?> </p>
+                            <p> Number of blocked comments : <?= $user->getCommentsNumber()["blocked"] ?> </p>
 
                         <?php
                         }
@@ -214,82 +227,78 @@ if (!isset($user) || empty($user)) {
             </div>
         </div>
 
-        <br>
-        <br>
-        <br>
         <?php if (array_search("admin", $_SESSION["roles"]) !== false) {
 
         ?>
-        <div class="d-flex flex-column">
-            <div class="col">
-                <h1>His orders</h1>
-                <h5>Consultation of his orders</h5>
-            </div>
-            <div class="d-flex flex-row justify-content-around">
-                <div class="col-8">
-                    <br>
-                    <div class="wrapper-articles-table justify-content-between">
-                        <div>
-                            <div class="d-flex flex-row justify-content-between">
-                                <nav class="navbar navbar-white bg-white pl-0">
-                                    <form class="form-inline">
-                                        <input class="form-control mr-sm-2" id="customSearchOrderUser" type="search" placeholder="Search" aria-label="Search">
-                                        <img id="searchOrderUser" src="<?php echo BASE_URL . PATH_ICONS ?>search-svg.svg" alt="">
-                                    </form>
-                                </nav>
+            <div class="d-flex flex-column mt-3 mt-lg-3">
+                <div>
+                    <h1>His orders</h1>
+                    <h5>Consultation of his orders</h5>
+                </div>
+                <div class="d-flex flex-row justify-content-lg-around justify-content-center flex-wrap">
+                    <div class="col-12 col-lg-8">
+                        <div class="wrapper-articles-table justify-content-between">
+                            <div>
+                                <div class="d-flex flex-row justify-content-between">
+                                    <nav class="navbar navbar-white bg-white pl-0">
+                                        <form class="form-inline">
+                                            <input class="form-control mr-sm-2" id="customSearchOrderUser" type="search" placeholder="Search" aria-label="Search">
+                                            <img id="searchOrderUser" src="<?php echo BASE_URL . PATH_ICONS ?>search-svg.svg" alt="">
+                                        </form>
+                                    </nav>
 
+                                </div>
+                                <table class="table-borderless table-striped" rowEvents="" id="allOrdersUserTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchOrderUser" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
+                                    <thead>
+                                        <th>ID</th>
+
+                                        <th>User</th>
+
+                                        <th>Amount</th>
+
+                                        <th>Number of articles</th>
+
+                                        <th>Date</th>
+
+                                        <th>State</th>
+
+                                    </thead>
+                                    <tbody id="allOrdersTbody">
+                                        <?php
+                                        $orders = $user->getOrders();
+                                        foreach ($orders as $order) {
+                                            echo '<tr class="orders" data-id="' . $order->getIdOrder() . '">';
+                                            echo '<td>' . $order->getIdOrder() . '</td>';
+                                            echo '<td>' . $order->getUser()->getFirstName() . " " . $order->getUser()->getLastName() . '</td>';
+                                            echo '<td>' . round(($order->getAmount()), 2) . '</td>';
+                                            echo '<td>' . $order->getNumberOfArticle() . '</td>';
+                                            echo '<td>' . $order->getDisplayDate() . '</td>';
+                                            echo '<td>' . $order->getDisplayState() . '</td>';
+                                            echo '</tr>';
+                                        } ?>
+                                    </tbody>
+                                    </tbody>
+                                </table>
                             </div>
-                            <table class="table-borderless table-striped" rowEvents="" id="allOrdersUserTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchOrderUser" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
-                                <thead>
-                                    <th>ID</th>
+                        </div>
 
-                                    <th>User</th>
+                    </div>
+                    <div class="col-12 col-md-6 col-lg-4 mb-3 mb-lg-0 mt-4 mt-lg-0">
+                        <div class="d-flex justify-content-between px-xl-3 align-items-end">
+                            <h2>Details</h2>
+                            <div id="userOrderId" class="d-flex justify-content-center align-items-center orderId">
+                                <h4 id="idOrderUser" className="mr-5">N°:</h4>
+                            </div>
 
-                                    <th>Amount</th>
-
-                                    <th>Number of articles</th>
-
-                                    <th>Date</th>
-
-                                    <th>State</th>
-
-                                </thead>
-                                <tbody id="allOrdersTbody">
-                                    <?php
-                                    $orders = $user->getOrders();
-                                    foreach ($orders as $order) {
-                                        echo '<tr class="orders" data-id="' . $order->getIdOrder() . '">';
-                                        echo '<td>' . $order->getIdOrder() . '</td>';
-                                        echo '<td>' . $order->getUser()->getFirstName() . " " . $order->getUser()->getLastName() . '</td>';
-                                        echo '<td>' . round(($order->getAmount()), 2) . '</td>';
-                                        echo '<td>' . $order->getNumberOfArticle() . '</td>';
-                                        echo '<td>' . $order->getDisplayDate() . '</td>';
-                                        echo '<td>' . $order->getDisplayState() . '</td>';
-                                        echo '</tr>';
-                                    } ?>
-                                </tbody>
-                                </tbody>
-                            </table>
+                        </div>
+                        <div id="listOrderLinesUser" class="d-flex flex-column justify-content-start w-100 p-2 bg-white border">
                         </div>
                     </div>
 
                 </div>
-                <div class="col-4 mb-3">
-                    <div class="d-flex justify-content-between px-3 align-items-end">
-                        <h2>Details</h2>
-                        <div id="userOrderId" class="d-flex justify-content-center align-items-center orderId">
-                            <h4 id="idOrderUser" className="mr-5">N°:</h4>
-                        </div>
-
-                    </div>
-                    <div id="listOrderLinesUser" class="d-flex flex-column justify-content-start w-100 p-2 bg-white border">
-                    </div>
-                </div>
-
             </div>
-        </div>
         <?php } ?>
-        
+
         <br>
 
         <div class="d-flex flex-column position-relative">
@@ -412,280 +421,280 @@ if (!isset($user) || empty($user)) {
     </div>
 
     <script>
-    const ROOT = '<?= BASE_URL ?>';
+        const ROOT = '<?= BASE_URL ?>';
 
-    // hide the notification after a click
-    var notifs = document.querySelectorAll(".notifications");
-    notifs.forEach(element =>
-        element.addEventListener('click', (function(e) {
-            element.hidden = true;
+        // hide the notification after a click
+        var notifs = document.querySelectorAll(".notifications");
+        notifs.forEach(element =>
+            element.addEventListener('click', (function(e) {
+                element.hidden = true;
+            }))
+        )
+
+
+        // -------------------------------- Edit user --------------------------// 
+
+        var formEditUser = document.querySelector("#editUserForm"); // get the form used to edit the user
+        // Event listener on the form
+        formEditUser.addEventListener('submit', (function(e) {
+            event.preventDefault(); // stop the default action of the form
+            const idUser = document.querySelector('#idUser').value;
+            console.log(document.querySelector("#admin").checked);
+            console.log(document.querySelector("#mod").checked);
+            console.log(document.querySelector("#chief").checked);
+            editUser(this, idUser).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        document.querySelector("#inputUserEditLastname").value = response.userLastname;
+                        document.querySelector("#inputUserEditFirstname").value = response.userFirstname;
+                        document.querySelector("#inputUserEditAddress1").value = response.userAddress1;
+                        document.querySelector("#inputUserEditAddress2").value = response.userAddress2;
+                        document.querySelector("#inputUserEditCity").value = response.userCity;
+                        document.querySelector("#inputUserEditPostcode").value = response.userPostcode;
+                        if (response.userRoles.indexOf('admin') != -1) {
+                            document.querySelector("#admin").checked = true;
+                        }
+                        if (response.userRoles.indexOf('moderator') != -1) {
+                            document.querySelector("#mod").checked = true;
+                        }
+                        if (response.userRoles.indexOf('chief') != -1) {
+                            document.querySelector("#chief").checked = true;
+                        }
+                        if (response.userState == "a") {
+                            document.querySelector("#userEditState").options.selectedIndex = 0;
+                        } else if (response.userState == "b") {
+                            document.querySelector("#userEditState").options.selectedIndex = 1;
+                        } else if (response.userState == "w") {
+                            document.querySelector("#userEditState").options.selectedIndex = 2;
+                        }
+
+
+                        document.querySelector("#errorUserEditLastname").innerHTML = "";
+                        document.querySelector("#errorUserEditFirstname").innerHTML = "";
+                        document.querySelector("#errorUserEditAddress1").innerHTML = "";
+                        document.querySelector("#errorUserEditAddress2").innerHTML = "";
+                        document.querySelector("#errorUserEditCity").innerHTML = "";
+                        document.querySelector("#errorUserEditPostcode").innerHTML = "";
+
+                        document.querySelector("#closeModalEdit").click();
+                        document.querySelector("#userEditSuccess").hidden = false;
+                    } else {
+                        document.querySelector("#errorUserEditLastname").innerHTML = response.errorMessages['userLastname'];
+                        document.querySelector("#errorUserEditFirstname").innerHTML = response.errorMessages['userFirstname'];;
+                        document.querySelector("#errorUserEditAddress1").innerHTML = response.errorMessages['userAddress1'];
+                        document.querySelector("#errorUserEditAddress2").innerHTML = response.errorMessages['userAddress2'];
+                        document.querySelector("#errorUserEditCity").innerHTML = response.errorMessages['userCity'];
+                        document.querySelector("#errorUserEditPostcode").innerHTML = response.errorMessages['userPostcode'];
+
+                        console.log(response.errorMessages)
+                    }
+                }
+            });
         }))
-    )
 
+        /**
+         * Ajax Request to edit the user
+         * @param {form} obj, int idUser
+         * @returns mixed
+         */
+        async function editUser(obj, idUser) {
+            var myHeaders = new Headers();
 
-    // -------------------------------- Edit user --------------------------// 
+            let formData = new FormData(obj);
+            formData.append('id_user', idUser);
 
-    var formEditUser = document.querySelector("#editUserForm"); // get the form used to edit the user
-    // Event listener on the form
-    formEditUser.addEventListener('submit', (function(e) {
-        event.preventDefault(); // stop the default action of the form
-        const idUser = document.querySelector('#idUser').value;
-        console.log(document.querySelector("#admin").checked);
-        console.log(document.querySelector("#mod").checked);
-        console.log(document.querySelector("#chief").checked);
-        editUser(this, idUser).then((response) => {
-            if (response) {
-                if (response.success) {
-                    document.querySelector("#inputUserEditLastname").value = response.userLastname;
-                    document.querySelector("#inputUserEditFirstname").value = response.userFirstname;
-                    document.querySelector("#inputUserEditAddress1").value = response.userAddress1;
-                    document.querySelector("#inputUserEditAddress2").value = response.userAddress2;
-                    document.querySelector("#inputUserEditCity").value = response.userCity;
-                    document.querySelector("#inputUserEditPostcode").value = response.userPostcode;
-                    if (response.userRoles.indexOf('admin') != -1) {
-                        document.querySelector("#admin").checked = true;
-                    }
-                    if (response.userRoles.indexOf('moderator') != -1) {
-                        document.querySelector("#mod").checked = true;
-                    }
-                    if (response.userRoles.indexOf('chief') != -1) {
-                        document.querySelector("#chief").checked = true;
-                    }
-                    if (response.userState == "a") {
-                        document.querySelector("#userEditState").options.selectedIndex = 0;
-                    } else if (response.userState == "b") {
-                        document.querySelector("#userEditState").options.selectedIndex = 1;
-                    } else if (response.userState == "w") {
-                        document.querySelector("#userEditState").options.selectedIndex = 2;
-                    }
-
-
-                    document.querySelector("#errorUserEditLastname").innerHTML = "";
-                    document.querySelector("#errorUserEditFirstname").innerHTML = "";
-                    document.querySelector("#errorUserEditAddress1").innerHTML = "";
-                    document.querySelector("#errorUserEditAddress2").innerHTML = "";
-                    document.querySelector("#errorUserEditCity").innerHTML = "";
-                    document.querySelector("#errorUserEditPostcode").innerHTML = "";
-
-                    document.querySelector("#closeModalEdit").click();
-                    document.querySelector("#userEditSuccess").hidden = false;
+            var myInit = {
+                method: 'POST',
+                headers: myHeaders,
+                mode: 'cors',
+                cache: 'default',
+                body: formData
+            };
+            let response = await fetch(ROOT + 'user/edituser', myInit);
+            try {
+                if (response.ok) {
+                    return await response.json();
                 } else {
-                    document.querySelector("#errorUserEditLastname").innerHTML = response.errorMessages['userLastname'];
-                    document.querySelector("#errorUserEditFirstname").innerHTML = response.errorMessages['userFirstname'];;
-                    document.querySelector("#errorUserEditAddress1").innerHTML = response.errorMessages['userAddress1'];
-                    document.querySelector("#errorUserEditAddress2").innerHTML = response.errorMessages['userAddress2'];
-                    document.querySelector("#errorUserEditCity").innerHTML = response.errorMessages['userCity'];
-                    document.querySelector("#errorUserEditPostcode").innerHTML = response.errorMessages['userPostcode'];
-
-                    console.log(response.errorMessages)
+                    return false;
                 }
+            } catch (e) {
+                console.error(e.message);
             }
-        });
-    }))
-
-    /**
-     * Ajax Request to edit the user
-     * @param {form} obj, int idUser
-     * @returns mixed
-     */
-    async function editUser(obj, idUser) {
-        var myHeaders = new Headers();
-
-        let formData = new FormData(obj);
-        formData.append('id_user', idUser);
-
-        var myInit = {
-            method: 'POST',
-            headers: myHeaders,
-            mode: 'cors',
-            cache: 'default',
-            body: formData
-        };
-        let response = await fetch(ROOT + 'user/edituser', myInit);
-        try {
-            if (response.ok) {
-                return await response.json();
-            } else {
-                return false;
-            }
-        } catch (e) {
-            console.error(e.message);
-        }
-    }
-
-    // -------------------------------- Reset Password --------------------------// 
-
-
-    function resetPassword() {
-        const idUser = event.target.getAttribute('data-id'); // get the id of the event target
-        console.log(idUser);
-        console.log(event.target)
-        resetThePassword(idUser).then((response) => {
-            if (response) {
-                if (response.success) {
-                    console.log(response);
-                    document.querySelector("#closeModalResetPassword").click();
-                    document.querySelector("#userPasswordResetSuccess").hidden = false;
-                    document.querySelector("#userPasswordResetSuccess").innerHTML = "<p>The new password is " + response.password + " ! Please, write it down before doing anything else !";
-                }
-            }
-        });
-    }
-
-    /**
-     * Ajax Request to change state of a comment
-     * @param int idUser
-     * @returns mixed
-     */
-    async function resetThePassword(idUser) {
-        var myHeaders = new Headers();
-
-        let formData = new FormData();
-        formData.append('id_user', idUser);
-
-        var myInit = {
-            method: 'POST',
-            headers: myHeaders,
-            mode: 'cors',
-            cache: 'default',
-            body: formData
-        };
-        let response = await fetch(ROOT + 'user/resetpassword', myInit);
-        try {
-            if (response.ok) {
-                return await response.json();
-            } else {
-                return false;
-            }
-        } catch (e) {
-            console.error(e.message);
         }
 
-    }
+        // -------------------------------- Reset Password --------------------------// 
 
-    // -------------------------------- Display articles for an order --------------------------//  
 
-    const myTable = document.querySelector("#allOrdersUserTable"); // get the table
-    myTable.addEventListener('click', function() { // add event listener
-        var orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
-        getOrderLines(orderId).then((response) => {
-            if (response) {
-                const divList = document.querySelector("#listOrderLinesUser")
-                divList.innerHTML = "";
-                if (response.success) {
-                    response['articles'].forEach(element => {
+        function resetPassword() {
+            const idUser = event.target.getAttribute('data-id'); // get the id of the event target
+            console.log(idUser);
+            console.log(event.target)
+            resetThePassword(idUser).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        console.log(response);
+                        document.querySelector("#closeModalResetPassword").click();
+                        document.querySelector("#userPasswordResetSuccess").hidden = false;
+                        document.querySelector("#userPasswordResetSuccess").innerHTML = "<p>The new password is " + response.password + " ! Please, write it down before doing anything else !";
+                    }
+                }
+            });
+        }
+
+        /**
+         * Ajax Request to change state of a comment
+         * @param int idUser
+         * @returns mixed
+         */
+        async function resetThePassword(idUser) {
+            var myHeaders = new Headers();
+
+            let formData = new FormData();
+            formData.append('id_user', idUser);
+
+            var myInit = {
+                method: 'POST',
+                headers: myHeaders,
+                mode: 'cors',
+                cache: 'default',
+                body: formData
+            };
+            let response = await fetch(ROOT + 'user/resetpassword', myInit);
+            try {
+                if (response.ok) {
+                    return await response.json();
+                } else {
+                    return false;
+                }
+            } catch (e) {
+                console.error(e.message);
+            }
+
+        }
+
+        // -------------------------------- Display articles for an order --------------------------//  
+
+        const myTable = document.querySelector("#allOrdersUserTable"); // get the table
+        myTable.addEventListener('click', function() { // add event listener
+            var orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
+            getOrderLines(orderId).then((response) => {
+                if (response) {
+                    const divList = document.querySelector("#listOrderLinesUser")
+                    divList.innerHTML = "";
+                    if (response.success) {
+                        response['articles'].forEach(element => {
+                            const div = document.createElement("div");
+                            div.innerHTML = element.all;
+                            divList.appendChild(div); // add the articles lines to the divList
+                        })
+                    } else {
                         const div = document.createElement("div");
-                        div.innerHTML = element.all;
-                        divList.appendChild(div); // add the articles lines to the divList
-                    })
-                } else {
-                    const div = document.createElement("div");
-                    div.innerHTML = "";
-                    divList.appendChild(div); // if no response, empty the divList.
-                }
-                if (orderId == null) {
-                    orderId = "";
-                }
-                document.querySelector("#idOrderUser").innerHTML = "N°: " + orderId;
-
-            }
-        });
-    });
-
-    /**
-     * Ajax Request to get the articles from the orderLines according to the order
-     * @param int orderId
-     * @returns mixed
-     */
-    async function getOrderLines(orderId) {
-        var myHeaders = new Headers();
-
-        let formData = new FormData();
-        formData.append('id_order', orderId);
-
-        var myInit = {
-            method: 'POST',
-            headers: myHeaders,
-            mode: 'cors',
-            cache: 'default',
-            body: formData
-        };
-        let response = await fetch(ROOT + 'user/userorder', myInit);
-        try {
-            if (response.ok) {
-                return await response.json();
-            } else {
-                return false;
-            }
-        } catch (e) {
-            console.error(e.message);
-        }
-
-
-    }
-
-    // -------------------------------- Change state of a comment --------------------------//  
-
-    function changeState(state) {
-        const idComment = event.target.getAttribute('data-id'); // get the id of the event target
-        console.log(event.target);
-        const td = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.previousSibling; // get td of state for this comment
-        console.log(td);
-        var btnclose; // get the btn close of the modal
-        if (state == "a") {
-            btnclose = document.querySelector("#closeModalApprove"+idComment);
-        } else if (state == "b") {
-            btnclose = document.querySelector("#closeModalBlock"+idComment);
-        }
-
-        changeStateComment(state, idComment).then((response) => {
-            if (response) {
-                if (response.success) {
-                    td.innerHTML = response.state;
-                    if (state == "a") {
-                        document.querySelector("#commentApprovedSuccess").hidden = false;
-                    } else if (state == "b") {
-                        document.querySelector("#commentBlockedSuccess").hidden = false;
+                        div.innerHTML = "";
+                        divList.appendChild(div); // if no response, empty the divList.
                     }
-                    btnclose.click();
+                    if (orderId == null) {
+                        orderId = "";
+                    }
+                    document.querySelector("#idOrderUser").innerHTML = "N°: " + orderId;
+
                 }
-            }
+            });
         });
-    }
 
-    /**
-     * Ajax Request to change state of a comment
-     * @param int state, int idComment
-     * @returns mixed
-     */
-    async function changeStateComment(state, idComment) {
-        var myHeaders = new Headers();
+        /**
+         * Ajax Request to get the articles from the orderLines according to the order
+         * @param int orderId
+         * @returns mixed
+         */
+        async function getOrderLines(orderId) {
+            var myHeaders = new Headers();
 
-        let formData = new FormData();
-        formData.append('state', state);
-        formData.append('id_comment', idComment);
+            let formData = new FormData();
+            formData.append('id_order', orderId);
 
-        var myInit = {
-            method: 'POST',
-            headers: myHeaders,
-            mode: 'cors',
-            cache: 'default',
-            body: formData
-        };
-        let response = await fetch(ROOT + 'user/usercomment', myInit);
-        try {
-            if (response.ok) {
-                return await response.json();
-            } else {
-                return false;
+            var myInit = {
+                method: 'POST',
+                headers: myHeaders,
+                mode: 'cors',
+                cache: 'default',
+                body: formData
+            };
+            let response = await fetch(ROOT + 'user/userorder', myInit);
+            try {
+                if (response.ok) {
+                    return await response.json();
+                } else {
+                    return false;
+                }
+            } catch (e) {
+                console.error(e.message);
             }
-        } catch (e) {
-            console.error(e.message);
+
+
         }
 
+        // -------------------------------- Change state of a comment --------------------------//  
 
-    }
-</script>
+        function changeState(state) {
+            const idComment = event.target.getAttribute('data-id'); // get the id of the event target
+            console.log(event.target);
+            const td = event.target.parentNode.parentNode.parentNode.parentNode.parentNode.previousSibling; // get td of state for this comment
+            console.log(td);
+            var btnclose; // get the btn close of the modal
+            if (state == "a") {
+                btnclose = document.querySelector("#closeModalApprove" + idComment);
+            } else if (state == "b") {
+                btnclose = document.querySelector("#closeModalBlock" + idComment);
+            }
+
+            changeStateComment(state, idComment).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        td.innerHTML = response.state;
+                        if (state == "a") {
+                            document.querySelector("#commentApprovedSuccess").hidden = false;
+                        } else if (state == "b") {
+                            document.querySelector("#commentBlockedSuccess").hidden = false;
+                        }
+                        btnclose.click();
+                    }
+                }
+            });
+        }
+
+        /**
+         * Ajax Request to change state of a comment
+         * @param int state, int idComment
+         * @returns mixed
+         */
+        async function changeStateComment(state, idComment) {
+            var myHeaders = new Headers();
+
+            let formData = new FormData();
+            formData.append('state', state);
+            formData.append('id_comment', idComment);
+
+            var myInit = {
+                method: 'POST',
+                headers: myHeaders,
+                mode: 'cors',
+                cache: 'default',
+                body: formData
+            };
+            let response = await fetch(ROOT + 'user/usercomment', myInit);
+            try {
+                if (response.ok) {
+                    return await response.json();
+                } else {
+                    return false;
+                }
+            } catch (e) {
+                console.error(e.message);
+            }
+
+
+        }
+    </script>
 
 <?php } else { ?>
 
