@@ -48,9 +48,14 @@ class UserLog{
     public function getDisplayDate()
     {
         $date = new DateTime($this->connectionDate);
-        return $date->format('j F Y \a\t H\hi');
+        $displayDate = "";
+        if ($this->connectionDate!=null){
+            $displayDate= $date->format('j F Y \a\t H\hi');
+        } 
+        return $displayDate;
     }
 
+    
     /**
      * Set the value of connectionDate
      *
