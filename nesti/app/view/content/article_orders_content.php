@@ -27,8 +27,8 @@ if (!isset($orders)) {
     <h2 class="mb-5 mt-5">Orders</h2>
 
 
-    <div class="d-flex flex-row justify-content-between flex-wrap">
-        <div>
+    <div class="d-flex flex-row justify-content-center justify-content-lg-between flex-wrap">
+        <div class = "col-12 col-lg-8">
             <div class="d-flex flex-row justify-content-between">
                 <nav class="navbar navbar-white bg-white pl-0">
                     <form class="form-inline">
@@ -59,7 +59,7 @@ if (!isset($orders)) {
                         echo '<td>' . $order->getUser()->getFirstName() . " " . $order->getUser()->getLastName() . '</td>';
                         echo '<td>' . round(($order->getAmount()), 2) . '</td>';
                         echo '<td>' . $order->getDisplayDate() . '</td>';
-                        echo '<td>' . $order->getState() . '</td>';
+                        echo '<td>' . $order->getDisplayState() . '</td>';
                         echo '</tr>';
                     } ?>
                 </tbody>
@@ -67,7 +67,7 @@ if (!isset($orders)) {
             </table>
         </div>
 
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column col-12 col-md-6 col-lg-4 ">
             <div class="d-flex flex-row flex-wrap justify-content-between">
                 <h3>Details</h3>
                 <div id="articleOrderId" class="d-flex justify-content-center align-items-center orderId">
