@@ -173,7 +173,7 @@ class Recipe
     {
         if ($this->time != null) {
             $troncatedTime = explode(":", $this->time);
-            $convertedTime = (double) $troncatedTime[0] * 60 + (double) $troncatedTime[1] + (double) $troncatedTime[2] / 60;
+            $convertedTime = (float) $troncatedTime[0] * 60 + (float) $troncatedTime[1] + (float) $troncatedTime[2] / 60;
         } else {
             $convertedTime = null;
         }
@@ -208,6 +208,26 @@ class Recipe
             $this->time = $convertedTime;
         }
         return $PreparationTimeError;
+    }
+
+
+    /**
+     * Get the display time (xH yM)
+     */
+    public function getDisplayTime()
+    {
+        $time = (int) $this->getTime();
+        $hour = intdiv($time, 60);
+        $min = fmod($time, 60);
+        $hour = ltrim($hour, "0");
+        $min = ltrim($min, "0");
+        // $hour = (String) ((int)$hour) ;
+
+        $hour = $hour ? $hour . ' h ' : '';
+        $min = $min ? $min . ' min ' : '';
+
+        $displayTime = $hour . $min;
+        return $displayTime;
     }
 
     /**
@@ -254,11 +274,11 @@ class Recipe
         return $this;
     }
 
-    
+
 
     /**
      * Get the value of idPicture
-     */ 
+     */
     public function getIdPicture()
     {
         return $this->idPicture;
@@ -268,7 +288,7 @@ class Recipe
      * Set the value of idPicture
      *
      * @return  self
-     */ 
+     */
     public function setIdPicture($idPicture)
     {
         $this->idPicture = $idPicture;
@@ -278,7 +298,7 @@ class Recipe
 
     /**
      * Get the value of idChief
-     */ 
+     */
     public function getIdChief()
     {
         return $this->idChief;
@@ -288,7 +308,7 @@ class Recipe
      * Set the value of idChief
      *
      * @return  self
-     */ 
+     */
     public function setIdChief($idChief)
     {
         $this->idChief = $idChief;
@@ -296,7 +316,7 @@ class Recipe
         return $this;
     }
 
-     /**
+    /**
      * Get paragraphs for a recipe
      */
     public function getParagraphs()
@@ -306,29 +326,29 @@ class Recipe
         return $paragraphes;
     }
 
-     // Display state for tables
-     public function getDisplayState()
-     {
- 
-         if ($this->state == 'a') {
-             $state = 'Active';
-         }
-         if ($this->state == 'b') {
-             $state = 'Blocked';
-         }
-         if ($this->state == 'w') {
-             $state = 'Waiting';
-         }
-         return $state;
-     }
+    // Display state for tables
+    public function getDisplayState()
+    {
 
-     /**
+        if ($this->state == 'a') {
+            $state = 'Active';
+        }
+        if ($this->state == 'b') {
+            $state = 'Blocked';
+        }
+        if ($this->state == 'w') {
+            $state = 'Waiting';
+        }
+        return $state;
+    }
+
+    /**
      * Get the average grade for the recipe
      */
     public function getGrade()
     {
-        $result=0;
-        $total=0;
+        $result = 0;
+        $total = 0;
         $recipeDAO = new RecipeDAO();
         $grades = $recipeDAO->getGrades($this->idRecipe);
 
@@ -336,10 +356,10 @@ class Recipe
             $total += $grade->getGrade();
         }
 
-        if(count($grades)!=0){ // get the average grade
-            $result = $total/count($grades);
+        if (count($grades) != 0) { // get the average grade
+            $result = $total / count($grades);
         }
-        
+
         return $result;
     }
 }
