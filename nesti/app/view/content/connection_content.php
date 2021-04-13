@@ -47,6 +47,14 @@ if (!isset($disconnect) || empty($disconnect)) {
 <script>
     const ROOT = '<?= BASE_URL ?>';
 
+    // hide the notification after a click
+    var notifs = document.querySelectorAll(".notifications");
+    notifs.forEach(element =>
+        element.addEventListener('click', (function(e) {
+            element.hidden = true;
+        }))
+    )
+
     // -------------------------------- Connect user --------------------------// 
 
     var connectionForm = document.querySelector("#formConnection"); // get the form used to connect the user
