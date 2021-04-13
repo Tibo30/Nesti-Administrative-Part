@@ -137,21 +137,7 @@ class ArticleController extends BaseController
             $articleEdit = $this->articleDAO->getArticle($idArticle); // we get the article from the database
             $articleEdit->setState("b"); // we change is state in local
             $this->articleDAO->editArticle($articleEdit, "state"); // we change is state in the database
-            $articles = $this->articleDAO->getArticles(); // we get back all the articles from the database
-            $index = 0;
-            // in this loop we prepare the return data from the fetch
-            foreach ($articles as $article) {
-                $data['articles'][$index]['id'] = $article->getIdArticle();
-                $data['articles'][$index]['name'] = $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " de " .  $article->getProduct()->getProductName();
-                $data['articles'][$index]['selling_price'] = round(($article->getPrice()->getPrice()), 2);
-                $data['articles'][$index]['type'] = $article->getType();
-                $data['articles'][$index]['last_import'] = $article->getLastImport()->getDisplayDate();
-                $data['articles'][$index]['state'] = $article->getDisplayState();
-                $data['articles'][$index]['stock'] = $article->getStock();
-                $data['articles'][$index]['action'] = '<a class="btn-modify-article" href="' . BASE_URL . 'article/edit/' .  $article->getIdArticle() . ' "data-id=' . $article->getIdArticle() . '>Modify</br></a>
-                <a class="btn-delete-article" onclick="allArticlesDelete()" data-id=' . $article->getIdArticle() . '>Delete</a>';
-                $index++;
-            }
+            $data["state"]=$articleEdit->getDisplayState();
             $data['success'] = true;
         }
         echo json_encode($data);
