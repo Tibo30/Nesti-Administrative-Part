@@ -13,7 +13,7 @@
         </a>
         <p> &nbsp > Import</p>
     </div>
-    <div class="d-flex flex-row justify-content-around">
+    <div class="d-flex flex-row justify-content-center justify-content-lg-around flex-wrap ">
         <div class="d-flex flex-column">
             <h2 class="mb-2 mt-2">Import</h2>
             <form method="post">
@@ -28,7 +28,7 @@
         </div>
         <div>
             <div class="d-flex flex-column">
-                <h3 class="mb-2 mt-2">List of imported articles</h2>
+                <h3 class="mb-3 mt-3 mt-lg-0">List of imported articles</h2>
                     <div class="d-flex flex-column justify-content-between w-100 p-2 bg-white border">
                         <?php foreach ($articles as $article) {
                             echo ' <div class="d-flex flex-row justify-content-between"> <p> ' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " de " .  $article->getProduct()->getProductName() . '</p><p>'.$article->getQuantityBought() . ' </p><div><a href="' . BASE_URL . 'article/edit/' . $article->getIdArticle() . '" class="btn-edit-article">Edit</a></div></div>';
