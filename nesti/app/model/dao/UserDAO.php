@@ -44,20 +44,38 @@ class UserDAO extends ModelDAO
     public function getRole($idUser)
     {
         $role = [];
-        $reqChief = self::$_bdd->prepare('SELECT id_users FROM chief WHERE id_users=:id');
-        $reqAdmin = self::$_bdd->prepare('SELECT id_users FROM admin WHERE id_users=:id');
-        $reqModerator = self::$_bdd->prepare('SELECT id_users FROM moderator WHERE id_users=:id');
+        $reqChief = self::$_bdd->prepare('SELECT * FROM chief WHERE id_users=:id');
+        $reqAdmin = self::$_bdd->prepare('SELECT * FROM admin WHERE id_users=:id');
+        $reqModerator = self::$_bdd->prepare('SELECT * FROM moderator WHERE id_users=:id');
         $reqChief->execute(array("id" => $idUser));
         $reqAdmin->execute(array("id" => $idUser));
         $reqModerator->execute(array("id" => $idUser));
         if ($reqChief->rowcount() == 1) {
-            $role[] = "chief";
+            if ($data = $reqChief->fetch()) {
+                if ($data["role_state"] == "a") {
+                    $role[] = "chief";
+                } else {
+                    $role[] = "oldChief";
+                }
+            }
         }
         if ($reqAdmin->rowcount() == 1) {
-            $role[] = "admin";
+            if ($data = $reqAdmin->fetch()) {
+                if ($data["role_state"] == "a") {
+                    $role[] = "admin";
+                } else {
+                    $role[] = "oldAdmin";
+                }
+            }
         }
         if ($reqModerator->rowcount() == 1) {
-            $role[] = "moderator";
+            if ($data = $reqModerator->fetch()) {
+                if ($data["role_state"] == "a") {
+                    $role[] = "moderator";
+                } else {
+                    $role[] = "oldModerator";
+                }
+            }
         }
 
         $role[] = "user";
