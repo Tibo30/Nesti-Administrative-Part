@@ -49,7 +49,7 @@ class City{
         $cityError = "";
         if (empty($cityName)) {
             $cityError = "Please enter a city";
-        } else if (!preg_match("/^[a-z ,.'-]{3,20}+$/i", $cityName)) { // A MODIFIER
+        } else if (!preg_match("/^[a-zA-ZÀ-ÿ ,.'-]{3,20}+$/i", $cityName)) {
             $this->cityError = "The city is incorrect";
         } else {
             $this->cityName = $cityName;
