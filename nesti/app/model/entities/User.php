@@ -543,7 +543,10 @@ class User
                 $count++;
             }
         }
-        $averageGrade = $totalgradeChief / $count;
+        $averageGrade=null;
+        if ($count>0){
+            $averageGrade = $totalgradeChief / $count;
+        }
         return $averageGrade;
     }
 }
