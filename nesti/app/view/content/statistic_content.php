@@ -79,11 +79,11 @@
                             <?php
                             foreach ($articleOutOfStock as $article) {
                                 echo '<tr>';
-                                echo '<td>' . $article->getProduct()->getProductName() ." (".$article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() ." )". '</td>';
+                                echo '<td>' . $article->getProduct()->getProductName() . " (" . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " )" . '</td>';
                                 echo '<td>' . $article->getQuantitySold() . '</td>';
                                 echo '<td>' . $article->getBenefits() . '</td>';
                                 echo '<td>';
-                                echo '<a class="btn-see-articleOutOfStock" href="' . BASE_URL . 'article/edit/' . $article->getIdArticle() .'">see</br></a>';
+                                echo '<a class="btn-see-articleOutOfStock" href="' . BASE_URL . 'article/edit/' . $article->getIdArticle() . '">see</br></a>';
                                 echo '</td>';
                                 echo '</tr>';
                             } ?>
@@ -99,132 +99,131 @@
     </div>
 
     <script>
-    // ---------------------------- Orders -----------------------------//
-    const el = document.getElementById('toastOrders');
-    var totalPurchasedPerDay = <?php echo json_encode($totalPurchasedPerDay) ?>;
-    var totalSoldPerDay = <?php echo json_encode($totalSoldPerDay) ?>;
+        // ---------------------------- Orders -----------------------------//
+        const el = document.getElementById('toastOrders');
+        var totalPurchasedPerDay = <?php echo json_encode($totalPurchasedPerDay) ?>;
+        var totalSoldPerDay = <?php echo json_encode($totalSoldPerDay) ?>;
 
-    const data = {
+        const data = {
 
-        categories: [
-            '0',
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9'
-        ],
+            categories: [
+                '0',
+                '1',
+                '2',
+                '3',
+                '4',
+                '5',
+                '6',
+                '7',
+                '8',
+                '9'
+            ],
 
-        series: [{
-            name: 'Cost',
-            data: totalPurchasedPerDay,
-        }, {
-            name: 'Sells',
-            data: totalSoldPerDay,
-        }],
-    };
+            series: [{
+                name: 'Cost',
+                data: totalPurchasedPerDay,
+            }, {
+                name: 'Sells',
+                data: totalSoldPerDay,
+            }],
+        };
 
-    const options = {
-        chart: {
-            title: '',
-            width: 600,
-            height: 400
-        },
-        xAxis: {
-            pointOnColumn: false,
-            title: {
-                text: ''
-            }
-        },
-        yAxis: {
-            title: ''
-        },
-    };
-
-    const chartLog = toastui.Chart.lineChart({
-        el,
-        data,
-        options
-    });
-
-
-
-    // ---------------------------- Website Consultation -----------------------------//
-    const el1 = document.getElementById('toastPieConnection');
-    var connectionPerHour = <?php echo json_encode($connectionPerHour) ?>;
-    const dataConnectionLogPerHour = {
-        categories: ['Connection'],
-        series: connectionPerHour
-    }
-    const optionsConnectionLog = {
-        chart: {
-            title: '',
-            width: 400,
-            height: 400
-        },
-        legend: {
-            visible: false
-        },
-        series: {
-            dataLabels: {
-                visible: true,
-                anchor: 'outer',
-                formatter: (value) => value,
-                pieSeriesName: {
-                    visible: true,
-                },
+        const options = {
+            chart: {
+                title: '',
+                width: 600,
+                height: 400
             },
-            radiusRange: {
-                inner: '60%',
-                outer: '100%',
-            }
+            xAxis: {
+                pointOnColumn: false,
+                title: {
+                    text: ''
+                }
+            },
+            yAxis: {
+                title: ''
+            },
+        };
+
+        const chartLog = toastui.Chart.lineChart({
+            el,
+            data,
+            options
+        });
+
+
+
+        // ---------------------------- Website Consultation -----------------------------//
+        const el1 = document.getElementById('toastPieConnection');
+        var connectionPerHour = <?php echo json_encode($connectionPerHour) ?>;
+        const dataConnectionLogPerHour = {
+            categories: ['Connection'],
+            series: connectionPerHour
         }
-
-    };
-    const chartConection = toastui.Chart.pieChart({
-        el: el1,
-        data: dataConnectionLogPerHour,
-        options: optionsConnectionLog
-    });
-
-    // ---------------------------- Articles -----------------------------//
-    const el2 = document.getElementById('toastArticles');
-    var articleSold = <?php echo json_encode($articleSold) ?>;
-    var articleBought = <?php echo json_encode($articleBought) ?>;
-    var articles = <?php echo json_encode($articles) ?>;
-    var articleInStock = <?php echo json_encode($articleInStock) ?>;
-    var clésDenses = Object.keys(articles);
-    console.log(articles);
-
-    const dataArticle = {
-        categories: clésDenses,
-        series: [{
-                name: 'cost amount',
-                data: articleBought,
+        const optionsConnectionLog = {
+            chart: {
+                title: '',
+                width: 400,
+                height: 400
             },
-            {
-                name: 'sold amount',
-                data: articleSold,
+            legend: {
+                visible: false
+            },
+            series: {
+                dataLabels: {
+                    visible: true,
+                    anchor: 'outer',
+                    formatter: (value) => value,
+                    pieSeriesName: {
+                        visible: true,
+                    },
+                },
+                radiusRange: {
+                    inner: '60%',
+                    outer: '100%',
+                }
             }
-        ],
-    };
-    const optionsArticle = {
-        chart: {
-            title: "",
-            width: 900,
-            height: 400
-        },
-    };
 
-    const chartArticle = toastui.Chart.columnChart({
-        el: el2,
-        data: dataArticle,
-        options: optionsArticle
-    });
-</script>
+        };
+        const chartConection = toastui.Chart.pieChart({
+            el: el1,
+            data: dataConnectionLogPerHour,
+            options: optionsConnectionLog
+        });
+
+        // ---------------------------- Articles -----------------------------//
+        const el2 = document.getElementById('toastArticles');
+        var articleSold = <?php echo json_encode($articleSold) ?>;
+        var articleBought = <?php echo json_encode($articleBought) ?>;
+        var articles = <?php echo json_encode($articles) ?>;
+        var articleInStock = <?php echo json_encode($articleInStock) ?>;
+        var clésDenses = Object.keys(articles);
+
+        const dataArticle = {
+            categories: clésDenses,
+            series: [{
+                    name: 'cost amount',
+                    data: articleBought,
+                },
+                {
+                    name: 'sold amount',
+                    data: articleSold,
+                }
+            ],
+        };
+        const optionsArticle = {
+            chart: {
+                title: "",
+                width: 900,
+                height: 400
+            },
+        };
+
+        const chartArticle = toastui.Chart.columnChart({
+            el: el2,
+            data: dataArticle,
+            options: optionsArticle
+        });
+    </script>
 
 <?php } ?>
