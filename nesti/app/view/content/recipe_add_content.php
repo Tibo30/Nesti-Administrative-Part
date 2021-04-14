@@ -66,7 +66,7 @@ if (!isset($listAllIngredients)) {
                         <div class="col-2 p-0"><input type="text" class="form-control" id="inputAddPreparationTime" name="preparationTime" value=""></div>
                     </div>
                     <span class="text-danger" id="errorTime"></span>
-                    <div class="d-flex flex-row">
+                    <div class="d-flex flex-row justify-content-center">
                         <button id="submitNewRecipe" type="submit" class="btn mr-5">Submit</button>
                         <button id="cancelNewRecipe" type="reset" class="btn">Cancel</button>
                     </div>

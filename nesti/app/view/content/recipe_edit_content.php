@@ -92,7 +92,7 @@ if (!isset($ingredients)) {
                                                 }; ?>>Waiting</option>
                         </select>
                     </div>
-                    <div class="d-flex flex-row">
+                    <div class="d-flex flex-row justify-content-center">
                         <button id="submitEditRecipe" data-toggle="modal" type="button" data-target="#modalEditRecipe" class="btn mr-5">Submit</button>
                         <button id="cancelEditRecipe" type="reset" class="btn">Cancel</button>
                     </div>
@@ -254,7 +254,7 @@ if (!isset($ingredients)) {
                 <div class="form-group">
                     <div id="addIngredientListEditRecipe" class="d-flex flex-column justify-content-between w-100 p-2 bg-white border">
                         <?php foreach ($recipeIngredients as $recipeIngredient) {
-                            echo ' <div class="d-flex flex-row justify-content-between"> <div class="mb-3"> ' . $recipeIngredient->getQuantity() . " " . $recipeIngredient->getUnitMeasure()->getName() . " de " . $recipeIngredient->getIngredient()->getProductName() . ' </div><div onclick="createModalDeleteIngredient(' . $recipeIngredient->getOrder() . ',' . $recipeIngredient->getIdRecipe() . ',' . $recipeIngredient->getIDIngredient() . ')" class="btn-delete-ingredient">delete</div><div id="openModalIngredient' . $recipeIngredient->getOrder() . '" hidden data-toggle="modal" data-target="#modalEditRecipeDeleteIngredient' . $recipeIngredient->getOrder() . '"></div></div>';
+                            echo ' <div class="d-flex flex-row justify-content-between"> <div class="mb-3"> ' . $recipeIngredient->getQuantity() . " " . $recipeIngredient->getUnitMeasure()->getName() . " de " . $recipeIngredient->getIngredient()->getProductName() . ' </div><div onclick="createModalDeleteIngredient(' . $recipeIngredient->getOrder() . ',' . $recipeIngredient->getIdRecipe() . ',' . $recipeIngredient->getIDIngredient() . ')" class="btn-delete-ingredient">delete</div><div id="openModalIngredient' . $recipeIngredient->getOrder() . '" hidden data-toggle="modal" data-target="#modalRecipeDeleteIngredient' . $recipeIngredient->getOrder() . '"></div></div>';
                         }
                         ?>
                     </div>
@@ -308,7 +308,6 @@ if (!isset($ingredients)) {
             var divModal = document.createElement("div"); //create a div
             divModal.style.position = "absolute";
             var line = event.target.parentNode; // get the ingredient line
-
             var newModal = '<div class="modal fade" id="modalRecipeDeleteIngredient' + Number(order) + '" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" ' +
                 'aria-hidden="true"><div class="modal-dialog modal-dialog-centered" role="document"><div class="modal-content">' +
                 '<div class="modal-header"> <h5 class = "modal-title" id = "exampleModalLongTitle" > Do you really want to delete this ingredient? </h5> <button type = "button" ' +

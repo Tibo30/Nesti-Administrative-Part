@@ -6,27 +6,27 @@
         <p class="textAccessForbidden">You don't have the rights to access this page</p>
     </div>
 <?php } else { ?>
-    <div id="statisticsPage" class="container">
+    <div id="statisticsPage" class="">
         <div class="d-flex flex-column">
             <h1>Stats</h1>
 
-            <div class="d-flex flex-row flex-wrap justify-content-between mb-3">
-                <div class="d-flex flex-column">
+            <div class="d-flex flex-row flex-wrap justify-content-lg-between justify-content-center">
+                <div class="d-flex flex-column col-12 col-lg-5">
                     <h2>Orders</h2>
                     <div id="toastOrders"> </div>
-                    <p>Biggest orders</p>
+                    <p class="statistic_titles">Biggest orders</p>
                     <div id="biggestOrders" class="border p-3">
                         <?php foreach ($biggestOrders as $biggestOrder) {
                             echo '<div class="d-flex flex-row justify-content-between mb-3"><div class="mr-2"> Commande n° ' . $biggestOrder->getIdOrder() . '</div><a class="btn-see-order" href="' . BASE_URL . 'article/orders' . '">see</a></div>';
                         } ?>
                     </div>
                 </div>
-                <div class="d-flex flex-column">
+                <div class="d-flex flex-column mt-4 mt-lg-0">
                     <h2>Website Consultation</h2>
                     <div id="toastPieConnection"> </div>
                 </div>
                 <div class="d-flex flex-column ">
-                    <p>TOP 10 Users</p>
+                    <p class="statistic_titles">TOP 10 Users</p>
                     <div id="mostConnectedUsers" class="border p-3">
                         <?php foreach ($mostConnectedUsers as $mostConnectedUser) {
                             echo '<div class="d-flex flex-row justify-content-between mb-3"><div class="mr-2">' . $mostConnectedUser["name"] . '</div><a class="btn-see-user" href="' . BASE_URL . 'user/edit/' . $mostConnectedUser["id"] . '">see</a></div>';
@@ -34,12 +34,12 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-row flex-wrap justify-content-between">
-                <div class="d-flex flex-column">
+            <div class="d-flex flex-row flex-wrap justify-content-lg-between justify-content-center mt-4 mt-lg-3">
+                <div class="d-flex flex-column col-12 col-lg-5">
                     <h2>Recipes</h2>
-                    <div class="d-flex flex-row flex-wrap justify-content-around">
+                    <div class="d-flex flex-row flex-wrap justify-content-lg-between justify-content-center">
                         <div>
-                            <p>TOP 10 Chiefs</p>
+                            <p class="statistic_titles">TOP 10 Chiefs</p>
                             <div id="topChief" class="border p-3">
                                 <?php foreach ($topChiefs as $topChief) {
                                     echo '<div class="d-flex flex-row justify-content-between mb-3"><div class="mr-2">' . $topChief->getLastName() . " " . $topChief->getFirstName() . '</div><a class="btn-see-user" href="' . BASE_URL . 'user/edit/' . $topChief->getIdUser() . '">see</a></div>';
@@ -47,8 +47,8 @@
                             </div>
                         </div>
 
-                        <div>
-                            <p>TOP 10 Recipes</p>
+                        <div class="mt-2 mt-lg-0">
+                            <p class="statistic_titles">TOP 10 Recipes</p>
                             <div id="topRecipe" class="border p-3">
                                 <?php foreach ($topRecipes as $recipe) {
                                     echo '<div class="d-flex flex-row justify-content-between mb-3"><a class="mr-2 btn-see-recipe" href="' . BASE_URL . 'recipe/edit/' . $recipe->getIdRecipe() . '">' . $recipe->getRecipeName() . '</a><div>by ' . $recipe->getChief()->getLastName() . " " . $recipe->getChief()->getFirstName() . '</div></div>';
@@ -59,11 +59,11 @@
 
                 </div>
 
-                <div class="d-flex flex-column mb-3">
+                <div class="d-flex flex-column mt-4 mt-lg-0 mb-3">
                     <h2>Articles</h2>
                     <p>Articles for sales : <?php echo count($articles); ?></p>
                     <div id="toastArticles"> </div>
-                    <p>Out of stock</p>
+                    <p class="statistic_titles">Out of stock</p>
                     <table class="table-borderless table-striped" id="table" data-toggle="table" data-sortable="true">
                         <thead>
                             <th>Name</th>
@@ -99,11 +99,12 @@
     </div>
 
     <script>
+        var screenwidth = window.screen.width;
         // ---------------------------- Orders -----------------------------//
         const el = document.getElementById('toastOrders');
         var totalPurchasedPerDay = <?php echo json_encode($totalPurchasedPerDay) ?>;
         var totalSoldPerDay = <?php echo json_encode($totalSoldPerDay) ?>;
-
+      
         const data = {
 
             categories: [
@@ -131,8 +132,11 @@
         const options = {
             chart: {
                 title: '',
-                width: 600,
-                height: 400
+                width: (screenwidth >600 ? 600 : 300),
+                height: 300
+            },
+            legend: {
+                visible: (screenwidth >600 ? true : false)
             },
             xAxis: {
                 pointOnColumn: false,
@@ -152,7 +156,6 @@
         });
 
 
-
         // ---------------------------- Website Consultation -----------------------------//
         const el1 = document.getElementById('toastPieConnection');
         var connectionPerHour = <?php echo json_encode($connectionPerHour) ?>;
@@ -163,7 +166,7 @@
         const optionsConnectionLog = {
             chart: {
                 title: '',
-                width: 400,
+                width: (screenwidth >500 ? 500 : 300),
                 height: 400
             },
             legend: {
@@ -214,8 +217,11 @@
         const optionsArticle = {
             chart: {
                 title: "",
-                width: 900,
-                height: 400
+                width: (screenwidth >600 ? 600 : 300),
+                height: 300
+            },
+            legend: {
+                visible: (screenwidth >600 ? true : false)
             },
         };
 

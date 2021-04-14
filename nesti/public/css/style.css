@@ -1,5 +1,4 @@
 
-
 :root{
     --primaryColor: #00838F;
     --primaryLightColor: #4FB3BF;
@@ -26,39 +25,38 @@ body{
     font-family:"Nunito",sans-serif !important;
 }
 
-#connectionForm{
-    max-width: 50%;
-    padding: 5% 15% 5% 15%;
-    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.15);   
-}
 
-/*------------------------------------  a trier -------------------------------*/
+/*------------------------------------ nav -------------------------------*/
 
 p{
     margin: 0 !important;
 }
 
 h2{
-    font-weight: bolder;
-    color: #00595a;
+    font-weight: bolder !important;
+    color: var(--primaryDarkColor);
 }
 
 h1{
-    font-weight: bolder;
-    color: #00595a;
+    font-weight: bolder !important;
+    color: var(--primaryDarkColor);
 }
 
 h3{
-    font-weight: bold;
-    color: #00595a;
+    font-weight: bolder !important;
+    color: var(--primaryDarkColor);
 }
 h4{
-    font-weight: bold;
-    color: #00595a;
+    font-weight: bolder !important;
+    color: var(--primaryDarkColor);
+}
+
+#mainNav form>a{
+color: var(--classicColorGrey);
 }
 
 #mainNav li>a{
-    color:white;
+    color:var(--classicColorWhite);
 }
 
 #mainNav li{
@@ -69,7 +67,7 @@ h4{
 #mainNav .active{
     background-color: var(--secondaryColor);
 }
-.active>a{
+#mainNav .active>a{
     color:var(--classicColorGrey) !important;
 }
 
@@ -83,34 +81,6 @@ h4{
     width : 35%;
 }
 
-#mainNav form>a{
-color: var(--classicColorGrey);
-}
-
-
-
-#deleteEditArticle{
-    background-color:var(    --colorButtonDanger);
-    color: var(--classicColorWhite);
-}
-
-  .custom-file-input ~ .custom-file-label::after {
-    content: "choisir";
-}
-
-
-#buttonAddRecipePicture{
-    background-color: var(--colorButtonValidate);
-    color:var(--classicColorWhite);
-}
-
-#file-upload-button{
-    content:"chose a file";
-}
-
-
-
-
 
 
 /*------------------------------------ common -------------------------------*/
@@ -118,6 +88,32 @@ color: var(--classicColorGrey);
 .titleAccessForbidden{
     margin-top: 50px;
     color:var(--primaryDarkColor);
+}
+
+.active .page-link{
+    background-color: var(--primaryColor) !important;
+    border-color:transparent !important;
+    color : var(--classicColorWhite) !important;
+}
+
+.page-link{
+    color : var(--primaryColor) !important;
+}
+
+.dropdown-toggle{
+    background-color: var(--primaryColor) !important;
+    border-color:transparent !important;
+    color : var(--classicColorWhite) !important;
+}
+
+.dropdown-item.active{
+    background-color: var(--primaryColor) !important;
+    border-color:transparent !important;
+    color : var(--classicColorWhite) !important;
+}
+
+tbody tr:hover{
+    background-color: var(--secondaryColor) !important;
 }
 
 
@@ -863,7 +859,11 @@ color: var(--classicColorGrey);
 }
 
 /*------------------------------------ connection content -------------------------------*/
-
+#connectionForm{
+    max-width: 50%;
+    padding: 5% 15% 5% 15%;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.15);   
+}
 
 #disconnectSuccess {
     position:absolute;
@@ -927,7 +927,15 @@ color: var(--classicColorGrey);
 
 #statisticsPage{
     max-width: 80%;
+    margin: auto;
 }
+
+@media only screen and (max-width: 500px) {
+    #statisticsPage{
+        max-width: 100%;
+        margin: auto;
+    }
+  }
 
 .btn-see-user{
     color:var(--colorButtonInformation);
@@ -963,8 +971,11 @@ color: var(--classicColorGrey);
     cursor: pointer;
 }
 
-
 #statisticsPage .fixed-table-container,#topRecipe, #topChief, #biggestOrders,#mostConnectedUsers {
     box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.25), 0 5px 7px 0 rgba(0, 0, 0, 0.25);  
     
+}
+
+.statistic_titles{
+    color: var(--primaryLightColor);
 }
