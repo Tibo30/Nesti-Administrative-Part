@@ -11,6 +11,9 @@ if (!isset($disconnect) || empty($disconnect)) {
      } ?>>
         <p>Successfully disconnected</p>
     </div>
+    <!-- div notif account not active -->
+    <div id="accountNotActive" class="notifications" hidden>
+    </div>
     <div id="logoNesti" class="position-absolute">
         <img src="<?= BASE_URL . PATH_ICONS ?>Nesti-logo.png" alt="Nesti logo">
     </div>
@@ -66,6 +69,8 @@ if (!isset($disconnect) || empty($disconnect)) {
                 if (response.success) {
                     window.location = ROOT + "recipe";
                 } else {
+                    document.querySelector("#accountNotActive").hidden = false;
+                    document.querySelector("#accountNotActive").innerHTML = "<p>" + response.notif+ "</p>";
                     document.querySelector("#errorEmailUsername").innerHTML = response.errorMessages['emailUsername'];
                     document.querySelector("#errorPassword").innerHTML = response.errorMessages['password'];
                 }
