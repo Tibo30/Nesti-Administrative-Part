@@ -5,43 +5,47 @@ class RoleDAO extends ModelDAO
     public function createRoles($user)
     {
         $roles = $user->getRoles();
-        
+
         foreach ($roles as $role) {
-            $req = self::$_bdd->prepare('INSERT INTO ' . $role . ' (id_users) VALUES (:id)');
+            $req = self::$_bdd->prepare('INSERT INTO ' . $role . ' (id_users, role_state) VALUES (:id, "a")');
             $req->execute(array("id" => $user->getIdUser()));
             $req->closeCursor(); // release the server connection so it's possible to do other query
         }
     }
 
-     // edit roles of user
-     public function editRoles($userEdit,$role)
-     {
-            $req = self::$_bdd->prepare('INSERT INTO ' . $role . ' (id_users) VALUES (:id)');
-            $req->execute(array("id" => $userEdit->getIdUser()));
-            $req->closeCursor(); // release the server connection so it's possible to do other query
-     }
+    public function createRole($user, $role)
+    {
+        $req = self::$_bdd->prepare('INSERT INTO ' . $role . ' (id_users, role_state) VALUES (:id, "a")');
+        $req->execute(array("id" => $user->getIdUser()));
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+    }
 
-    // public function getRole($idUser)
+    // // edit roles of user
+    // public function editRoles($userEdit, $role, $role_state)
     // {
-    //     $role = [];
-    //     $reqChief = self::$_bdd->prepare('SELECT id_users FROM chief WHERE id_users=:id');
-    //     $reqAdmin = self::$_bdd->prepare('SELECT id_users FROM admin WHERE id_users=:id');
-    //     $reqModerator = self::$_bdd->prepare('SELECT id_users FROM moderator WHERE id_users=:id');
-    //     $reqChief->execute(array("id" => $idUser));
-    //     $reqAdmin->execute(array("id" => $idUser));
-    //     $reqModerator->execute(array("id" => $idUser));
-    //     if ($reqChief->rowcount() == 1) {
-    //         $role[] = "chief";
-    //     }
-    //     if ($reqAdmin->rowcount() == 1) {
-    //         $role[] = "admin";
-    //     }
-    //     if ($reqModerator->rowcount() == 1) {
-    //         $role[] = "moderator";
-    //     }
-
-    //     $role[] = "user";
-
-    //     return $role;
+    //     $req = self::$_bdd->prepare('INSERT INTO ' . $role . ' (id_users, role_state) VALUES (:id, :state)');
+    //     $req->execute(array("id" => $userEdit->getIdUser(), "state" => $role_state));
+    //     $req->closeCursor(); // release the server connection so it's possible to do other query
     // }
+
+    // edit roles of user
+    public function editRole($userEdit, $role, $role_state)
+    {
+        $req = self::$_bdd->prepare('UPDATE ' . $role . ' SET role_state =:state WHERE id_users=:id');
+        $req->execute(array("id" => $userEdit->getIdUser(), "state" => $role_state));
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+    }
+
+    // edit roles of user
+    public function getRoleState($userEdit, $role)
+    {
+        $state = "";
+        $req = self::$_bdd->prepare('SELECT * from ' . $role . ' WHERE id_users=:id');
+        $req->execute(array("id" => $userEdit->getIdUser()));
+        if ($data =  $req->fetch()) {
+            $state = $data["role_state"];
+        }
+        $req->closeCursor(); // release the server connection so it's possible to do other query
+        return $state;
+    }
 }
