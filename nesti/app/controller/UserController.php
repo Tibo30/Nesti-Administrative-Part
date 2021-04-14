@@ -27,7 +27,8 @@ class UserController extends BaseController
         } else if (($this->_url) == "user_usercomment") {
             $this->changeStateComment(); // this is the method called by the fetch API with the user/usercomment ROOT.
         } else if (($this->_url) == "user_edituser") {
-            $this->editUserDatabase(); // this is the method called by the fetch API with the user/edituser ROOT.
+            $data=$this->editUserDatabase();
+            $this->_url="user_edit";
         } else if (($this->_url) == "user_delete") {
             $this->deleteUser(); // this is the method called by the fetch API with the user/delete ROOT.
         } else if (($this->_url) == "user_resetpassword") {
@@ -165,7 +166,7 @@ class UserController extends BaseController
             $orderLines = $ordersDAO->getOrderLines($idOrder); // we get all the orderLines for this order
             if (count($orderLines) > 0) { // if there is at least one orderLine
                 $data['success'] = true;
-                
+
                 $articleDAO = new ArticleDAO();
                 $index = 0;
                 // in this loop we prepare the return data from the fetch
@@ -210,7 +211,7 @@ class UserController extends BaseController
     public function editUserDatabase()
     {
         $data = [];
-        $data['success'] = false;
+        // $data['success'] = false;
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
             $idUser = filter_input(INPUT_POST, "id_user", FILTER_SANITIZE_STRING);
             $userLastname = filter_input(INPUT_POST, "userLastname", FILTER_SANITIZE_STRING);
@@ -220,6 +221,7 @@ class UserController extends BaseController
             $userCity = filter_input(INPUT_POST, "userCity", FILTER_SANITIZE_STRING);
             $userPostCode = filter_input(INPUT_POST, "userPostcode", FILTER_SANITIZE_STRING);
             $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+            $userRoles[]='user';
             $userState = filter_input(INPUT_POST, "userState", FILTER_SANITIZE_STRING);
 
             // first we have to check if the city already exists, if not to create it
@@ -280,36 +282,38 @@ class UserController extends BaseController
                 if ($formerUserPostCode != $userPostCode) { // if the postcode changed
                     $this->userDAO->editUser($userEdit, "postcode");
                 }
-                if ($formerUserRoles != $userRoles && $userRoles != null) { // if the roles changed
+
+                if ($formerUserRoles != $userRoles) { // if the roles changed
                     $roleDAO = new RoleDAO();
-                    foreach ($userRoles as $role) { // check which role has been added
-                        if (array_search($role, $formerUserRoles) === false) { // if this role wasn't is the former list we add the role
-                            $roleDAO->editRoles($userEdit, $role);
+                    if ($userRoles != null) {
+                        foreach ($userRoles as $role) { // check which role has been added
+                            if (array_search($role, $formerUserRoles) === false && array_search("old" . ucfirst($role), $formerUserRoles) === false) { // if this role or its old version wasn't in the former list we add the role
+                                $roleDAO->createRole($userEdit, $role);
+                            } else if (array_search($role, $formerUserRoles) === false && array_search("old" . ucfirst($role), $formerUserRoles) !== false) { // if this role wasn't in the former list but its old version is, we edit the role
+                                $roleDAO->editRole($userEdit, $role, "a");
+                            }
+                        }
+                        foreach ($formerUserRoles as $formerRole) { // check which role was in the database
+                            if (array_search($formerRole, $userRoles) === false && ($formerRole == "admin" || $formerRole == "moderator" || $formerRole == "chief")) { // if this role is no longer checked, we change the state to "blocked"
+                                $roleDAO->editRole($userEdit, $formerRole, "b");
+                            }
+                        }
+                    } else { // if there is no role
+                        foreach ($formerUserRoles as $formerRole) { // check which role was in the database
+                            if ($formerRole == "admin" || $formerRole == "moderator" || $formerRole == "chief") { // we change all the states to "blocked"
+                                $roleDAO->editRole($userEdit, $formerRole, "b");
+                            }
                         }
                     }
                 }
                 if ($formerUserState != $userState) { // if the states changed
                     $this->userDAO->editUser($userEdit, "state");
                 }
-
-                $data['idUser'] = $userEdit->getIdUser();
-                $data['userLastname'] = $userEdit->getLastname();
-                $data['userFirstname'] = $userEdit->getFirstname();
-                $data['userEmail'] = $userEdit->getEmail();
-                $data['userUsername'] = $userEdit->getUsername();
-                $data['userPassword'] = $userEdit->getPassword();
-                $data['userConfirmPassword'] = $userEdit->getPassword();
-                $data['userAddress1'] = $userEdit->getAddress1();
-                $data['userAddress2'] = $userEdit->getAddress2();
-                $data['userCity'] = $userEdit->getCity()->getCityName();
-                $data['userPostcode'] = $userEdit->getPostCode();
-                $data['userRoles'] = $userEdit->getRoles();
-                $data['userState'] = $userEdit->getState();
-                $data['success'] = true;
+                $user = $this->userDAO->getOneUser($idUser);
+                $data = ['user' => $user];
             }
         }
-        echo json_encode($data);
-        die;
+        return $data;
     }
 
     /**
@@ -325,7 +329,7 @@ class UserController extends BaseController
             $userEdit = $this->userDAO->getOneUser($idUser); // we get the user from the database
             $userEdit->setState("b"); // we change is state in local
             $this->userDAO->editUser($userEdit, "state"); // we change its state in the database
-            $data["state"]=$userEdit->getDisplayState();
+            $data["state"] = $userEdit->getDisplayState();
             $data['success'] = true;
         }
         echo json_encode($data);
