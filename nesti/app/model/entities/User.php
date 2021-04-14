@@ -79,7 +79,7 @@ class User
         $userLastnameError = "";
         if (empty($lastname)) {
             $userLastnameError = "Please enter a lastname";
-        } else if (!preg_match("/^[a-z ,.'-]{3,20}+$/i", $lastname)) { // A MODIFIER
+        } else if (!preg_match("/^[a-zA-ZÀ-ÿ ,.'-]{3,20}+$/i", $lastname)) {
             $userLastnameError = "The lastname is incorrect";
         } else {
             $this->lastname = $lastname;
@@ -105,7 +105,7 @@ class User
         $userFirstnameError = "";
         if (empty($firstname)) {
             $userFirstnameError = "Please enter a firstname";
-        } else if (!preg_match("/^[a-z ,.'-]{3,20}+$/i", $firstname)) { // A MODIFIER
+        } else if (!preg_match("/^[a-zA-ZÀ-ÿ ,.'-]{3,20}+$/i", $firstname)) {
             $userFirstnameError = "The firstname is incorrect";
         } else {
             $this->firstname = $firstname;
@@ -202,9 +202,9 @@ class User
     {
         $date = new DateTime($this->creationDate);
         $displayDate = "";
-        if ($this->creationDate!=null){
-            $displayDate= $date->format('j F Y \a\t H\hi');
-        } 
+        if ($this->creationDate != null) {
+            $displayDate = $date->format('j F Y \a\t H\hi');
+        }
         return $displayDate;
     }
 
@@ -431,8 +431,8 @@ class User
             }
         }
 
-        if ($displayRoles == null) {
-            $displayRoles[] = 'Utilisateur';
+        if ($displayRoles[0] == '') {
+            $displayRoles[] = 'User';
         }
 
         return $displayRoles;
