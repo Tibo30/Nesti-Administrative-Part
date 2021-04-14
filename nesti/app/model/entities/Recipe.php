@@ -221,7 +221,6 @@ class Recipe
         $min = fmod($time, 60);
         $hour = ltrim($hour, "0");
         $min = ltrim($min, "0");
-        // $hour = (String) ((int)$hour) ;
 
         $hour = $hour ? $hour . ' h ' : '';
         $min = $min ? $min . ' min ' : '';
