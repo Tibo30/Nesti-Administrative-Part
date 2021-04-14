@@ -157,7 +157,7 @@ if (!isset($user) || empty($user)) {
 
                         <?php $userRoles = $user->getRoles() ?>
                         <?php
-                        if (array_search('chief', $userRoles) !== false) { ?>
+                        if (array_search('chief', $userRoles) !== false || array_search('oldChief', $userRoles) !== false) { ?>
 
 
                             <p class="font-weight-bold"> Chief </p>
@@ -175,7 +175,7 @@ if (!isset($user) || empty($user)) {
 
                         <?php
                         }
-                        if (array_search('admin', $userRoles) !== false) { ?>
+                        if (array_search('admin', $userRoles) !== false || array_search('oldAdmin', $userRoles) !== false) { ?>
 
                             <p class="font-weight-bold"> Administrator </p>
                             <p> Number of import : <?= count($user->getImports()) ?> </p>
@@ -184,7 +184,7 @@ if (!isset($user) || empty($user)) {
 
                         <?php
                         }
-                        if (array_search('moderator', $userRoles) !== false) { ?>
+                        if (array_search('moderator', $userRoles) !== false || array_search('oldModerator', $userRoles) !== false) { ?>
 
 
                             <p class="font-weight-bold"> Moderator </p>
@@ -431,96 +431,6 @@ if (!isset($user) || empty($user)) {
             }))
         )
 
-
-        // -------------------------------- Edit user --------------------------// 
-
-        var formEditUser = document.querySelector("#editUserForm"); // get the form used to edit the user
-        // Event listener on the form
-        formEditUser.addEventListener('submit', (function(e) {
-            event.preventDefault(); // stop the default action of the form
-            const idUser = document.querySelector('#idUser').value;
-            console.log(document.querySelector("#admin").checked);
-            console.log(document.querySelector("#mod").checked);
-            console.log(document.querySelector("#chief").checked);
-            editUser(this, idUser).then((response) => {
-                if (response) {
-                    if (response.success) {
-                        document.querySelector("#inputUserEditLastname").value = response.userLastname;
-                        document.querySelector("#inputUserEditFirstname").value = response.userFirstname;
-                        document.querySelector("#inputUserEditAddress1").value = response.userAddress1;
-                        document.querySelector("#inputUserEditAddress2").value = response.userAddress2;
-                        document.querySelector("#inputUserEditCity").value = response.userCity;
-                        document.querySelector("#inputUserEditPostcode").value = response.userPostcode;
-                        if (response.userRoles.indexOf('admin') != -1) {
-                            document.querySelector("#admin").checked = true;
-                        }
-                        if (response.userRoles.indexOf('moderator') != -1) {
-                            document.querySelector("#mod").checked = true;
-                        }
-                        if (response.userRoles.indexOf('chief') != -1) {
-                            document.querySelector("#chief").checked = true;
-                        }
-                        if (response.userState == "a") {
-                            document.querySelector("#userEditState").options.selectedIndex = 0;
-                        } else if (response.userState == "b") {
-                            document.querySelector("#userEditState").options.selectedIndex = 1;
-                        } else if (response.userState == "w") {
-                            document.querySelector("#userEditState").options.selectedIndex = 2;
-                        }
-
-
-                        document.querySelector("#errorUserEditLastname").innerHTML = "";
-                        document.querySelector("#errorUserEditFirstname").innerHTML = "";
-                        document.querySelector("#errorUserEditAddress1").innerHTML = "";
-                        document.querySelector("#errorUserEditAddress2").innerHTML = "";
-                        document.querySelector("#errorUserEditCity").innerHTML = "";
-                        document.querySelector("#errorUserEditPostcode").innerHTML = "";
-
-                        document.querySelector("#closeModalEdit").click();
-                        document.querySelector("#userEditSuccess").hidden = false;
-                    } else {
-                        document.querySelector("#errorUserEditLastname").innerHTML = response.errorMessages['userLastname'];
-                        document.querySelector("#errorUserEditFirstname").innerHTML = response.errorMessages['userFirstname'];;
-                        document.querySelector("#errorUserEditAddress1").innerHTML = response.errorMessages['userAddress1'];
-                        document.querySelector("#errorUserEditAddress2").innerHTML = response.errorMessages['userAddress2'];
-                        document.querySelector("#errorUserEditCity").innerHTML = response.errorMessages['userCity'];
-                        document.querySelector("#errorUserEditPostcode").innerHTML = response.errorMessages['userPostcode'];
-
-                        console.log(response.errorMessages)
-                    }
-                }
-            });
-        }))
-
-        /**
-         * Ajax Request to edit the user
-         * @param {form} obj, int idUser
-         * @returns mixed
-         */
-        async function editUser(obj, idUser) {
-            var myHeaders = new Headers();
-
-            let formData = new FormData(obj);
-            formData.append('id_user', idUser);
-
-            var myInit = {
-                method: 'POST',
-                headers: myHeaders,
-                mode: 'cors',
-                cache: 'default',
-                body: formData
-            };
-            let response = await fetch(ROOT + 'user/edituser', myInit);
-            try {
-                if (response.ok) {
-                    return await response.json();
-                } else {
-                    return false;
-                }
-            } catch (e) {
-                console.error(e.message);
-            }
-        }
 
         // -------------------------------- Reset Password --------------------------// 
 
