@@ -4,14 +4,14 @@ if (!isset($url)) {
 }
 ?>
 
-<?php include(PATH_VIEW . 'common/head.php'); ?>
+<?php include(BASE_DIR.PATH_VIEW . 'common/head.php'); ?>
 
 <body>
     <?php
     //echo "template / ";
 
     if ($url != 'connection') {
-        include(PATH_VIEW . 'common/navigation.php');
+        include(BASE_DIR.PATH_VIEW . 'common/navigation.php');
     }
     if ($url == "recipe_edit" || $url == "recipe_add" || $url == "recipe_delete") {
         // echo "temp^late ";

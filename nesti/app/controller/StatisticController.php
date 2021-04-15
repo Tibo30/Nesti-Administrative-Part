@@ -1,5 +1,5 @@
 <?php
-require_once(PATH_VIEW . 'View.php');
+require_once(BASE_DIR.PATH_VIEW . 'View.php');
 
 class StatisticController extends BaseController
 {
@@ -131,7 +131,7 @@ class StatisticController extends BaseController
             $articleBought[] = $article->getTotalBought();
         }
 
-        $this->_view = new View('Statistic');
+        $this->_view = new View('statistic');
         $data["mostConnectedUsers"]=$mostConnectedUsers;
         $data["biggestOrders"]=$orders;
         $data["topChiefs"]=$chiefs;

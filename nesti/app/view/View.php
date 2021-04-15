@@ -3,7 +3,7 @@ class View{
     private $_file;
 
     public function __construct($action){
-        $this->_file = PATH_VIEW.'content/'.$action.'_content.php';
+        $this->_file = BASE_DIR.PATH_VIEW.'content/'.$action.'_content.php';
         //echo "view / ";
     }
 

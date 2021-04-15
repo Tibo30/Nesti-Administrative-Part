@@ -3,6 +3,6 @@ if (!isset($loc)) {
     $loc = "";
 }
 
-if (!@include(PATH_VIEW . "content/$loc" . "_content.php")) {
-    include(PATH_ERRORS . 'error404.html');
+if (!@include(BASE_DIR.PATH_VIEW . "content/$loc" . "_content.php")) {
+    include(BASE_DIR.PATH_ERRORS . 'error404.html');
 }

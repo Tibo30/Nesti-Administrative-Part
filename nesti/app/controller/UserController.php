@@ -1,6 +1,5 @@
 <?php
-require_once(PATH_VIEW . 'View.php');
-require_once(PATH_MODEL . 'entities/user.php');
+require_once(BASE_DIR.PATH_VIEW . 'View.php');
 
 class UserController extends BaseController
 {
