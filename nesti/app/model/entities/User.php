@@ -517,7 +517,7 @@ class User
     // get all recipes for a chief
     public function getRecipes()
     {
-        $recipeDAO = new recipeDAO();
+        $recipeDAO = new RecipeDAO();
         $recipes = $recipeDAO->getRecipesChief($this->idUser);
         return $recipes;
     }
@@ -525,7 +525,7 @@ class User
     // get last recipe for a chief
     public function getLastRecipe()
     {
-        $recipeDAO = new recipeDAO();
+        $recipeDAO = new RecipeDAO();
         $recipe = $recipeDAO->getLastRecipe($this->idUser);
         return $recipe;
     }
@@ -533,7 +533,7 @@ class User
     // get average grade for a chief
     public function getAverageGrade()
     {
-        $recipeDAO = new recipeDAO();
+        $recipeDAO = new RecipeDAO();
         $recipes = $recipeDAO->getRecipesChief($this->idUser);
         $totalgradeChief = 0;
         $count = 0;
