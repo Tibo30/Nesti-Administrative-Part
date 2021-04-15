@@ -1,12 +1,41 @@
 <?php
 include('app/config.php');
 
-//auto loading classes
-spl_autoload_register(function ($class) {
-    $sources = array(PATH_MODEL . 'dao/' . $class . '.php', PATH_CTRL . $class . '.php ',  PATH_MODEL . 'entities/' . $class . '.php',PATH_MODEL . $class . '.php');
-    foreach ($sources as $source) {
-        if (file_exists($source)) {
-            require_once $source;
-        }
+class Autoloader
+{
+    private static $includeDirs;
+
+    public static function autoloadRegister()
+    {
+        spl_autoload_register(function ($className) {
+            foreach (static::getIncludeDirs() as $dir) {
+                $path = "$dir/$className.php";
+                if (file_exists($path)) {
+                    require $path;
+                }
+            }
+        });
     }
-});
+
+    public static function getIncludeDirs()
+    {
+        if (static::$includeDirs == null) {
+            static::$includeDirs = [];
+            $iterator = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator(__DIR__)
+            );
+            $index = 0;
+            foreach ($iterator as $file) {
+
+                if ($file->isDir() && $file->getBasename() == '.') {
+                    $index++;
+                    // echo ($index);
+                    static::$includeDirs[] = $file->getPath();
+                }
+            }
+        }
+        return static::$includeDirs;
+    }
+}
+
+Autoloader::autoloadRegister();
