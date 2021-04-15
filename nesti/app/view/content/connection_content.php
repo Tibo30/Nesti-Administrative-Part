@@ -5,10 +5,10 @@ if (!isset($disconnect) || empty($disconnect)) {
 ?>
 
 <div id="connectionPage">
-     <!-- div notif disconnection -->
-     <div id="disconnectSuccess" class="notifications" <?php if($disconnect==false){
-         echo  "hidden";
-     } ?>>
+    <!-- div notif disconnection -->
+    <div id="disconnectSuccess" class="notifications" <?php if ($disconnect == false) {
+                                                            echo  "hidden";
+                                                        } ?>>
         <p>Successfully disconnected</p>
     </div>
     <!-- div notif account not active -->
@@ -69,8 +69,10 @@ if (!isset($disconnect) || empty($disconnect)) {
                 if (response.success) {
                     window.location = ROOT + "recipe";
                 } else {
-                    document.querySelector("#accountNotActive").hidden = false;
-                    document.querySelector("#accountNotActive").innerHTML = "<p>" + response.notif+ "</p>";
+                    if (response.notif) {
+                        document.querySelector("#accountNotActive").hidden = false;
+                        document.querySelector("#accountNotActive").innerHTML = "<p>" + response.notif + "</p>";
+                    }
                     document.querySelector("#errorEmailUsername").innerHTML = response.errorMessages['emailUsername'];
                     document.querySelector("#errorPassword").innerHTML = response.errorMessages['password'];
                 }
