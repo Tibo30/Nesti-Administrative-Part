@@ -18,7 +18,7 @@ if (array_search("chief", $_SESSION["roles"]) !== false || array_search("admin",
         <div id="recipeDeletedSuccess" class="notifications" hidden>
             <p>The recipe has been deleted (blocked)</p>
         </div>
-        <h2 class="mb-2 mt-2">Recettes</h2>
+        <h2 class="mb-2 mt-3">Recettes</h2>
         <div class="d-flex flex-row justify-content-xl-between justify-content-center flex-wrap ">
             <nav class="navbar navbar-white bg-white pl-0">
                 <form class="form-inline">
@@ -26,7 +26,7 @@ if (array_search("chief", $_SESSION["roles"]) !== false || array_search("admin",
                     <img id="searchRecipe" src="<?php echo BASE_URL . PATH_ICONS ?>search-svg.svg" alt="">
                 </form>
             </nav>
-            <div>
+            <div class="pt-2">
                 <a id="btnAddRecipe" href="recipe/add" class="btn mb-1 border align-self-end"> <img id="svgAddRecipe" src="<?php echo BASE_URL . PATH_ICONS ?>create-svg.svg" alt="svg plus">
                     Add Recipe</a>
             </div>
@@ -109,10 +109,10 @@ if (array_search("chief", $_SESSION["roles"]) !== false || array_search("admin",
                 if (response) {
                     if (response.success) {
                         td.innerHTML = response.state;
-                        document.querySelector("#closeModalDelete" + idRecipe).click();
                         document.querySelector("#recipeDeletedSuccess").hidden = false;
                     }
                 }
+                document.querySelector("#closeModalDelete" + idRecipe).click();
             })
         }
 
