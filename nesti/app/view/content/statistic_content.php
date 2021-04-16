@@ -132,7 +132,7 @@
         const options = {
             chart: {
                 title: '',
-                width: (screenwidth >600 ? 600 : 300),
+                width: 600,
                 height: 300
             },
             legend: {
@@ -166,7 +166,7 @@
         const optionsConnectionLog = {
             chart: {
                 title: '',
-                width: (screenwidth >500 ? 500 : 300),
+                width: 500,
                 height: 400
             },
             legend: {
@@ -217,7 +217,7 @@
         const optionsArticle = {
             chart: {
                 title: "",
-                width: (screenwidth >600 ? 600 : 300),
+                width: 600,
                 height: 300
             },
             legend: {
