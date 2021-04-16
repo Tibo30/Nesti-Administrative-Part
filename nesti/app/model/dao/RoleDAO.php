@@ -7,9 +7,11 @@ class RoleDAO extends ModelDAO
         $roles = $user->getRoles();
 
         foreach ($roles as $role) {
-            $req = self::$_bdd->prepare('INSERT INTO ' . $role . ' (id_users, role_state) VALUES (:id, "a")');
-            $req->execute(array("id" => $user->getIdUser()));
-            $req->closeCursor(); // release the server connection so it's possible to do other query
+            if ($role != "user") {
+                $req = self::$_bdd->prepare('INSERT INTO ' . $role . ' (id_users, role_state) VALUES (:id, "a")');
+                $req->execute(array("id" => $user->getIdUser()));
+                $req->closeCursor(); // release the server connection so it's possible to do other query
+            }
         }
     }
 
