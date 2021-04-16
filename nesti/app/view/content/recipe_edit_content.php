@@ -59,7 +59,7 @@ if (!isset($ingredients)) {
                 <form method="post" id="editRecipeForm">
                     <div class="form-group">
                         <label for="inputEditRecipeName">Recipe name</label>
-                        <input type="text" class="form-control p-0" id="inputEditRecipeName" name="recipeName" value="<?= $recipe->getRecipeName() ?>">
+                        <input type="text" class="form-control" id="inputEditRecipeName" name="recipeName" value="<?= $recipe->getRecipeName() ?>">
                         <small id="recipeChiefName" class="form-text text-muted">Recipe Chief : <?= $recipe->getChief()->getLastname() . " " . $recipe->getChief()->getFirstname() ?></small>
                     </div>
                     <span class="text-danger" id="errorEditRecipeName"></span>
@@ -260,7 +260,7 @@ if (!isset($ingredients)) {
                     </div>
                     <div class="col-12 p-0 mb-3">
                         <label for="inputIngredientNameEditRecipe">Add an ingredient</label>
-                        <input list="ingredientsEdit" type="text" class="form-control p-0" id="inputIngredientNameEditRecipe">
+                        <input list="ingredientsEdit" type="text" class="form-control" placeholder="Ingredient" id="inputIngredientNameEditRecipe">
                         <datalist id="ingredientsEdit">
                             <?php
                             foreach ($listAllIngredients as $ingredients) {
@@ -412,8 +412,6 @@ if (!isset($ingredients)) {
                         document.querySelector("#errorEditTime").innerHTML = "";
 
                         document.querySelector("#idRecipe").value = response.idRecipe;
-
-                        document.querySelector("#closeModalEditRecipe").click();
                         document.querySelector("#recipeEditSuccess").hidden = false;
                     } else {
                         document.querySelector("#errorEditRecipeName").innerHTML = response.errorMessages['recipeName'];
@@ -422,6 +420,7 @@ if (!isset($ingredients)) {
                         document.querySelector("#errorEditTime").innerHTML = response.errorMessages['preparationTime'];
                     }
                 }
+                document.querySelector("#closeModalEditRecipe").click();
             });
         }))
 
@@ -477,13 +476,13 @@ if (!isset($ingredients)) {
                             } else {
                                 document.querySelector("#recipePictureEditSuccess").hidden = false;
                             }
-                            document.querySelector("#closeModalEditPictureRecipe").click();
                         } else {
                             if (response.errorMove != null) { // if the picture has not been moved
                                 alert(response.errorMove);
                             }
                         }
                     }
+                    document.querySelector("#closeModalEditPictureRecipe").click();
                 });
             }
 
@@ -533,10 +532,10 @@ if (!isset($ingredients)) {
                             const divPicture = document.querySelector("#recipePictureEdit"); // get the div where the picture is displayed
                             namePicture.innerHTML = ""; // change the name of the picture to empty
                             divPicture.style.backgroundImage = null; // change the background image of the div to null
-                            document.querySelector("#closeModalDeletePictureRecipe").click();
                             document.querySelector("#recipePictureDeleteSuccess").hidden = false;
                         }
                     }
+                    document.querySelector("#closeModalDeletePictureRecipe").click();
                 });
             }
         }))
@@ -649,7 +648,6 @@ if (!isset($ingredients)) {
                 deleteIngredient(idRecipe, idIngredient, order).then((response) => {
                     if (response) {
                         if (response.success) {
-                            document.querySelector("#closeModalEditRecipeDeleteIngredient" + idIngredient).click(); // simulate a click on the close modal button
                             divList.innerHTML = ""; //empty the list
                             if (response['recipeIngredient'] != undefined) {
                                 response['recipeIngredient'].forEach(element => {
@@ -661,6 +659,7 @@ if (!isset($ingredients)) {
                             document.querySelector("#recipeEditIngredientDeletedSuccess").hidden = false;
                         }
                     }
+                    document.querySelector("#closeModalEditRecipeDeleteIngredient" + idIngredient).click(); // simulate a click on the close modal button
                 });
             }
         }
