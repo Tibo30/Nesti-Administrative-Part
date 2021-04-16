@@ -283,7 +283,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
         // Checks the strength of the password
         function passwordStrength(pw) {
 
-            changeColorConditions(pw);
+            var condition = changeColorConditions(pw);
 
             var n = 0;
             var strength = 0;
@@ -304,42 +304,58 @@ if (!isset($errorMessages) || empty($errorMessages)) {
             if (strength >= 100) {
                 strength = 100;
             }
+            if (condition==true){
+                strength=100;
+            }
             console.log(strength)
             return strength;
         }
 
         // Changes the color of the conditions depending of the input password
         function changeColorConditions(pw) {
+            var condition = false;
 
             if (/.{12,}/.test(pw) == true) {
-                document.getElementById("pwdLength").style.color = 'green'
-            } else(
-                document.getElementById("pwdLength").style.color = 'red'
-            )
+                document.getElementById("pwdLength").style.color = 'green';
+                condition = true;
+            } else{
+                document.getElementById("pwdLength").style.color = 'red';
+                condition = false;
+            }
 
             if (/[a-z]/.test(pw) == true) {
-                document.getElementById("pwdLowCase").style.color = 'green'
-            } else(
-                document.getElementById("pwdLowCase").style.color = 'red'
-            )
+                document.getElementById("pwdLowCase").style.color = 'green';
+                condition = true;
+            } else{
+                document.getElementById("pwdLowCase").style.color = 'red';
+                condition = false;
+            }
 
             if (/[A-Z]/.test(pw) == true) {
-                document.getElementById("pwdUpperCase").style.color = 'green'
-            } else(
-                document.getElementById("pwdUpperCase").style.color = 'red'
-            )
+                document.getElementById("pwdUpperCase").style.color = 'green';
+                condition = true;
+            } else{
+                document.getElementById("pwdUpperCase").style.color = 'red';
+                condition = false;
+            }
 
             if (/\d/.test(pw) == true) {
-                document.getElementById("pwdDigit").style.color = 'green'
-            } else(
-                document.getElementById("pwdDigit").style.color = 'red'
-            )
+                document.getElementById("pwdDigit").style.color = 'green';
+                condition = true;
+            } else{
+                document.getElementById("pwdDigit").style.color = 'red';
+                condition = false;
+            }
 
             if (/\W/.test(pw) == true) {
-                document.getElementById("pwdSpecial").style.color = 'green'
-            } else(
-                document.getElementById("pwdSpecial").style.color = 'red'
-            )
+                document.getElementById("pwdSpecial").style.color = 'green';
+                condition = true;
+            } else{
+                document.getElementById("pwdSpecial").style.color = 'red';
+                condition = false;
+            }
+
+            return condition;
         }
     </script>
 
