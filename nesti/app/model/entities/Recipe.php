@@ -138,7 +138,7 @@ class Recipe
         $NumberOfPeopleError = "";
         if (empty($numberOfPeople)) {
             $NumberOfPeopleError = 'Please enter a Number';
-        } else if (!preg_match("/^[0-9]/", $numberOfPeople)) {
+        } else if (!preg_match("/^[0-9]{0,2}$/", $numberOfPeople)) {
             $NumberOfPeopleError = "Only numbers allowed";
         } else {
             $this->numberOfPeople = $numberOfPeople;
