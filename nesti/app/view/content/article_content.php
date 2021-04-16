@@ -23,7 +23,7 @@ if (!isset($articles)) {
         <div id="articleDeletedSuccess" class="notifications" hidden>
             <p>The article has been deleted (blocked)</p>
         </div>
-        <h2 class="mb-5 mt-5">Article</h2>
+        <h2 class="mb-2 mt-3">Article</h2>
         <div class="d-flex flex-row justify-content-xl-between justify-content-center flex-wrap">
             <nav class="navbar navbar-white bg-white pl-0">
                 <form class="form-inline">
@@ -31,7 +31,7 @@ if (!isset($articles)) {
                     <img id="searchArticle" src="<?php echo BASE_URL . PATH_ICONS ?>search-svg.svg" alt="">
                 </form>
             </nav>
-            <div>
+            <div class="pt-2">
                 <a id="btnSeeOrders" href="article/orders" class="btn border align-self-end"> <i class="fa fa-eye mr-2"></i>
                     Orders</a>
                 <a id="btnImportArticle" href="article/import" class="btn border align-self-end"> <img id="svgImportArticle" src="<?php echo BASE_URL . PATH_ICONS ?>create-svg.svg" alt="svg plus">
@@ -64,7 +64,7 @@ if (!isset($articles)) {
                     echo '<tr>';
                     echo '<td>' . $article->getIdArticle() . '</td>';
                     echo '<td>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " de " .  $article->getProduct()->getProductName() . '</td>';
-                    echo '<td>' . round(($article->getPrice()->getPrice()), 2) . '</td>';
+                    echo '<td>' . round(($article->getPrice()->getPrice()), 2) . ' € </td>';
                     echo '<td>' . $article->getType() . '</td>';
                     echo '<td>' . $article->getLastImport()->getDisplayDate() . '</td>';
                     echo '<td>' . $article->getDisplayState() . '</td>';
@@ -117,10 +117,10 @@ if (!isset($articles)) {
                 if (response) {
                     if (response.success) {
                         td.innerHTML = response.state;
-                        document.querySelector("#closeModalDelete" + idArticle).click();
                         document.querySelector("#articleDeletedSuccess").hidden = false;
                     }
                 }
+                document.querySelector("#closeModalDelete" + idArticle).click();
             })
         }
 
