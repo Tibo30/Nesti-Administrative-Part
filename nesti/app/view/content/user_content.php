@@ -18,7 +18,7 @@ if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("adm
         <div id="userDeletedSuccess" class="notifications" hidden>
             <p>The user has been deleted (blocked)</p>
         </div>
-        <h2 class="mb-2 mt-2">Users</h2>
+        <h2 class="mb-2 mt-3">Users</h2>
         <div class="d-flex flex-row justify-content-xl-between justify-content-center flex-wrap">
             <nav class="navbar navbar-white bg-white pl-0">
                 <form class="form-inline">
@@ -26,7 +26,7 @@ if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("adm
                     <img id="searchUser" src="<?php echo BASE_URL . PATH_ICONS ?>search-svg.svg" alt="">
                 </form>
             </nav>
-            <div>
+            <div class="pt-2">
                 <a id="btnAddUser" href="user/add" class="btn mb-1 border align-self-end"> <img id="svgAddUser" src="<?php echo BASE_URL . PATH_ICONS ?>create-svg.svg" alt="svg plus">
                     Add User</a>
             </div>
@@ -109,10 +109,10 @@ if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("adm
                 if (response) {
                     if (response.success) {
                         td.innerHTML = response.state;
-                        document.querySelector("#closeModalDelete" + idUser).click();
                         document.querySelector("#userDeletedSuccess").hidden = false;
                     }
                 }
+                document.querySelector("#closeModalDelete" + idUser).click();
             })
         }
 
