@@ -1,169 +1,170 @@
-
-:root{
+:root {
     --primaryColor: #00838F;
     --primaryLightColor: #4FB3BF;
     --primaryDarkColor: #005662;
-
     --secondaryColor: #FBC02D;
     --secondaryLightColor: #FFF263;
     --secondaryDarkColor: #C49000;
-
     --classicColorDark: #414141;
     --classicColorGrey: #606267;
     --classicColorLight: #ECECEC;
     --classicColorWhite: #FFFFFF;
-
-    --colorButtonDisabled:#ececec;
-    --colorButtonInformation:#4FB3BF;
-    --colorButtonDanger:#fb3939;
-    --colorButtonAlert:#fac02e;
-    --colorButtonValidate:#b0d41c;
-
+    --colorButtonDisabled: #ececec;
+    --colorButtonInformation: #4FB3BF;
+    --colorButtonDanger: #fb3939;
+    --colorButtonAlert: #fac02e;
+    --colorButtonValidate: #b0d41c;
 }
 
-body{
-    font-family:"Nunito",sans-serif !important;
+body {
+    font-family: "Nunito", sans-serif !important;
 }
-
 
 /*------------------------------------ nav -------------------------------*/
 
-p{
-    margin: 0 !important;
+#mainNav form>a {
+    color: var(--classicColorGrey);
 }
 
-h2{
-    font-weight: bolder !important;
-    color: var(--primaryDarkColor);
+#mainNav li>a {
+    color: var(--classicColorWhite);
 }
 
-h1{
-    font-weight: bolder !important;
-    color: var(--primaryDarkColor);
+#mainNav li>a:hover {
+    opacity: 0.5;
+    background-color: var(--secondaryColor);
+    border-radius: 5px;
 }
 
-h3{
-    font-weight: bolder !important;
-    color: var(--primaryDarkColor);
-}
-h4{
-    font-weight: bolder !important;
-    color: var(--primaryDarkColor);
-}
-
-#mainNav form>a{
-color: var(--classicColorGrey);
-}
-
-#mainNav li>a{
-    color:var(--classicColorWhite);
-}
-
-#mainNav li{
+#mainNav li {
     background-color: var(--primaryColor);
     border-radius: 5px;
 }
 
-#mainNav .active{
+#mainNav .active {
     background-color: var(--secondaryColor);
 }
-#mainNav .active>a{
-    color:var(--classicColorGrey) !important;
+
+#mainNav .active>a {
+    color: var(--classicColorGrey) !important;
 }
 
-.navnesti{
-    color:var(--classicColorWhite);
-    background-color:var(--primaryDarkColor);
+.navnesti {
+    color: var(--classicColorWhite);
+    background-color: var(--primaryDarkColor);
     width: 65%;
 }
 
-.logOut{
-    width : 35%;
+.logOut {
+    width: 35%;
 }
-
-
 
 /*------------------------------------ common -------------------------------*/
 
-.titleAccessForbidden{
+p {
+    margin: 0 !important;
+}
+
+h2 {
+    font-weight: bolder !important;
+    color: var(--primaryDarkColor);
+}
+
+h1 {
+    font-weight: bolder !important;
+    color: var(--primaryDarkColor);
+}
+
+h3 {
+    font-weight: bolder !important;
+    color: var(--primaryDarkColor);
+}
+
+h4 {
+    font-weight: bolder !important;
+    color: var(--primaryDarkColor);
+}
+
+.titleAccessForbidden {
     margin-top: 50px;
-    color:var(--primaryDarkColor);
+    color: var(--primaryDarkColor);
 }
 
-.active .page-link{
+.active .page-link {
     background-color: var(--primaryColor) !important;
-    border-color:transparent !important;
-    color : var(--classicColorWhite) !important;
+    border-color: transparent !important;
+    color: var(--classicColorWhite) !important;
 }
 
-.page-link{
-    color : var(--primaryColor) !important;
+.page-link {
+    color: var(--primaryColor) !important;
 }
 
-.dropdown-toggle{
+.dropdown-toggle {
     background-color: var(--primaryColor) !important;
-    border-color:transparent !important;
-    color : var(--classicColorWhite) !important;
+    border-color: transparent !important;
+    color: var(--classicColorWhite) !important;
 }
 
-.dropdown-item.active{
+.dropdown-item.active {
     background-color: var(--primaryColor) !important;
-    border-color:transparent !important;
-    color : var(--classicColorWhite) !important;
+    border-color: transparent !important;
+    color: var(--classicColorWhite) !important;
 }
 
-tbody tr:hover{
+tbody tr:hover {
     background-color: var(--secondaryColor) !important;
 }
 
+button:hover {
+    opacity: 0.75;
+}
 
 /*------------------------------------ articles content -------------------------------*/
 
-#allArticlesPage .fixed-table-container{
-    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.25), 0 5px 7px 0 rgba(0, 0, 0, 0.25);  
-    
+#allArticlesPage .fixed-table-container {
+    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.25), 0 5px 7px 0 rgba(0, 0, 0, 0.25);
 }
 
-#allArticlesPage thead{
-    background-color:var(--primaryColor) ;
+#allArticlesPage thead {
+    background-color: var(--primaryColor);
     color: var(--classicColorWhite);
 }
 
-#searchArticle{
+#searchArticle {
     position: absolute;
     width: 10%;
-    left : 2%;
+    left: 2%;
 }
 
-
-#customSearchArticle{
+#customSearchArticle {
     margin: 0;
     padding-left: 50px;
 }
 
-#btnSeeOrders{
+#btnSeeOrders {
     background-color: var(--secondaryColor);
 }
 
-#btnImportArticle{
+#btnImportArticle {
     position: relative;
     margin: 0;
     padding-left: 50px;
 }
 
-#svgImportArticle{
+#svgImportArticle {
     position: absolute;
     left: 2%;
     width: 20%;
     z-index: 2;
 }
 
-.btn-delete-article, .btn-modify-article{
-    color:var(--colorButtonInformation);
+.btn-delete-article, .btn-modify-article {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-#articleDeletedSuccess{
+#articleDeletedSuccess {
     position: absolute;
     right: 0;
     background-color: var(--colorButtonValidate);
@@ -171,82 +172,82 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
 
-#confirm-delete-article{
-    background-color:var( --colorButtonValidate);
+#confirm-delete-article {
+    background-color: var( --colorButtonValidate);
 }
-
 
 /*------------------------------------ article import -------------------------------*/
-#importArticlePage .underLink>a,#importArticlePage .underLink>p{
-    color:var(--primaryLightColor);
+
+#importArticlePage .underLink>a, #importArticlePage .underLink>p {
+    color: var(--primaryLightColor);
 }
 
-#importArticle{
+#importArticle {
     background-color: var(--colorButtonValidate);
     color: var(--primaryDarkColor);
     width: 30%;
 }
 
-.btn-edit-article{
-    color:var(--colorButtonInformation);
+.btn-edit-article {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
 /*------------------------------------ article orders -------------------------------*/
-#ordersPage thead{
-    background-color:var(--primaryColor) ;
+
+#ordersPage thead {
+    background-color: var(--primaryColor);
     color: var(--classicColorWhite);
 }
 
-#ordersPage .underLink>a,#ordersPage .underLink>p{
-    color:var(--primaryLightColor);
+#ordersPage .underLink>a, #ordersPage .underLink>p {
+    color: var(--primaryLightColor);
 }
 
-#searchOrder{
+#searchOrder {
     position: absolute;
     width: 10%;
-    left : 2%;
+    left: 2%;
 }
 
-
-#customSearchOrder{
+#customSearchOrder {
     margin: 0;
     padding-left: 50px;
 }
 
-#listOrderLines{
+#listOrderLines {
     width: 100%;
     min-height: 200px;
 }
 
-#orderSeeArticle{
-    color:var(--colorButtonInformation);
+#orderSeeArticle {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-.btn-see-article{
-    color:var(--colorButtonInformation);
+.btn-see-article {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-#articleOrderId{
+#articleOrderId {
     min-width: 80px;
-    background-color: var(--secondaryLightColor) ;
+    background-color: var(--secondaryLightColor);
 }
 
 /*------------------------------------ article edit -------------------------------*/
 
-#articleEditPage .underLink>a,#articleEditPage .underLink>p{
-    color:var(--primaryLightColor);
+#articleEditPage .underLink>a, #articleEditPage .underLink>p {
+    color: var(--primaryLightColor);
 }
 
-#articlePictureEdit{
+#articlePictureEdit {
     width: 100%;
     height: 70%;
     min-height: 300px;
@@ -255,8 +256,7 @@ tbody tr:hover{
     background-size: contain;
 }
 
-
-.articlePictureBin{
+.articlePictureBin {
     width: 30px;
     height: 30px;
     background-color: red;
@@ -265,25 +265,27 @@ tbody tr:hover{
     vertical-align: center;
     cursor: pointer;
 }
-.articlePictureBin img{
+
+.articlePictureBin img {
     width: 20px;
     height: 20px;
     background-color: red;
 }
 
-#InputFileEditArticle{
-    color:black;
-}
-#submitEditArticle, #btn-edit-article-picture{
-    background-color:var( --colorButtonValidate);
+#InputFileEditArticle {
+    color: black;
 }
 
-#cancelEditArticle{
-    background-color:var( --colorButtonInformation);
+#submitEditArticle, #btn-edit-article-picture {
+    background-color: var( --colorButtonValidate);
+}
+
+#cancelEditArticle {
+    background-color: var( --colorButtonInformation);
     color: var(--classicColorWhite);
 }
 
-#articleEditSuccess, #articlePictureEditSuccess, #articlePictureDeleteSuccess{
+#articleEditSuccess, #articlePictureEditSuccess, #articlePictureDeleteSuccess {
     position: absolute;
     right: 0;
     background-color: var(--colorButtonValidate);
@@ -291,10 +293,10 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
 
 #articlePictureEditMessage {
@@ -305,59 +307,57 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
 
-#confirm-edit-picture-article, #confirm-edit-article, #confirm-delete-picture-article{
-    background-color:var( --colorButtonValidate);
+#confirm-edit-picture-article, #confirm-edit-article, #confirm-delete-picture-article {
+    background-color: var( --colorButtonValidate);
 }
 
 /*------------------------------------ recipes content -------------------------------*/
 
-#allRecipePage .fixed-table-container{
-    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.25), 0 5px 7px 0 rgba(0, 0, 0, 0.25);  
-    
+#allRecipePage .fixed-table-container {
+    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.25), 0 5px 7px 0 rgba(0, 0, 0, 0.25);
 }
 
-#allRecipePage thead{
-    background-color:var(--primaryColor) ;
+#allRecipePage thead {
+    background-color: var(--primaryColor);
     color: var(--classicColorWhite);
 }
 
-#searchRecipe{
+#searchRecipe {
     position: absolute;
     width: 10%;
-    left : 2%;
+    left: 2%;
 }
 
-#btnAddRecipe{
+#btnAddRecipe {
     position: relative;
     margin: 0;
     padding-left: 50px;
 }
 
-#svgAddRecipe{
+#svgAddRecipe {
     position: absolute;
     left: 2%;
     width: 20%;
     z-index: 2;
 }
 
-
-#customSearchRecipe{
+#customSearchRecipe {
     margin: 0;
     padding-left: 50px;
 }
 
-.btn-delete-recipe, .btn-modify-recipe{
-    color:var(--colorButtonInformation);
+.btn-delete-recipe, .btn-modify-recipe {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-#recipeDeletedSuccess{
+#recipeDeletedSuccess {
     position: absolute;
     right: 0;
     background-color: var(--colorButtonValidate);
@@ -365,32 +365,32 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
 
-#confirm-delete-recipe{
-    background-color:var( --colorButtonValidate);
+#confirm-delete-recipe {
+    background-color: var( --colorButtonValidate);
 }
 
 /*------------------------------------ recipe add content -------------------------------*/
 
-#recipeAddPage .underLink>a,#recipeAddPage .underLink>p{
-    color:var(--primaryLightColor);
+#recipeAddPage .underLink>a, #recipeAddPage .underLink>p {
+    color: var(--primaryLightColor);
 }
 
-#submitNewRecipe{
-    background-color:var( --colorButtonValidate);
+#submitNewRecipe {
+    background-color: var( --colorButtonValidate);
 }
 
-#cancelNewRecipe{
-    background-color:var( --colorButtonInformation);
+#cancelNewRecipe {
+    background-color: var( --colorButtonInformation);
     color: var(--classicColorWhite);
 }
 
-#pictureAddRecipe{
+#pictureAddRecipe {
     width: 100%;
     height: 70%;
     min-height: 300px;
@@ -399,68 +399,68 @@ tbody tr:hover{
     background-size: contain;
 }
 
-#recipeImgUpload{
-    content:none;
+#recipeImgUpload {
+    content: none;
 }
 
-#addParagraphNewRecipe{
+#addParagraphNewRecipe {
     width: 100%;
-    background-color: var(--classicColorWhite) ;
-    border:1px dashed rgb(184, 183, 183);
+    background-color: var(--classicColorWhite);
+    border: 1px dashed rgb(184, 183, 183);
 }
 
-#addParagraphNewRecipe>div{
+#addParagraphNewRecipe>div {
     color: var(--primaryLightColor);
     font-size: 50px;
 }
 
-#recipeAddPage .paragraphAddRecipe[readonly]{
-    background-color:red;
+#recipeAddPage .paragraphAddRecipe[readonly] {
+    background-color: red;
     box-shadow: none;
-  }
- 
-  #recipeAddPage .paragraphAddRecipe{
-      resize: none;
-  }
+}
 
-  #recipeAddPage .paragraphIcons{
-      width: 20px;
-      display:flex;
-      flex-direction:column;
-      justify-content: center;
-  }
+#recipeAddPage .paragraphAddRecipe {
+    resize: none;
+}
 
-  #recipeAddPage .paragraphIcons img{
-      margin-bottom: 5px;
-  }
+#recipeAddPage .paragraphIcons {
+    width: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-  #recipeAddPage textarea{
-      width: 90%;
-  }
+#recipeAddPage .paragraphIcons img {
+    margin-bottom: 5px;
+}
 
-  #recipeAddPage .deleteSvg{
+#recipeAddPage textarea {
+    width: 90%;
+}
+
+#recipeAddPage .deleteSvg {
     padding: 2px;
     background-color: red;
     cursor: pointer;
-  }
-
-  #recipeAddPage .upSvg{
-    padding: 2px;
-    background-color: var(--secondaryColor);
-    cursor: pointer;
-  }
-
-  #recipeAddPage .downSvg{
-    padding: 2px;
-    background-color: var(--secondaryColor);
-    cursor: pointer;
-  }
-
-  #btn-add-recipe-picture{
-    background-color:var( --colorButtonValidate);
 }
 
-#recipePictureAdd{
+#recipeAddPage .upSvg {
+    padding: 2px;
+    background-color: var(--secondaryColor);
+    cursor: pointer;
+}
+
+#recipeAddPage .downSvg {
+    padding: 2px;
+    background-color: var(--secondaryColor);
+    cursor: pointer;
+}
+
+#btn-add-recipe-picture {
+    background-color: var( --colorButtonValidate);
+}
+
+#recipePictureAdd {
     width: 100%;
     height: 70%;
     min-height: 300px;
@@ -469,20 +469,20 @@ tbody tr:hover{
     background-size: contain;
 }
 
-#okIngredientAddRecipe{
-    background-color:var( --colorButtonValidate);
+#okIngredientAddRecipe {
+    background-color: var( --colorButtonValidate);
 }
 
-#okParagraphAddRecipe{
-    background-color:var( --colorButtonValidate);
+#okParagraphAddRecipe {
+    background-color: var( --colorButtonValidate);
 }
 
-.btn-delete-ingredient{
-    color:var(--colorButtonInformation);
+.btn-delete-ingredient {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-#recipeCreatedSuccess, #recipePictureAddSuccess, #recipeIngredientAddSuccess, #recipeIngredientDeletedSuccess, #recipeParagraphDeletedSuccess, #recipeParagraphMovedSuccess, #recipeParagraphSavedSuccess{
+#recipeCreatedSuccess, #recipePictureAddSuccess, #recipeIngredientAddSuccess, #recipeIngredientDeletedSuccess, #recipeParagraphDeletedSuccess, #recipeParagraphMovedSuccess, #recipeParagraphSavedSuccess {
     position: absolute;
     right: 0;
     background-color: var(--colorButtonValidate);
@@ -490,13 +490,13 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
 
-#recipePictureAddInfo{
+#recipePictureAddInfo {
     position: absolute;
     right: 0;
     background-color: var(--colorButtonAlert);
@@ -504,13 +504,13 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
 
-#recipePictureAddError{
+#recipePictureAddError {
     position: absolute;
     right: 0;
     background-color: var(--colorButtonDanger);
@@ -518,20 +518,19 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
-
 
 /*------------------------------------ recipe edit content -------------------------------*/
 
-#recipeEditPage .underLink>a,#recipeAddPage .underLink>p{
-    color:var(--primaryLightColor);
+#recipeEditPage .underLink>a, #recipeAddPage .underLink>p {
+    color: var(--primaryLightColor);
 }
 
-#recipePictureEdit{
+#recipePictureEdit {
     width: 100%;
     height: 70%;
     min-height: 300px;
@@ -540,89 +539,86 @@ tbody tr:hover{
     background-size: contain;
 }
 
-#btn-edit-recipe-picture{
-    background-color:var( --colorButtonValidate);
+#btn-edit-recipe-picture {
+    background-color: var( --colorButtonValidate);
 }
 
-#submitEditRecipe{
-    background-color:var( --colorButtonValidate);
+#submitEditRecipe {
+    background-color: var( --colorButtonValidate);
 }
 
-#cancelEditRecipe{
-    background-color:var( --colorButtonInformation);
+#cancelEditRecipe {
+    background-color: var( --colorButtonInformation);
     color: var(--classicColorWhite);
 }
 
-
-#addParagraphEditRecipe>div{
+#addParagraphEditRecipe>div {
     color: var(--primaryLightColor);
     font-size: 50px;
 }
 
-
-#addParagraphEditRecipe{
+#addParagraphEditRecipe {
     width: 100%;
-    background-color: var(--classicColorWhite) ;
-    border:1px dashed rgb(184, 183, 183);
+    background-color: var(--classicColorWhite);
+    border: 1px dashed rgb(184, 183, 183);
 }
 
-#okParagraphEditRecipe{
-    background-color:var( --colorButtonValidate);
+#okParagraphEditRecipe {
+    background-color: var( --colorButtonValidate);
 }
 
-#okIngredientEditRecipe{
-    background-color:var( --colorButtonValidate);
+#okIngredientEditRecipe {
+    background-color: var( --colorButtonValidate);
 }
 
-
-#recipeEditPage .paragraphEditRecipe[readonly]{
-    background-color:red;
+#recipeEditPage .paragraphEditRecipe[readonly] {
+    background-color: red;
     box-shadow: none;
-  }
- 
-  #recipeEditPage .paragraphEditRecipe{
-      resize: none;
-  }
+}
 
-  #recipeEditPage .paragraphIcons{
-      width: 20px;
-      display:flex;
-      flex-direction:column;
-      justify-content: center;
-  }
+#recipeEditPage .paragraphEditRecipe {
+    resize: none;
+}
 
-  #recipeEditPage .paragraphIcons img{
-      margin-bottom: 5px;
-  }
+#recipeEditPage .paragraphIcons {
+    width: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-  #recipeEditPage textarea{
-      width: 90%;
-  }
+#recipeEditPage .paragraphIcons img {
+    margin-bottom: 5px;
+}
 
-  #recipeEditPage .deleteSvg{
+#recipeEditPage textarea {
+    width: 90%;
+}
+
+#recipeEditPage .deleteSvg {
     padding: 2px;
     background-color: red;
     cursor: pointer;
-  }
-
-  #recipeEditPage .upSvg{
-    padding: 2px;
-    background-color: var(--secondaryColor);
-    cursor: pointer;
-  }
-
-  #recipeEditPage .downSvg{
-    padding: 2px;
-    background-color: var(--secondaryColor);
-    cursor: pointer;
-  }
-
-  .btn-delete-ingredients{
-    color:var(--colorButtonInformation);
-  cursor: pointer;
 }
 
-.recipePictureBin{
+#recipeEditPage .upSvg {
+    padding: 2px;
+    background-color: var(--secondaryColor);
+    cursor: pointer;
+}
+
+#recipeEditPage .downSvg {
+    padding: 2px;
+    background-color: var(--secondaryColor);
+    cursor: pointer;
+}
+
+.btn-delete-ingredients {
+    color: var(--colorButtonInformation);
+    cursor: pointer;
+}
+
+.recipePictureBin {
     width: 30px;
     height: 30px;
     background-color: red;
@@ -631,13 +627,14 @@ tbody tr:hover{
     vertical-align: center;
     cursor: pointer;
 }
-.recipePictureBin img{
+
+.recipePictureBin img {
     width: 20px;
     height: 20px;
     background-color: red;
 }
 
-#recipeEditSuccess, #recipePictureEditSuccess, #recipePictureDeleteSuccess, #recipeEditIngredientEditSuccess, #recipeEditIngredientDeletedSuccess, #recipeEditParagraphDeletedSuccess, #recipeEditParagraphMovedSuccess, #recipeEditParagraphSavedSuccess{
+#recipeEditSuccess, #recipePictureEditSuccess, #recipePictureDeleteSuccess, #recipeEditIngredientEditSuccess, #recipeEditIngredientDeletedSuccess, #recipeEditParagraphDeletedSuccess, #recipeEditParagraphMovedSuccess, #recipeEditParagraphSavedSuccess {
     position: absolute;
     right: 0;
     background-color: var(--colorButtonValidate);
@@ -645,10 +642,10 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
 
 #recipePictureEditMessage {
@@ -659,59 +656,57 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
 
-#confirm-edit-picture-recipe, #confirm-edit-recipe, #confirm-delete-picture-recipe, #confirm-edit-recipe-delete-paragraph, #confirm-edit-recipe-delete-ingredient,#confirm-add-recipe-delete-ingredient{
-    background-color:var( --colorButtonValidate);
+#confirm-edit-picture-recipe, #confirm-edit-recipe, #confirm-delete-picture-recipe, #confirm-edit-recipe-delete-paragraph, #confirm-edit-recipe-delete-ingredient, #confirm-add-recipe-delete-ingredient {
+    background-color: var( --colorButtonValidate);
 }
 
 /*------------------------------------ users content -------------------------------*/
 
-#allUserPage .fixed-table-container{
-    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.25), 0 5px 7px 0 rgba(0, 0, 0, 0.25);  
-    
+#allUserPage .fixed-table-container {
+    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.25), 0 5px 7px 0 rgba(0, 0, 0, 0.25);
 }
 
-#allUserPage thead{
-    background-color:var(--primaryColor) ;
+#allUserPage thead {
+    background-color: var(--primaryColor);
     color: var(--classicColorWhite);
 }
 
-#searchUser{
+#searchUser {
     position: absolute;
     width: 10%;
-    left : 2%;
+    left: 2%;
 }
 
-#btnAddUser{
+#btnAddUser {
     position: relative;
     margin: 0;
     padding-left: 50px;
 }
 
-#svgAddUser{
+#svgAddUser {
     position: absolute;
     left: 2%;
     width: 20%;
     z-index: 2;
 }
 
-
-#customSearchUser{
+#customSearchUser {
     margin: 0;
     padding-left: 50px;
 }
 
-.btn-delete-user, .btn-modify-user{
-    color:var(--colorButtonInformation);
+.btn-delete-user, .btn-modify-user {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-#userDeletedSuccess{
+#userDeletedSuccess {
     position: absolute;
     right: 0;
     background-color: var(--colorButtonValidate);
@@ -719,29 +714,28 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
 
-#confirm-delete-user{
-    background-color:var( --colorButtonValidate);
+#confirm-delete-user {
+    background-color: var( --colorButtonValidate);
 }
-
 
 /*------------------------------------ user add content -------------------------------*/
 
-#userAddPage .underLink>a,#userAddPage .underLink>p{
-    color:var(--primaryLightColor);
+#userAddPage .underLink>a, #userAddPage .underLink>p {
+    color: var(--primaryLightColor);
 }
 
-#submitNewUser{
-    background-color:var( --colorButtonValidate);
+#submitNewUser {
+    background-color: var( --colorButtonValidate);
 }
 
 #cancelNewUser {
-    background-color:var( --colorButtonInformation);
+    background-color: var( --colorButtonInformation);
     color: var(--classicColorWhite);
 }
 
@@ -753,8 +747,7 @@ tbody tr:hover{
     background-color: red;
 }
 
-#pwdStrength::-moz-progress-bar,
-#pwdStrength::-webkit-progress-value {
+#pwdStrength::-moz-progress-bar, #pwdStrength::-webkit-progress-value {
     background: green;
 }
 
@@ -767,7 +760,7 @@ tbody tr:hover{
     line-height: 1rem;
 }
 
-#userCreatedSuccess{
+#userCreatedSuccess {
     position: absolute;
     right: 0;
     background-color: var(--colorButtonValidate);
@@ -775,207 +768,235 @@ tbody tr:hover{
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
-    z-index:100;
+    align-items: center;
+    z-index: 100;
 }
 
 /*------------------------------------ user edit content -------------------------------*/
 
-#userEditPage .underLink>a,#userEditPage .underLink>p{
-    color:var(--primaryLightColor);
+#userEditPage .underLink>a, #userEditPage .underLink>p {
+    color: var(--primaryLightColor);
 }
 
 #cancelEditUser {
-    background-color:var( --colorButtonInformation);
+    background-color: var( --colorButtonInformation);
     color: var(--classicColorWhite);
 }
 
-#userEditPage thead{
-    background-color:var(--primaryColor) ;
+#userEditPage thead {
+    background-color: var(--primaryColor);
     color: var(--classicColorWhite);
 }
 
-#searchOrderUser, #searchCommentUser{
+#searchOrderUser, #searchCommentUser {
     position: absolute;
     width: 10%;
-    left : 2%;
+    left: 2%;
 }
 
-
-#customSearchOrderUser, #customSearchCommentUser{
+#customSearchOrderUser, #customSearchCommentUser {
     margin: 0;
     padding-left: 50px;
 }
 
-#listOrderLinesUser{
+#listOrderLinesUser {
     min-width: 300px;
     min-height: 200px;
 }
 
-.btn-block-comment, .btn-approve-comment{
-    color:var(--colorButtonInformation);
+.btn-block-comment, .btn-approve-comment {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-#commentApprovedSuccess, #commentBlockedSuccess{
-    position:absolute;
+#commentApprovedSuccess, #commentBlockedSuccess {
+    position: absolute;
     right: 0;
-    top:0;
+    top: 0;
     background-color: var(--colorButtonValidate);
     width: 50%;
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     z-index: 100;
 }
-
 
 #userEditSuccess, #userPasswordResetSuccess {
-    position:absolute;
+    position: absolute;
     right: 0;
     background-color: var(--colorButtonValidate);
     width: 50%;
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     z-index: 100;
 }
 
-#userOrderId{
+#userOrderId {
     min-width: 80px;
-    background-color: var(--secondaryLightColor) ;
+    background-color: var(--secondaryLightColor);
 }
 
-#submitEditUser, #confirm-approve, #confirm-block, #confirm-edit, #confirm-reset-password{
-    background-color:var( --colorButtonValidate);
+#submitEditUser, #confirm-approve, #confirm-block, #confirm-edit, #confirm-reset-password {
+    background-color: var( --colorButtonValidate);
 }
 
 /*------------------------------------ connection content -------------------------------*/
-#connectionForm{
+
+#connectionForm {
     max-width: 50%;
     padding: 5% 15% 5% 15%;
-    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.15);   
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.15);
 }
 
 #disconnectSuccess {
-    position:absolute;
+    position: absolute;
     right: 0;
     left: 0;
-    top:50px;
-    margin-left: auto; 
-    margin-right: auto; 
+    top: 50px;
+    margin-left: auto;
+    margin-right: auto;
     background-color: var(--colorButtonValidate);
     width: 50%;
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     z-index: 100;
 }
 
 #accountNotActive {
-    position:absolute;
+    position: absolute;
     right: 0;
     left: 0;
-    top:50px;
-    margin-left: auto; 
-    margin-right: auto; 
+    top: 50px;
+    margin-left: auto;
+    margin-right: auto;
     background-color: var(--colorButtonDanger);
     width: 50%;
     min-width: 200px;
     min-height: 100px;
     border-radius: 5px;
-    display:flex;
+    display: flex;
     justify-content: center;
-    align-items:center;
+    align-items: center;
     z-index: 100;
 }
 
-#connectionPage{
-    background-image:url("../pictures/icons/bg-nesti.png");
+#connectionPage {
+    background-image: url("../pictures/icons/bg-nesti.png");
     background-repeat: no-repeat;
     background-size: cover;
-    position:absolute;
+    position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     width: 100%;
     height: 100%;
 }
 
-#logoNesti>img{
+#logoNesti>img {
     width: 50%;
     height: 50%;
 }
 
-#connectionPage button{
+#connectionPage button {
     background-color: var(--colorButtonInformation);
     width: 40%;
 }
 
 /*------------------------------------ statistics -------------------------------*/
 
-#statisticsPage{
+#statisticsPage {
     max-width: 80%;
     margin: auto;
 }
 
 @media only screen and (max-width: 500px) {
-    #statisticsPage{
+    #statisticsPage {
         max-width: 100%;
         margin: auto;
     }
-  }
+    #toastArticles canvas {
+        width: 350px !important;
+        height: 300px !important;
+    }
+    #toastArticles, #toastPieConnection, #toastOrders{
+        text-align: center;
+    }
 
-.btn-see-user{
-    color:var(--colorButtonInformation);
+    #toastPieConnection canvas {
+        width: 350px !important;
+        height: 300px !important;
+    }
+
+    #toastOrders canvas {
+        width: 300px !important;
+        height: 300px !important;
+    }
+
+    #toastArticles .toastui-chart-tooltip-container{
+        transform:translate(160px, 2220px) !important;
+    }
+
+    #toastOrders .toastui-chart-tooltip-container{
+        transform:translate(127px, 315px) !important;
+    }
+
+    #toastPieConnection .toastui-chart-tooltip-container{
+        transform:translate(192px, 950px) !important;
+    }
+
+}
+
+.btn-see-user {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-.btn-see-order{
-    color:var(--colorButtonInformation);
+.btn-see-order {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-.btn-see-recipe{
-    color:var(--colorButtonInformation);
+.btn-see-recipe {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-#topChief{
+#topChief {
     min-height: 250px;
 }
 
-#topRecipe{
+#topRecipe {
     min-width: 300px;
     min-height: 80%;
 }
 
-#statisticsPage thead{
-    background-color:var(--primaryColor) ;
+#statisticsPage thead {
+    background-color: var(--primaryColor);
     color: var(--classicColorWhite);
 }
 
-.btn-see-articleOutOfStock{
-    color:var(--colorButtonInformation);
+.btn-see-articleOutOfStock {
+    color: var(--colorButtonInformation);
     cursor: pointer;
 }
 
-#statisticsPage .fixed-table-container,#topRecipe, #topChief, #biggestOrders,#mostConnectedUsers {
-    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.25), 0 5px 7px 0 rgba(0, 0, 0, 0.25);  
-    
+#statisticsPage .fixed-table-container, #topRecipe, #topChief, #biggestOrders, #mostConnectedUsers {
+    box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.25), 0 5px 7px 0 rgba(0, 0, 0, 0.25);
 }
 
-.statistic_titles{
+.statistic_titles {
     color: var(--primaryLightColor);
 }
