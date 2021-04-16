@@ -26,8 +26,7 @@ class UserController extends BaseController
         } else if (($this->_url) == "user_usercomment") {
             $this->changeStateComment(); // this is the method called by the fetch API with the user/usercomment ROOT.
         } else if (($this->_url) == "user_edituser") {
-            $data=$this->editUserDatabase();
-            $this->_url="user_edit";
+            $this->editUserDatabase(); // this is the method called by the fetch API with the user/edituser ROOT.
         } else if (($this->_url) == "user_delete") {
             $this->deleteUser(); // this is the method called by the fetch API with the user/delete ROOT.
         } else if (($this->_url) == "user_resetpassword") {
@@ -71,6 +70,7 @@ class UserController extends BaseController
             $userCity = filter_input(INPUT_POST, "userCity", FILTER_SANITIZE_STRING);
             $userPostCode = filter_input(INPUT_POST, "userPostCode", FILTER_SANITIZE_STRING);
             $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+            $userRoles[]='user';
             $userState = filter_input(INPUT_POST, "userState", FILTER_SANITIZE_STRING);
 
             // first we have to check if the city already exists, if not to create it
@@ -210,7 +210,8 @@ class UserController extends BaseController
     public function editUserDatabase()
     {
         $data = [];
-        // $data['success'] = false;
+        $data['success'] = false;
+
         if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
             $idUser = filter_input(INPUT_POST, "id_user", FILTER_SANITIZE_STRING);
             $userLastname = filter_input(INPUT_POST, "userLastname", FILTER_SANITIZE_STRING);
@@ -308,11 +309,25 @@ class UserController extends BaseController
                 if ($formerUserState != $userState) { // if the states changed
                     $this->userDAO->editUser($userEdit, "state");
                 }
-                $user = $this->userDAO->getOneUser($idUser);
-                $data = ['user' => $user];
+
+                $data['idUser'] = $userEdit->getIdUser();
+                $data['userLastname'] = $userEdit->getLastname();
+                $data['userFirstname'] = $userEdit->getFirstname();
+                $data['userEmail'] = $userEdit->getEmail();
+                $data['userUsername'] = $userEdit->getUsername();
+                $data['userPassword'] = $userEdit->getPassword();
+                $data['userConfirmPassword'] = $userEdit->getPassword();
+                $data['userAddress1'] = $userEdit->getAddress1();
+                $data['userAddress2'] = $userEdit->getAddress2();
+                $data['userCity'] = $userEdit->getCity()->getCityName();
+                $data['userPostcode'] = $userEdit->getPostCode();
+                $data['userRoles'] = $userEdit->getRoles();
+                $data['userState'] = $userEdit->getState();
+                $data['success'] = true;
             }
         }
-        return $data;
+        echo json_encode($data);
+        die;
     }
 
     /**
