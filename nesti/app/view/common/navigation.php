@@ -36,7 +36,7 @@ if (!isset($url)) {
       </li>
     </ul>
     <form class="form-inline logOut my-2 my-lg-0 justify-content-around">
-      <a class="nav-link" href="">
+      <a class="nav-link">
         <i class="fas fa-user mr-2"></i>
         <?php echo $_SESSION["lastname"] . " " . $_SESSION["firstname"] ?>
       </a>
