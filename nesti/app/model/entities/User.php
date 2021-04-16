@@ -238,8 +238,8 @@ class User
         $userUsernameError = "";
         if (empty($username)) {
             $userUsernameError = 'Please enter a username';
-        } else if (!preg_match("/^[a-zA-Z0-9._-]{3,20}$/", $username)) {
-            $userUsernameError = "The username doesn't respect the conditions";
+        } else if (!preg_match("/^[a-zA-ZÀ-ÿ0-9._-]{7,20}$/", $username)) {
+            $userUsernameError = 'The username has to be between 7 to 20 alphanumeric characters("." "_" "-" accepted)';
         } else {
             $this->username = $username;
         }
@@ -313,7 +313,7 @@ class User
         if (empty($postcode)) {
             $userPostCodeError = "Please enter a postcode";
         } else if (!preg_match("/^[0-9]{5}$/", $postcode)) {
-            $postcodeError = "Please enter a valid postcode (5 digits)";
+            $userPostCodeError = "Please enter a valid postcode (5 digits)";
         } else {
             $this->postcode = $postcode;
         }
