@@ -427,9 +427,106 @@ if (!isset($user) || empty($user)) {
         var notifs = document.querySelectorAll(".notifications");
         notifs.forEach(element =>
             element.addEventListener('click', (function(e) {
-                element.hidden = true;
+                console.log(e.target);
+                if (e.target.getAttribute("id") == "userPasswordResetSuccess") {
+                    if (e.detail === 3) {
+                        element.hidden = true;;
+                    }
+                } else {
+                    element.hidden = true;
+                }
             }))
         )
+
+        // -------------------------------- Edit user --------------------------// 
+
+        var formEditUser = document.querySelector("#editUserForm"); // get the form used to edit the user
+        // Event listener on the form
+        formEditUser.addEventListener('submit', (function(e) {
+            event.preventDefault(); // stop the default action of the form
+            const idUser = document.querySelector('#idUser').value;
+            console.log(document.querySelector("#admin").checked);
+            console.log(document.querySelector("#mod").checked);
+            console.log(document.querySelector("#chief").checked);
+            editUser(this, idUser).then((response) => {
+                if (response) {
+                    if (response.success) {
+                        document.querySelector("#inputUserEditLastname").value = response.userLastname;
+                        document.querySelector("#inputUserEditFirstname").value = response.userFirstname;
+                        document.querySelector("#inputUserEditAddress1").value = response.userAddress1;
+                        document.querySelector("#inputUserEditAddress2").value = response.userAddress2;
+                        document.querySelector("#inputUserEditCity").value = response.userCity;
+                        document.querySelector("#inputUserEditPostcode").value = response.userPostcode;
+                        if (response.userRoles.indexOf('admin') != -1) {
+                            document.querySelector("#admin").checked = true;
+                        }
+                        if (response.userRoles.indexOf('moderator') != -1) {
+                            document.querySelector("#mod").checked = true;
+                        }
+                        if (response.userRoles.indexOf('chief') != -1) {
+                            document.querySelector("#chief").checked = true;
+                        }
+                        if (response.userState == "a") {
+                            document.querySelector("#userEditState").options.selectedIndex = 0;
+                        } else if (response.userState == "b") {
+                            document.querySelector("#userEditState").options.selectedIndex = 1;
+                        } else if (response.userState == "w") {
+                            document.querySelector("#userEditState").options.selectedIndex = 2;
+                        }
+
+
+                        document.querySelector("#errorUserEditLastname").innerHTML = "";
+                        document.querySelector("#errorUserEditFirstname").innerHTML = "";
+                        document.querySelector("#errorUserEditAddress1").innerHTML = "";
+                        document.querySelector("#errorUserEditAddress2").innerHTML = "";
+                        document.querySelector("#errorUserEditCity").innerHTML = "";
+                        document.querySelector("#errorUserEditPostcode").innerHTML = "";
+
+                        document.querySelector("#userEditSuccess").hidden = false;
+                    } else {
+                        document.querySelector("#errorUserEditLastname").innerHTML = response.errorMessages['userLastname'];
+                        document.querySelector("#errorUserEditFirstname").innerHTML = response.errorMessages['userFirstname'];;
+                        document.querySelector("#errorUserEditAddress1").innerHTML = response.errorMessages['userAddress1'];
+                        document.querySelector("#errorUserEditAddress2").innerHTML = response.errorMessages['userAddress2'];
+                        document.querySelector("#errorUserEditCity").innerHTML = response.errorMessages['userCity'];
+                        document.querySelector("#errorUserEditPostcode").innerHTML = response.errorMessages['userPostcode'];
+
+                        console.log(response.errorMessages)
+                    }
+                }
+                document.querySelector("#closeModalEdit").click();
+            });
+        }))
+
+        /**
+         * Ajax Request to edit the user
+         * @param {form} obj, int idUser
+         * @returns mixed
+         */
+        async function editUser(obj, idUser) {
+            var myHeaders = new Headers();
+
+            let formData = new FormData(obj);
+            formData.append('id_user', idUser);
+
+            var myInit = {
+                method: 'POST',
+                headers: myHeaders,
+                mode: 'cors',
+                cache: 'default',
+                body: formData
+            };
+            let response = await fetch(ROOT + 'user/edituser', myInit);
+            try {
+                if (response.ok) {
+                    return await response.json();
+                } else {
+                    return false;
+                }
+            } catch (e) {
+                console.error(e.message);
+            }
+        }
 
 
         // -------------------------------- Reset Password --------------------------// 
@@ -442,12 +539,11 @@ if (!isset($user) || empty($user)) {
             resetThePassword(idUser).then((response) => {
                 if (response) {
                     if (response.success) {
-                        console.log(response);
-                        document.querySelector("#closeModalResetPassword").click();
                         document.querySelector("#userPasswordResetSuccess").hidden = false;
-                        document.querySelector("#userPasswordResetSuccess").innerHTML = "<p>The new password is " + response.password + " ! Please, write it down before doing anything else !";
+                        document.querySelector("#userPasswordResetSuccess").innerHTML = "The new password is " + response.password + " ! Please, write it down before doing anything else ! (Triple click to close this window)";
                     }
                 }
+                document.querySelector("#closeModalResetPassword").click();
             });
         }
 
@@ -566,9 +662,9 @@ if (!isset($user) || empty($user)) {
                         } else if (state == "b") {
                             document.querySelector("#commentBlockedSuccess").hidden = false;
                         }
-                        btnclose.click();
                     }
                 }
+                btnclose.click();
             });
         }
 
