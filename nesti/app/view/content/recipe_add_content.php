@@ -47,7 +47,7 @@ if (!isset($listAllIngredients)) {
                 <form method="post" id="addRecipeForm">
                     <div class="form-group">
                         <label for="inputAddRecipeName">Recipe name</label>
-                        <input type="text" class="form-control p-0" id="inputAddRecipeName" name="recipeName" value="">
+                        <input type="text" class="form-control" id="inputAddRecipeName" name="recipeName" value="">
                         <small id="recipeAddChiefName" class="form-text text-muted">Recipe Chief : <?= $_SESSION["lastname"] . " " . $_SESSION["firstname"] ?></small>
                     </div>
                     <span class="text-danger" id="errorRecipeName"></span>
@@ -137,7 +137,7 @@ if (!isset($listAllIngredients)) {
                     <div class="col-12 p-0 mb-3">
 
                         <label for="inputIngredientNameAddRecipe">Add an ingredient</label>
-                        <input list="ingredientsAdd" type="text" class="form-control p-0" id="inputIngredientNameAddRecipe" name="ingredient">
+                        <input list="ingredientsAdd" type="text" class="form-control" placeholder="Ingredient" id="inputIngredientNameAddRecipe" name="ingredient">
                         <datalist id="ingredientsAdd">
                             <?php
                             foreach ($listAllIngredients as $ingredients) {
@@ -471,7 +471,6 @@ if (!isset($listAllIngredients)) {
                 deleteIngredient(idRecipe, idIngredient, order).then((response) => {
                     if (response) {
                         if (response.success) {
-                            document.querySelector("#closeModalAddRecipeDeleteIngredient" + idIngredient).click(); // simulate a click on the close modal button
                             divList.innerHTML = ""; //empty the list
                             if (response['recipeIngredient'] != undefined) {
                                 response['recipeIngredient'].forEach(element => {
@@ -485,6 +484,7 @@ if (!isset($listAllIngredients)) {
                             console.log(response.errorMessages)
                         }
                     }
+                    document.querySelector("#closeModalAddRecipeDeleteIngredient" + idIngredient).click(); // simulate a click on the close modal button
                 });
             }
         }
