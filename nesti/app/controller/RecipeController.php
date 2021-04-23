@@ -196,7 +196,7 @@ class RecipeController extends BaseController
             if ($productNameError == "" && $unitNameError == "" && $quantityError == "") {
                 $recipeIngredientsDAO = new RecipeIngredientsDAO();
                 $recipeIngredientsDAO->createRecipeIngredient($recipeIngredient);
-                $data['recipeIngredient'] = '<div class="d-flex flex-row justify-content-between"><div class="mb-3">' . $quantity . ' ' . $unit->getName() . ' de ' . $ingredient->getProductName() . '</div><div onclick="createModalDeleteIngredient(' . $recipeIngredient->getOrder() . ',' . $recipeIngredient->getIdRecipe() . ',' . $recipeIngredient->getIDIngredient() . ')" class="btn-delete-ingredient">delete</div><div id="openModalIngredient' . $recipeIngredient->getOrder() . '" hidden data-toggle="modal" data-target="#modalRecipeDeleteIngredient' . $recipeIngredient->getOrder() . '"></div></div>';
+                $data['recipeIngredient'] = '<div class="d-flex flex-row justify-content-between"><div class="mb-3">' . $quantity . ' ' . $unit->getName() . ' of ' . $ingredient->getProductName() . '</div><div onclick="createModalDeleteIngredient(' . $recipeIngredient->getOrder() . ',' . $recipeIngredient->getIdRecipe() . ',' . $recipeIngredient->getIDIngredient() . ')" class="btn-delete-ingredient">delete</div><div id="openModalIngredient' . $recipeIngredient->getOrder() . '" hidden data-toggle="modal" data-target="#modalRecipeDeleteIngredient' . $recipeIngredient->getOrder() . '"></div></div>';
                 $data['success'] = true;
             }
         }
@@ -230,7 +230,7 @@ class RecipeController extends BaseController
                         $recipeIngredientDAO->editRecipeIngredient($recipeIngredient->getIdRecipe(), $recipeIngredient->getIDIngredient(), $recipeIngredient->getOrder(), $newOrder);
                         $recipeIngredient->setOrder($newOrder);
                     }
-                    $data['recipeIngredient'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div class="mb-3">' . $recipeIngredient->getQuantity() . ' ' . $recipeIngredient->getUnitMeasure()->getName() . ' de ' . $recipeIngredient->getIngredient()->getProductName() . '</div><div onclick="createModalDeleteIngredient(' . $recipeIngredient->getOrder() . ',' . $recipeIngredient->getIdRecipe() . ',' . $recipeIngredient->getIDIngredient() . ')" class="btn-delete-ingredient">delete</div><div id="openModalIngredient' . $recipeIngredient->getOrder() . '" hidden data-toggle="modal" data-target="#modalRecipeDeleteIngredient' . $recipeIngredient->getOrder() . '"></div></div>';
+                    $data['recipeIngredient'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div class="mb-3">' . $recipeIngredient->getQuantity() . ' ' . $recipeIngredient->getUnitMeasure()->getName() . ' of ' . $recipeIngredient->getIngredient()->getProductName() . '</div><div onclick="createModalDeleteIngredient(' . $recipeIngredient->getOrder() . ',' . $recipeIngredient->getIdRecipe() . ',' . $recipeIngredient->getIDIngredient() . ')" class="btn-delete-ingredient">delete</div><div id="openModalIngredient' . $recipeIngredient->getOrder() . '" hidden data-toggle="modal" data-target="#modalRecipeDeleteIngredient' . $recipeIngredient->getOrder() . '"></div></div>';
                     $index++;
                     $newOrder++;
                 }
