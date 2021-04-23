@@ -716,7 +716,10 @@ if (!isset($ingredients)) {
          */
         function createEntitiesParagraph() {
             paragraphs = document.querySelectorAll(".paragraphEditRecipeLine")
-            order = paragraphs[paragraphs.length - 1].getAttribute('order');
+            order=0;
+            if (paragraphs.length > 0) {
+                order = paragraphs[paragraphs.length - 1].getAttribute('order');
+            }
             order++;
             // get the paragraphes area
             var paragraphArea = document.querySelector("#paragraphsEditRecipe");
