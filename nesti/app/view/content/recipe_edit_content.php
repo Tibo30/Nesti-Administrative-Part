@@ -254,7 +254,7 @@ if (!isset($ingredients)) {
                 <div class="form-group">
                     <div id="addIngredientListEditRecipe" class="d-flex flex-column justify-content-between w-100 p-2 bg-white border">
                         <?php foreach ($recipeIngredients as $recipeIngredient) {
-                            echo ' <div class="d-flex flex-row justify-content-between"> <div class="mb-3"> ' . $recipeIngredient->getQuantity() . " " . $recipeIngredient->getUnitMeasure()->getName() . " de " . $recipeIngredient->getIngredient()->getProductName() . ' </div><div onclick="createModalDeleteIngredient(' . $recipeIngredient->getOrder() . ',' . $recipeIngredient->getIdRecipe() . ',' . $recipeIngredient->getIDIngredient() . ')" class="btn-delete-ingredient">delete</div><div id="openModalIngredient' . $recipeIngredient->getOrder() . '" hidden data-toggle="modal" data-target="#modalRecipeDeleteIngredient' . $recipeIngredient->getOrder() . '"></div></div>';
+                            echo ' <div class="d-flex flex-row justify-content-between"> <div class="mb-3"> ' . $recipeIngredient->getQuantity() . " " . $recipeIngredient->getUnitMeasure()->getName() . " of " . $recipeIngredient->getIngredient()->getProductName() . ' </div><div onclick="createModalDeleteIngredient(' . $recipeIngredient->getOrder() . ',' . $recipeIngredient->getIdRecipe() . ',' . $recipeIngredient->getIDIngredient() . ')" class="btn-delete-ingredient">delete</div><div id="openModalIngredient' . $recipeIngredient->getOrder() . '" hidden data-toggle="modal" data-target="#modalRecipeDeleteIngredient' . $recipeIngredient->getOrder() . '"></div></div>';
                         }
                         ?>
                     </div>
