@@ -896,6 +896,7 @@ button:hover {
 #connectionPage {
     background-image: url("../pictures/icons/bg-nesti.png");
     background-repeat: no-repeat;
+    background-position: center;
     background-size: cover;
     position: absolute;
     top: 50%;
@@ -915,6 +916,26 @@ button:hover {
     width: 40%;
 }
 
+@media only screen and (max-width: 1280px) {
+    #connectionForm {
+        max-width:70%;
+    }
+}
+
+@media only screen and (max-width: 700px) {
+    #connectionForm {
+        width:300px;
+        padding: 20px 20px 20px 20px;
+        max-width: none;
+        margin: auto;
+    }
+
+    #connectionPage .container{
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+}
+
 /*------------------------------------ statistics -------------------------------*/
 
 #statisticsPage {
@@ -931,32 +952,26 @@ button:hover {
         width: 350px !important;
         height: 300px !important;
     }
-    #toastArticles, #toastPieConnection, #toastOrders{
+    #toastArticles, #toastPieConnection, #toastOrders {
         text-align: center;
     }
-
     #toastPieConnection canvas {
         width: 350px !important;
         height: 300px !important;
     }
-
     #toastOrders canvas {
         width: 300px !important;
         height: 300px !important;
     }
-
-    #toastArticles .toastui-chart-tooltip-container{
-        transform:translate(160px, 2220px) !important;
+    #toastArticles .toastui-chart-tooltip-container {
+        transform: translate(160px, 2220px) !important;
     }
-
-    #toastOrders .toastui-chart-tooltip-container{
-        transform:translate(127px, 315px) !important;
+    #toastOrders .toastui-chart-tooltip-container {
+        transform: translate(127px, 315px) !important;
     }
-
-    #toastPieConnection .toastui-chart-tooltip-container{
-        transform:translate(192px, 950px) !important;
+    #toastPieConnection .toastui-chart-tooltip-container {
+        transform: translate(192px, 950px) !important;
     }
-
 }
 
 .btn-see-user {
