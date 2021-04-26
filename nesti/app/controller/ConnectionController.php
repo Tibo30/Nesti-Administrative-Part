@@ -44,7 +44,7 @@ class ConnectionController extends BaseController
                 $_SESSION["roles"] = $activUser->getRoles();
                 $data['success'] = true;
             } else {
-                $data['notif'] = 'you account isn\'t active ';
+                $data['notif'] = 'Your account isn\'t active ';
             }
         } else {
             $errorEmail = "";
