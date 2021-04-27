@@ -43,11 +43,11 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                 <form method="post" action="" id="editArticleForm">
                     <div class="form-group">
                         <label for="articleFactoryName">Article factory name</label>
-                        <input type="text" class="form-control p-0" name="articleFactoryName" id="articleFactoryName" value="<?= $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " de " .  $article->getProduct()->getProductName() ?>" disabled>
+                        <input type="text" class="form-control p-0" name="articleFactoryName" id="articleFactoryName" value="<?= $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " of " .  $article->getProduct()->getProductName() ?>" disabled>
                     </div>
                     <div class="form-group">
                         <label for="articleUserName">Article user name</label>
-                        <input type="text" class="form-control p-0" name="articleUserName" id="articleUserName" value="<?= $article->getUserArticleName() != null ? $article->getUserArticleName() : $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " de " .  $article->getProduct()->getProductName() ?>">
+                        <input type="text" class="form-control p-0" name="articleUserName" id="articleUserName" value="<?= $article->getUserArticleName() != null ? $article->getUserArticleName() : $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " of " .  $article->getProduct()->getProductName() ?>">
                         <span class="text-danger" id="errorEditArticleUserName"></span>
                     </div>
                     <div class="mx-0 p-0 form-group row justify-content-between">
@@ -56,7 +56,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                     </div>
                     <div class="mx-0 p-0 form-group row justify-content-between">
                         <label for="sellingPrice">Selling price</label>
-                        <div class="col-3 p-0"><input type="text" class="form-control" name="sellingPrice" id="sellingPrice" value="<?= round(($article->getPrice()->getPrice()), 2) ?>" disabled></div>
+                        <div class="col-3 p-0"><input type="text" class="form-control" name="sellingPrice" id="sellingPrice" value="<?=  $article->getPrice()!=null ? round(($article->getPrice()->getPrice()), 2) : "" ?>" disabled></div>
                     </div>
                     <div class="mx-0 p-0 form-group row justify-content-between">
                         <label for="stock">Stock</label>
