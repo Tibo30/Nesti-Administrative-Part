@@ -110,7 +110,7 @@ class ArticleController extends BaseController
 
                 $data['articleEdit'] = $articleEdit;
                 $data['idArticle'] = $articleEdit->getIdArticle();
-                $data['articleFactoryName'] = $articleEdit->getQuantityPerUnit() . " " . $articleEdit->getUnitMeasure()->getName() . " de " .  $articleEdit->getProduct()->getProductName();
+                $data['articleFactoryName'] = $articleEdit->getQuantityPerUnit() . " " . $articleEdit->getUnitMeasure()->getName() . " of " .  $articleEdit->getProduct()->getProductName();
                 $data['articleUserName'] = $articleEdit->getUserArticleName();
                 $data['articlePrice'] = round(($articleEdit->getPrice()->getPrice()), 2);
                 $data['articleStock'] = $articleEdit->getStock();
