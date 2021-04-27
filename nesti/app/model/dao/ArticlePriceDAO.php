@@ -24,7 +24,12 @@ class ArticlePriceDAO extends ModelDAO
                 $var[] = $priceObject->hydration($row);;
             }
         }
-        $lastPriceObject=$var[0];
+        if (count($var)>0){
+            $lastPriceObject=$var[0];
+        } else {
+            $lastPriceObject=null;
+        }
+        
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $lastPriceObject;
     }
