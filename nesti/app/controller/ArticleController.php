@@ -201,7 +201,7 @@ class ArticleController extends BaseController
                 $iD = $_POST['idArticlePicture'];
                 $picture = new Picture();
                 $picture->setExtension($ext);
-                $picture->setName(substr($img, 0, $position));
+                $picture->setName(substr(strtolower($img), 0, $position));
                 if (($pictureDAO->doesPictureExist($picture->getName(), $picture->getExtension())) == false) { // check if the picture/name is not already in the table
                     if (move_uploaded_file($tmp, $path)) { // move the file form temporary folder to right folder (according to path)
                         $data['success'] = true;
