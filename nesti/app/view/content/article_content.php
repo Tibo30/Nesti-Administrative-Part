@@ -63,7 +63,7 @@ if (!isset($articles)) {
                 foreach ($articles as $article) {
                     echo '<tr>';
                     echo '<td>' . $article->getIdArticle() . '</td>';
-                    echo '<td>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " de " .  $article->getProduct()->getProductName() . '</td>';
+                    echo '<td>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " of " .  $article->getProduct()->getProductName() . '</td>';
                     echo '<td>' . ($article->getPrice()!=null ? round(($article->getPrice()->getPrice()), 2) : "") . ' € </td>';
                     echo '<td>' . $article->getType() . '</td>';
                     echo '<td>' . $article->getLastImport()->getDisplayDate() . '</td>';
