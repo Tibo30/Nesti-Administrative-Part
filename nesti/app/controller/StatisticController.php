@@ -121,8 +121,10 @@ class StatisticController extends BaseController
             } else {
                 $articleInStock[] = $article;
             }
-            $articlesWithKey[$article->getProduct()->getProductName()] = $article;
+            //$articlesWithKey[$article->getProduct()->getProductName()] = $article;
+             $articlesWithKey[$article->getQuantityPerUnit()." ".$article->getUnitMeasure()->getName()." of ".$article->getProduct()->getProductName()] = $article;
         }
+
 
         $articleSold = [];
         $articleBought = [];
