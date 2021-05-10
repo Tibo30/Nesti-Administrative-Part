@@ -104,7 +104,7 @@
         const el = document.getElementById('toastOrders');
         var totalPurchasedPerDay = <?php echo json_encode($totalPurchasedPerDay) ?>;
         var totalSoldPerDay = <?php echo json_encode($totalSoldPerDay) ?>;
-      
+
         const data = {
 
             categories: [
@@ -136,7 +136,7 @@
                 height: 300
             },
             legend: {
-                visible: (screenwidth >600 ? true : false)
+                visible: (screenwidth > 600 ? true : false)
             },
             xAxis: {
                 pointOnColumn: false,
@@ -202,6 +202,8 @@
         var articleInStock = <?php echo json_encode($articleInStock) ?>;
         var clésDenses = Object.keys(articles);
 
+        console.log(Object.keys(clésDenses));
+
         const dataArticle = {
             categories: clésDenses,
             series: [{
@@ -221,8 +223,12 @@
                 height: 300
             },
             legend: {
-                visible: (screenwidth >600 ? true : false)
+                visible: (screenwidth > 600 ? true : false)
             },
+            xAxis: {
+                visible:false
+            },
+
         };
 
         const chartArticle = toastui.Chart.columnChart({
