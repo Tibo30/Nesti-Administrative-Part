@@ -9,7 +9,7 @@ class Lot{
     public function hydration($data)
     {
         $this->refOrder = $data['ref_order'];
-        $this->unitCost = $data['id_article'];
+        $this->unitCost = $data['unit_cost'];
         $this->boughtQuantity = $data['bought_quantity'];
         $this->receivedDate = $data['received_date'];
         $this->idArticle = $data['id_article'];
