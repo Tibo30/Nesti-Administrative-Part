@@ -144,9 +144,6 @@ class Article
     }
 
 
-
-
-
     /**
      * Get the value of iDUnitMeasure
      */
