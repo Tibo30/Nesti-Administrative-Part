@@ -204,6 +204,7 @@ if (!isset($listAllIngredients)) {
             if (confirmDeleteIngredient != null) {
                 confirmDeleteIngredient.addEventListener('click', function() {
                     listenerDeleteIngredient(order, idRecipe, idIngredient)
+                    document.querySelector("#closeModalAddRecipeDeleteIngredient" + idIngredient).click(); // simulate a click on the close modal button
                 })
             }
         }
@@ -484,7 +485,6 @@ if (!isset($listAllIngredients)) {
                             console.log(response.errorMessages)
                         }
                     }
-                    document.querySelector("#closeModalAddRecipeDeleteIngredient" + idIngredient).click(); // simulate a click on the close modal button
                 });
             }
         }

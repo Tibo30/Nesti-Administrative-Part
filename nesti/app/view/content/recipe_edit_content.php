@@ -326,6 +326,7 @@ if (!isset($ingredients)) {
             if (confirmDeleteIngredient != null) {
                 confirmDeleteIngredient.addEventListener('click', function() {
                     listenerDeleteIngredient(order, idRecipe, idIngredient)
+                    document.querySelector("#closeModalEditRecipeDeleteIngredient" + idIngredient).click(); // simulate a click on the close modal button
                 })
             }
         }
@@ -658,8 +659,7 @@ if (!isset($ingredients)) {
                             }
                             document.querySelector("#recipeEditIngredientDeletedSuccess").hidden = false;
                         }
-                    }
-                    document.querySelector("#closeModalEditRecipeDeleteIngredient" + idIngredient).click(); // simulate a click on the close modal button
+                    }                   
                 });
             }
         }
