@@ -14,11 +14,11 @@ if (array_search("chief", $_SESSION["roles"]) !== false || array_search("admin",
 
 ?>
     <div class="container bg-white d-flex flex-column align-items-left position-relative" id="allRecipePage">
+        <h2 class="mb-2 mt-3">Recettes</h2>
         <!-- div notif recipe delete -->
         <div id="recipeDeletedSuccess" class="notifications" hidden>
             <p>The recipe has been deleted (blocked)</p>
         </div>
-        <h2 class="mb-2 mt-3">Recettes</h2>
         <div class="d-flex flex-row justify-content-xl-between justify-content-center flex-wrap ">
             <nav class="navbar navbar-white bg-white pl-0">
                 <form class="form-inline">

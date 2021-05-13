@@ -32,6 +32,13 @@ if (!isset($ingredients)) {
 
 ?>
     <div class="container bg-white align-items-left position-relative" id="recipeEditPage">
+
+        <div class="d-flex flex-row underLink">
+            <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>
+            </a>
+            <p> &nbsp > Edit</p>
+        </div>
+
         <!-- div notif recipe edit -->
         <div id="recipeEditSuccess" class="notifications" hidden>
             <p>The recipe has been successfully edited</p>
@@ -48,11 +55,6 @@ if (!isset($ingredients)) {
             <p>The recipe picture has been successfully deleted</p>
         </div>
 
-        <div class="d-flex flex-row underLink">
-            <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>
-            </a>
-            <p> &nbsp > Edit</p>
-        </div>
         <div class="d-flex flex-row flex-wrap justify-content-around">
             <div class="d-flex flex-column">
                 <h2 class="mb-2 mt-2">Recipe Edit</h2>
@@ -105,9 +107,6 @@ if (!isset($ingredients)) {
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <!-- <div class="modal-body">
-                                                    ...
-                                                </div> -->
                                 <div class="modal-footer">
                                     <button id="confirm-edit-recipe" class="btn" type="submit">Confirm</button>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -133,9 +132,6 @@ if (!isset($ingredients)) {
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <!-- <div class="modal-body">
-                                                    ...
-                                                </div> -->
                                 <div class="modal-footer">
                                     <button id="confirm-delete-picture-recipe" class="btn" type="submit">Confirm</button>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -145,13 +141,14 @@ if (!isset($ingredients)) {
                     </div>
                 </div>
                 <label class="form-label" for="customFile">Download a new picture</label>
-
                 <div class="custom-file">
                     <form id="formEditRecipeImage" action="" enctype="multipart/form-data" method="post">
                         <div class="d-flex flex-column">
-                            <input type="file" class="custom-file-input" id="InputFileEditRecipe" name="image">
-                            <!-- le name dans le input se retrouve dans le $_FILES['image'] -->
-                            <button data-toggle="modal" type="button" data-target="#modalEditPictureRecipe" class="align-self-end mt-1 btn" id="btn-edit-recipe-picture">OK</button>
+                            <input type="file" class="custom-file-input" id="InputFileEditRecipe" name="image" onchange="updatePictureName()">
+                            <div class = "d-flex align-items-center justify-content-end">
+                                <p class="pictureNameInput w-100"></p>
+                                <button data-toggle="modal" type="button" data-target="#modalEditPictureRecipe" class="align-self-end mt-1 btn" id="btn-edit-recipe-picture">OK</button>
+                            </div>
                         </div>
                         <label class="custom-file-label" for="InputFileEditRecipe" data-browse="Browse"></label>
                         <div class="modal fade" id="modalEditPictureRecipe" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
@@ -163,9 +160,6 @@ if (!isset($ingredients)) {
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <!-- <div class="modal-body">
-                                                    ...
-                                                </div> -->
                                     <div class="modal-footer">
                                         <button id="confirm-edit-picture-recipe" class="btn" type="submit">Confirm</button>
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -177,9 +171,6 @@ if (!isset($ingredients)) {
                 </div>
             </div>
 
-        </div>
-
-        <div class="container px-0 mx-0 mt-5 bg-light d-flex flex-row flex-wrap justify-content-between position-relative">
             <!-- div notif paragraph deleted -->
             <div id="recipeEditParagraphDeletedSuccess" class="notifications" hidden>
                 <p>The paragraph has been successfully deleted from the recipe. Please don't forget to save ! </p>
@@ -200,6 +191,12 @@ if (!isset($ingredients)) {
             <div id="recipeEditIngredientDeletedSuccess" class="notifications" hidden>
                 <p>The recipe ingredient has been successfully deleted</p>
             </div>
+
+        </div>
+
+
+
+        <div class="container px-0 mx-0 mt-5 bg-light d-flex flex-row flex-wrap justify-content-between position-relative">
 
             <div class="col-12 col-lg-7">
                 <h3 class="mb-2 mt-2">Preparation</h3>
@@ -302,6 +299,12 @@ if (!isset($ingredients)) {
                 element.hidden = true;
             }))
         )
+
+        function updatePictureName() {
+            var input = document.querySelector("#InputFileEditRecipe");
+            var output = document.querySelector('.pictureNameInput');
+            output.innerHTML = input.files.item(0).name;
+        }
 
         // create the modal needed on a click on the delete ingredient button
         function createModalDeleteIngredient(order, idRecipe, idIngredient) {
@@ -659,7 +662,7 @@ if (!isset($ingredients)) {
                             }
                             document.querySelector("#recipeEditIngredientDeletedSuccess").hidden = false;
                         }
-                    }                   
+                    }
                 });
             }
         }
@@ -716,7 +719,7 @@ if (!isset($ingredients)) {
          */
         function createEntitiesParagraph() {
             paragraphs = document.querySelectorAll(".paragraphEditRecipeLine")
-            order=0;
+            order = 0;
             if (paragraphs.length > 0) {
                 order = paragraphs[paragraphs.length - 1].getAttribute('order');
             }

@@ -166,11 +166,11 @@ button:hover {
 
 #articleDeletedSuccess {
     position: absolute;
-    right: 0;
+    right: 30rem;
+    top: 1rem;
     background-color: var(--colorButtonValidate);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
+    width: 300px;
+    min-height: 80px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -181,6 +181,17 @@ button:hover {
 #confirm-delete-article {
     background-color: var( --colorButtonValidate);
 }
+
+@media only screen and (max-width: 1199px) {
+    #articleDeletedSuccess {
+        position: relative;
+        right: 0;
+        top: 0;
+        margin: 0 auto;
+    }
+}
+
+
 
 /*------------------------------------ article import -------------------------------*/
 
@@ -285,36 +296,36 @@ button:hover {
     color: var(--classicColorWhite);
 }
 
-#articleEditSuccess, #articlePictureEditSuccess, #articlePictureDeleteSuccess {
+#articleEditSuccess, #articlePictureEditSuccess, #articlePictureDeleteSuccess, #articlePictureEditMessage {
     position: absolute;
-    right: 0;
+    right: 37rem;
+    top: 1rem;
     background-color: var(--colorButtonValidate);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
+    width: 300px;
+    min-height: 80px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    padding: 0 5px;
 }
 
 #articlePictureEditMessage {
-    position: absolute;
-    right: 0;
     background-color: var(--colorButtonAlert);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
 }
 
 #confirm-edit-picture-article, #confirm-edit-article, #confirm-delete-picture-article {
     background-color: var( --colorButtonValidate);
+}
+
+@media only screen and (max-width: 1199px) {
+    #articleEditSuccess, #articlePictureEditSuccess, #articlePictureDeleteSuccess, #articlePictureEditMessage {
+        position: relative;
+        margin: 0 auto;
+        right: 0;
+        top: 0;
+    }
 }
 
 /*------------------------------------ recipes content -------------------------------*/
@@ -359,11 +370,11 @@ button:hover {
 
 #recipeDeletedSuccess {
     position: absolute;
-    right: 0;
+    right: 30rem;
+    top: 1rem;
     background-color: var(--colorButtonValidate);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
+    width: 300px;
+    min-height: 80px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
@@ -373,6 +384,15 @@ button:hover {
 
 #confirm-delete-recipe {
     background-color: var( --colorButtonValidate);
+}
+
+@media only screen and (max-width: 1199px) {
+    #recipeDeletedSuccess {
+        position: relative;
+        right: 0;
+        top: 0;
+        margin: 0 auto;
+    }
 }
 
 /*------------------------------------ recipe add content -------------------------------*/
@@ -482,46 +502,59 @@ button:hover {
     cursor: pointer;
 }
 
-#recipeCreatedSuccess, #recipePictureAddSuccess, #recipeIngredientAddSuccess, #recipeIngredientDeletedSuccess, #recipeParagraphDeletedSuccess, #recipeParagraphMovedSuccess, #recipeParagraphSavedSuccess {
+
+#recipeCreatedSuccess, #recipePictureAddSuccess,#recipePictureAddInfo, #recipePictureAddError   {
     position: absolute;
-    right: 0;
+    right: 35rem;
+    top: 1rem;
     background-color: var(--colorButtonValidate);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
+    width: 300px;
+    min-height: 80px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    padding: 0 5px;
 }
 
+
 #recipePictureAddInfo {
-    position: absolute;
-    right: 0;
     background-color: var(--colorButtonAlert);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
 }
 
 #recipePictureAddError {
-    position: absolute;
-    right: 0;
     background-color: var(--colorButtonDanger);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
+}
+
+#recipeIngredientAddSuccess, #recipeIngredientDeletedSuccess, #recipeParagraphDeletedSuccess, #recipeParagraphMovedSuccess, #recipeParagraphSavedSuccess  {
+    position: absolute;
+    right: 32rem;
+    top: 29rem;
+    background-color: var(--colorButtonValidate);
+    width: 300px;
+    min-height: 80px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    padding: 0 5px;
+}
+
+@media only screen and (max-width: 1199px) {
+    #recipeCreatedSuccess, #recipePictureAddSuccess,#recipePictureAddInfo, #recipePictureAddError{
+        position: relative;
+        margin: 0 auto;
+        right: 0;
+        top: 0;
+    }
+    #recipeIngredientAddSuccess, #recipeIngredientDeletedSuccess, #recipeParagraphDeletedSuccess, #recipeParagraphMovedSuccess, #recipeParagraphSavedSuccess  {
+        position: relative;
+        margin: 2rem auto 0 auto;
+        right: 0;
+        top: 0;
+    }
 }
 
 /*------------------------------------ recipe edit content -------------------------------*/
@@ -634,36 +667,57 @@ button:hover {
     background-color: red;
 }
 
-#recipeEditSuccess, #recipePictureEditSuccess, #recipePictureDeleteSuccess, #recipeEditIngredientEditSuccess, #recipeEditIngredientDeletedSuccess, #recipeEditParagraphDeletedSuccess, #recipeEditParagraphMovedSuccess, #recipeEditParagraphSavedSuccess {
+#recipeEditSuccess, #recipePictureEditSuccess, #recipePictureEditMessage, #recipePictureDeleteSuccess {
     position: absolute;
-    right: 0;
+    right: 35rem;
     background-color: var(--colorButtonValidate);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
+    width: 300px;
+    min-height: 80px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    padding: 0 5px;
+}
+
+#recipeEditIngredientEditSuccess, #recipeEditIngredientDeletedSuccess, #recipeEditParagraphDeletedSuccess, #recipeEditParagraphMovedSuccess, #recipeEditParagraphSavedSuccess {
+    position: absolute;
+    right: 30rem;
+    top: 28rem;
+    background-color: var(--colorButtonValidate);
+    width: 300px;
+    min-height: 80px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    padding: 0 5px;
 }
 
 #recipePictureEditMessage {
-    position: absolute;
-    right: 0;
     background-color: var(--colorButtonAlert);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
 }
 
 #confirm-edit-picture-recipe, #confirm-edit-recipe, #confirm-delete-picture-recipe, #confirm-edit-recipe-delete-paragraph, #confirm-edit-recipe-delete-ingredient, #confirm-add-recipe-delete-ingredient {
     background-color: var( --colorButtonValidate);
+}
+
+@media only screen and (max-width: 1199px) {
+    #recipeEditSuccess, #recipePictureEditSuccess, #recipePictureEditMessage, #recipePictureDeleteSuccess{
+        position: relative;
+        margin: 0 auto;
+        right: 0;
+        top: 0;
+    }
+    #recipeEditIngredientEditSuccess, #recipeEditIngredientDeletedSuccess, #recipeEditParagraphDeletedSuccess, #recipeEditParagraphMovedSuccess, #recipeEditParagraphSavedSuccess {
+        position: relative;
+        margin: 1rem auto 0 auto;
+        right: 0;
+        top: 0;
+    }
+
 }
 
 /*------------------------------------ users content -------------------------------*/
@@ -708,20 +762,30 @@ button:hover {
 
 #userDeletedSuccess {
     position: absolute;
-    right: 0;
+    right: 30rem;
+    top: 1rem;
     background-color: var(--colorButtonValidate);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
+    width: 300px;
+    min-height: 80px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    padding: 0 5px;
 }
 
 #confirm-delete-user {
     background-color: var( --colorButtonValidate);
+}
+
+@media only screen and (max-width: 1199px) {
+    #userDeletedSuccess {
+        position: relative;
+        right: 0;
+        top: 0;
+        margin: 0 auto;
+    }
 }
 
 /*------------------------------------ user add content -------------------------------*/
@@ -762,17 +826,47 @@ button:hover {
 
 #userCreatedSuccess {
     position: absolute;
-    right: 0;
+    right: 35rem;
+    top: 1rem;
     background-color: var(--colorButtonValidate);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
+    width: 300px;
+    min-height: 80px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    padding: 0 5px;
 }
+
+@media only screen and (max-width: 1200px) {
+    #userCreatedSuccess {
+        right: 27rem;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    #userCreatedSuccess {
+        right: 10rem;
+        top: 0;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    #userCreatedSuccess {
+        right: 0;
+        top: 1rem;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    #userCreatedSuccess {
+        position: relative;
+        margin: 0 auto;
+        top: 0;
+    }
+}
+
 
 /*------------------------------------ user edit content -------------------------------*/
 
@@ -816,28 +910,29 @@ button:hover {
     right: 0;
     top: 0;
     background-color: var(--colorButtonValidate);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
+    width: 300px;
+    min-height: 80px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    padding: 0 5px;
 }
 
 #userEditSuccess, #userPasswordResetSuccess {
     position: absolute;
-    right: 0;
+    right: 7rem;
     background-color: var(--colorButtonValidate);
-    width: 50%;
-    min-width: 200px;
-    min-height: 100px;
+    width: 300px;
+    min-height: 80px;
     border-radius: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 100;
+    top: 35rem;
+    padding: 0 5px;
 }
 
 #userOrderId {
@@ -847,6 +942,36 @@ button:hover {
 
 #submitEditUser, #confirm-approve, #confirm-block, #confirm-edit, #confirm-reset-password {
     background-color: var( --colorButtonValidate);
+}
+
+@media only screen and (max-width: 991px) {
+    #userEditSuccess, #userPasswordResetSuccess {
+        top: 1rem;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    #userEditSuccess, #userPasswordResetSuccess {
+        right: 1rem;
+    }
+
+    #commentApprovedSuccess, #commentBlockedSuccess {
+        right: -4rem;
+    }
+}
+
+@media only screen and (max-width: 670px) {
+    #userEditSuccess, #userPasswordResetSuccess {
+        position: relative;
+        margin: 0 auto 1rem auto;
+        right: 0;
+    }
+
+    #commentApprovedSuccess, #commentBlockedSuccess {
+        position: relative;
+        margin: auto;
+        right: 0;
+    }
 }
 
 /*------------------------------------ connection content -------------------------------*/

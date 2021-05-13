@@ -15,10 +15,17 @@ if (!isset($listAllIngredients)) {
 }
 ?>
 
-<?php if (array_search("chief", $_SESSION["roles"]) !== false || array_search("admin", $_SESSION["roles"]) !== false) {
+<?php if (array_search("chief", $_SESSION["roles"]) !== false) {
 
 ?>
     <div class="container bg-white align-items-left position-relative" id="recipeAddPage">
+        <div class="d-flex flex-row underLink">
+            <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>
+            </a>
+            <p> &nbsp > Create</p>
+        </div>
+        <h2 class="mb-2 mt-2">Recipe Creation</h2>
+
         <!-- div notif recipe created -->
         <div id="recipeCreatedSuccess" class="notifications" hidden>
             <p>The recipe has been successfully created </p>
@@ -35,12 +42,7 @@ if (!isset($listAllIngredients)) {
         <div id="recipePictureAddError" class="notifications" hidden>
             <p> </p>
         </div>
-        <div class="d-flex flex-row underLink">
-            <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>
-            </a>
-            <p> &nbsp > Create</p>
-        </div>
-        <h2 class="mb-2 mt-2">Recipe Creation</h2>
+
         <div class="d-flex flex-row flex-wrap justify-content-around">
             <div class="d-flex flex-column">
 
@@ -74,7 +76,7 @@ if (!isset($listAllIngredients)) {
                 <input type="text" class="form-control" name="idRecipe" id="idRecipe" value="" hidden>
             </div>
 
-            
+
             <div class="invisible mt-3 mt-xl-0" id="addPicture">
                 <div id="recipePictureAdd" class="bg-light border mb-2"></div>
                 <div class=" d-flex flex-row justify-content-between">
@@ -85,18 +87,16 @@ if (!isset($listAllIngredients)) {
                 <div class="custom-file">
                     <form id="formAddRecipeImage" action="" enctype="multipart/form-data" method="post">
                         <div class="d-flex flex-column">
-                            <input type="file" class="custom-file-input" id="InputFileAddRecipe" name="image">
-                            <!-- le name dans le input se retrouve dans le $_FILES['image'] -->
-                            <button type="submit" class="align-self-end mt-1 btn" id="btn-add-recipe-picture">OK</button>
+                            <input type="file" class="custom-file-input" id="InputFileAddRecipe" name="image" accept="image/png, image/jpeg, image/jpg" onchange="updatePictureName()">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <p class="pictureNameInput w-100"></p>
+                                <button type="submit" class="align-self-end mt-1 btn" id="btn-add-recipe-picture">OK</button>
+                            </div>
                         </div>
                         <label class="custom-file-label" for="InputFileAddRecipe" data-browse="Browse"></label>
                     </form>
                 </div>
             </div>
-        </div>
-
-        
-        <div class="container px-0 mx-0 mt-5 bg-light d-flex flex-row flex-wrap justify-content-between invisible position-relative" id="hiddenContentAddRecipe">
             <!-- div notif paragraph deleted -->
             <div id="recipeParagraphDeletedSuccess" class="notifications" hidden>
                 <p>The paragraph has been successfully deleted from the recipe. Please don't forget to save ! </p>
@@ -117,6 +117,10 @@ if (!isset($listAllIngredients)) {
             <div id="recipeIngredientDeletedSuccess" class="notifications" hidden>
                 <p>The ingredient has been successfully deleted from the recipe </p>
             </div>
+        </div>
+
+
+        <div class="container px-0 mx-0 mt-5 bg-light d-flex flex-row flex-wrap justify-content-between invisible position-relative" id="hiddenContentAddRecipe">
             <div class="col-12 col-lg-7">
                 <h3 class="mb-2 mt-2">Preparation</h3>
                 <div class="form-group">
@@ -179,6 +183,12 @@ if (!isset($listAllIngredients)) {
                 element.hidden = true;
             }))
         )
+
+        function updatePictureName() {
+            var input = document.querySelector("#InputFileAddRecipe");
+            var output = document.querySelector('.pictureNameInput');
+            output.innerHTML = input.files.item(0).name;
+        }
 
         // create the modal needed on a click on the delete ingredient button
         function createModalDeleteIngredient(order, idRecipe, idIngredient) {

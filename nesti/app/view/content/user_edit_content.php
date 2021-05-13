@@ -8,19 +8,19 @@ if (!isset($user) || empty($user)) {
 
 ?>
     <div class="container bg-white align-items-left position-relative" id="userEditPage">
-        <!-- div notif user edit -->
-        <div id="userEditSuccess" class="notifications" hidden>
-            <p>User's information have been successfully edited in the database</p>
-        </div>
-
-        <!-- div notif password reset -->
-        <div id="userPasswordResetSuccess" class="notifications" hidden>
-        </div>
 
         <div class="d-flex flex-row underLink">
             <a href="<?= BASE_URL ?>user"><u>Users</u>
             </a>
             <p> &nbsp > Edit</p>
+        </div>
+         <!-- div notif user edit -->
+         <div id="userEditSuccess" class="notifications" hidden>
+            <p>User's information have been successfully edited in the database</p>
+        </div>
+
+        <!-- div notif password reset -->
+        <div id="userPasswordResetSuccess" class="notifications" hidden>
         </div>
         <div class="d-flex flex-row justify-content-lg-between justify-content-center flex-wrap">
             <div class="col-lg-4 col-12">
@@ -129,9 +129,6 @@ if (!isset($user) || empty($user)) {
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <!-- <div class="modal-body">
-                                                    ...
-                                                </div> -->
                                         <div class="modal-footer">
                                             <button id="confirm-edit" class="btn" type="submit">Confirm</button>
                                             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -370,9 +367,6 @@ if (!isset($user) || empty($user)) {
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <!-- <div class="modal-body">
-                                                    ...
-                                                </div> -->
                                                     <div class="modal-footer">
                                                         <button id="confirm-approve" type="button" class="btn" data-id="<?= $comment->getIdComment() ?>" onclick='changeState("a")'>Confirm</button>
                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -394,9 +388,6 @@ if (!isset($user) || empty($user)) {
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
-                                                    <!-- <div class="modal-body">
-                                                    ...
-                                                </div> -->
                                                     <div class="modal-footer">
                                                         <button id="confirm-block" type="button" class="btn" data-id="<?= $comment->getIdComment() ?>" onclick='changeState("b")'>Confirm</button>
                                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>

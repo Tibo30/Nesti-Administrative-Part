@@ -17,6 +17,12 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 <?php } else { ?>
 
     <div class="container bg-white align-items-left position-relative" id="articleEditPage">
+        <div class="d-flex flex-row underLink">
+            <a href="<?= BASE_URL ?>article"><u>Articles</u>
+            </a>
+            <p> &nbsp > Edit</p>
+        </div>
+        <h2 class="mb-2 mt-2">Article Edit</h2>
         <!-- div notif article edit -->
         <div id="articleEditSuccess" class="notifications" hidden>
             <p>The article has been successfully edited</p>
@@ -32,12 +38,6 @@ if (!isset($errorMessages) || empty($errorMessages)) {
         <div id="articlePictureDeleteSuccess" class="notifications" hidden>
             <p>The article picture has been successfully deleted</p>
         </div>
-        <div class="d-flex flex-row underLink">
-            <a href="<?= BASE_URL ?>article"><u>Articles</u>
-            </a>
-            <p> &nbsp > Edit</p>
-        </div>
-        <h2 class="mb-2 mt-2">Article Edit</h2>
         <div class="d-flex flex-row justify-content-around flex-wrap">
             <div class="d-flex flex-column">
                 <form method="post" action="" id="editArticleForm">
@@ -56,7 +56,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                     </div>
                     <div class="mx-0 p-0 form-group row justify-content-between">
                         <label for="sellingPrice">Selling price</label>
-                        <div class="col-3 p-0"><input type="text" class="form-control" name="sellingPrice" id="sellingPrice" value="<?=  $article->getPrice()!=null ? round(($article->getPrice()->getPrice()), 2) : "" ?>" disabled></div>
+                        <div class="col-3 p-0"><input type="text" class="form-control" name="sellingPrice" id="sellingPrice" value="<?= $article->getPrice() != null ? round(($article->getPrice()->getPrice()), 2) : "" ?>" disabled></div>
                     </div>
                     <div class="mx-0 p-0 form-group row justify-content-between">
                         <label for="stock">Stock</label>
@@ -89,9 +89,6 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <!-- <div class="modal-body">
-                                                    ...
-                                                </div> -->
                                 <div class="modal-footer">
                                     <button id="confirm-edit-article" class="btn" type="submit">Confirm</button>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -118,9 +115,6 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <!-- <div class="modal-body">
-                                                    ...
-                                                </div> -->
                                 <div class="modal-footer">
                                     <button id="confirm-delete-picture-article" class="btn" type="submit">Confirm</button>
                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -134,9 +128,11 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                 <div class="custom-file">
                     <form id="formEditArticleImage" action="" enctype="multipart/form-data" method="post">
                         <div class="d-flex flex-column">
-                            <input type="file" class="custom-file-input" id="InputFileEditArticle" name="image">
-                            <!-- le name dans le input se retrouve dans le $_FILES['image'] -->
-                            <button data-toggle="modal" type="button" data-target="#modalEditPictureArticle" class="align-self-end mt-1 btn" id="btn-edit-article-picture">OK</button>
+                            <input type="file" class="custom-file-input" id="InputFileEditArticle" name="image" onchange="updatePictureName()">
+                            <div class="d-flex align-items-center justify-content-end">
+                                <p class="pictureNameInput w-100"></p>
+                                <button data-toggle="modal" type="button" data-target="#modalEditPictureArticle" class="align-self-end mt-1 btn" id="btn-edit-article-picture">OK</button>
+                            </div>
                         </div>
                         <label class="custom-file-label" for="InputFileEditArticle" data-browse="Browse"></label>
                         <input type="text" class="form-control" name="idArticlePicture" id="idArticlePicture" value="<?= $article->getIdArticle() ?>" hidden>
@@ -149,9 +145,6 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
-                                    <!-- <div class="modal-body">
-                                                    ...
-                                                </div> -->
                                     <div class="modal-footer">
                                         <button id="confirm-edit-picture-article" class="btn" type="submit">Confirm</button>
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
@@ -178,6 +171,12 @@ if (!isset($errorMessages) || empty($errorMessages)) {
                 element.hidden = true;
             }))
         )
+
+        function updatePictureName() {
+            var input = document.querySelector("#InputFileEditArticle");
+            var output = document.querySelector('.pictureNameInput');
+            output.innerHTML = input.files.item(0).name;
+        }
 
 
         // -------------------------------- Edit article --------------------------//  

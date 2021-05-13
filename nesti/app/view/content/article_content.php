@@ -19,11 +19,11 @@ if (!isset($articles)) {
 <?php } else { ?>
 
     <div class="container d-flex flex-column align-items-left position-relative" id="allArticlesPage">
-        <!-- div notif article delete -->
-        <div id="articleDeletedSuccess" class="notifications" hidden>
+        <h2 class="mb-2 mt-3">Article</h2>
+         <!-- div notif article delete -->
+         <div id="articleDeletedSuccess" class="notifications" hidden>
             <p>The article has been deleted (blocked)</p>
         </div>
-        <h2 class="mb-2 mt-3">Article</h2>
         <div class="d-flex flex-row justify-content-xl-between justify-content-center flex-wrap">
             <nav class="navbar navbar-white bg-white pl-0">
                 <form class="form-inline">

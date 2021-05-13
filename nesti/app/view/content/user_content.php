@@ -14,11 +14,11 @@ if (!isset($users)) {
 if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("admin", $_SESSION["roles"]) !== false) {
 ?>
     <div class="container bg-white d-flex flex-column align-items-left position-relative" id="allUserPage">
-        <!-- div notif user delete -->
-        <div id="userDeletedSuccess" class="notifications" hidden>
+        <h2 class="mb-2 mt-3">Users</h2>
+          <!-- div notif user delete -->
+          <div id="userDeletedSuccess" class="notifications" hidden>
             <p>The user has been deleted (blocked)</p>
         </div>
-        <h2 class="mb-2 mt-3">Users</h2>
         <div class="d-flex flex-row justify-content-xl-between justify-content-center flex-wrap">
             <nav class="navbar navbar-white bg-white pl-0">
                 <form class="form-inline">

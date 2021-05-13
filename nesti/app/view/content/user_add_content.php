@@ -12,14 +12,15 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 
 ?>
     <div class="container bg-white align-items-left position-relative" id="userAddPage">
-        <!-- div notif user created -->
-        <div id="userCreatedSuccess" class="notifications" hidden>
-            <p>The user has been successfully created </p>
-        </div>
         <div class="d-flex flex-row underLink">
             <a href="<?= BASE_URL ?>user"><u>Users</u>
             </a>
             <p> &nbsp > Create</p>
+        </div>
+        
+  <!-- div notif user created -->
+  <div id="userCreatedSuccess" class="notifications" hidden>
+            <p>The user has been successfully created. You are going to be redirected to users page in 3 secondes </p>
         </div>
 
         <div class="d-flex flex-column">
@@ -219,6 +220,10 @@ if (!isset($errorMessages) || empty($errorMessages)) {
 
                         document.querySelector("#userCreatedSuccess").hidden = false;
 
+                        setTimeout(function() {
+                            window.location.href = ROOT+"user"; //will redirect to all users page
+                        }, 3000); //will call the function after 3 secs.
+
                     } else {
                         document.querySelector("#errorUserLastname").innerHTML = response.errorMessages['userLastname'];
                         document.querySelector("#errorUserFirstname").innerHTML = response.errorMessages['userFirstname'];
@@ -304,8 +309,8 @@ if (!isset($errorMessages) || empty($errorMessages)) {
             if (strength >= 100) {
                 strength = 100;
             }
-            if (condition==true){
-                strength=100;
+            if (condition == true) {
+                strength = 100;
             }
             console.log(strength)
             return strength;
@@ -318,7 +323,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
             if (/.{12,}/.test(pw) == true) {
                 document.getElementById("pwdLength").style.color = 'green';
                 condition = true;
-            } else{
+            } else {
                 document.getElementById("pwdLength").style.color = 'red';
                 condition = false;
             }
@@ -326,7 +331,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
             if (/[a-z]/.test(pw) == true) {
                 document.getElementById("pwdLowCase").style.color = 'green';
                 condition = true;
-            } else{
+            } else {
                 document.getElementById("pwdLowCase").style.color = 'red';
                 condition = false;
             }
@@ -334,7 +339,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
             if (/[A-Z]/.test(pw) == true) {
                 document.getElementById("pwdUpperCase").style.color = 'green';
                 condition = true;
-            } else{
+            } else {
                 document.getElementById("pwdUpperCase").style.color = 'red';
                 condition = false;
             }
@@ -342,7 +347,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
             if (/\d/.test(pw) == true) {
                 document.getElementById("pwdDigit").style.color = 'green';
                 condition = true;
-            } else{
+            } else {
                 document.getElementById("pwdDigit").style.color = 'red';
                 condition = false;
             }
@@ -350,7 +355,7 @@ if (!isset($errorMessages) || empty($errorMessages)) {
             if (/\W/.test(pw) == true) {
                 document.getElementById("pwdSpecial").style.color = 'green';
                 condition = true;
-            } else{
+            } else {
                 document.getElementById("pwdSpecial").style.color = 'red';
                 condition = false;
             }
