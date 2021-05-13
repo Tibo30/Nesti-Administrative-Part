@@ -1,5 +1,5 @@
 <?php
-require_once(BASE_DIR.PATH_VIEW . 'View.php');
+require_once(BASE_DIR . PATH_VIEW . 'View.php');
 
 class ConnectionController extends BaseController
 {
@@ -34,17 +34,21 @@ class ConnectionController extends BaseController
         $activeUserId = $activUser->getIdUser();
         $isVerified = password_verify($password, $activUser->getPassword());
         if ($isVerified && $activeUserId != 0) {
-            if ($activUser->getState() == "a") {
-                $mySession->connectUser($activeUserId);
-                $this->connectionDAO->addUserLog($activeUserId);
-                $_SESSION["lastname"] = $activUser->getLastname();
-                $_SESSION["firstname"] = $activUser->getFirstname();
-                $userDAO = new UserDAO();
-                $activUser->setRoles($userDAO->getRole($activeUserId));
-                $_SESSION["roles"] = $activUser->getRoles();
-                $data['success'] = true;
+            $userDAO = new UserDAO();
+            if ($userDAO->getRole($activeUserId) == ["user"]) {
+                $data['notif'] = 'You don\'t have the rights to enter this website';
             } else {
-                $data['notif'] = 'Your account isn\'t active ';
+                if ($activUser->getState() == "a") {
+                    $mySession->connectUser($activeUserId);
+                    $this->connectionDAO->addUserLog($activeUserId);
+                    $_SESSION["lastname"] = $activUser->getLastname();
+                    $_SESSION["firstname"] = $activUser->getFirstname();
+                    $activUser->setRoles($userDAO->getRole($activeUserId));
+                    $_SESSION["roles"] = $activUser->getRoles();
+                    $data['success'] = true;
+                } else {
+                    $data['notif'] = 'Your account isn\'t active ';
+                }
             }
         } else {
             $errorEmail = "";
