@@ -1,55 +1,82 @@
 <?php
-require_once(BASE_DIR.PATH_VIEW . 'View.php');
+require_once(BASE_DIR . PATH_VIEW . 'View.php');
 
 class RecipeController extends BaseController
 {
     private $recipeDAO;
 
+    /**
+     * initialize the controller
+     */
     public function initialize()
     {
-        $data[] = null;
-        $this->recipeDAO = new RecipeDAO();
-        if (($this->_url) == "recipe") {
-            $data = $this->recipes();
-        } else if (($this->_url) == "recipe_add") {
-            if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
-                $this->addRecipeDatabase(); // this is the method called by the fetch API with the recipe/add ROOT.
+        if (array_search("chief", $_SESSION["roles"]) !== false || array_search("admin", $_SESSION["roles"]) !== false) {
+            $data[] = null;
+            $this->recipeDAO = new RecipeDAO();
+            if (($this->_url) == "recipe") {
+                $data = $this->recipes();
+                $data["title"] = "Recipes";
+                $data["url"] = $this->_url;
+                $this->_view = new View($this->_url);
+                $this->_data = $data;
+            } else if (($this->_url) == "recipe_add") {
+                if (array_search("chief", $_SESSION["roles"]) !== false) {
+                    if ($_SERVER["REQUEST_METHOD"] == "POST" && !empty($_POST)) {
+                        $this->addRecipeDatabase(); // this is the method called by the fetch API with the recipe/add ROOT.
+                    }
+                    $data = $this->addRecipeAllIngredients();
+                    $data["title"] = "Recipes";
+                    $data["url"] = $this->_url;
+                    $this->_view = new View($this->_url);
+                    $this->_data = $data;
+                } else {
+                    $this->_view = new View("norights");
+                }
+            } else if (($this->_url) == "recipe_edit") {
+                $idRecipe = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
+                if (isset($idRecipe)) {
+                    $data =  $this->getThisRecipe($idRecipe);
+                }
+                // Only administrator or the chief that wrote the recipe can edit it.
+                if (array_search("admin", $_SESSION["roles"]) !== false || ($data["recipe"]->getChief()->getLastname() == $_SESSION["lastname"] && $data["recipe"]->getChief()->getFirstname() == $_SESSION["firstname"])) {
+                    $data["title"] = "Recipes";
+                    $data["url"] = $this->_url;
+                    $this->_view = new View($this->_url);
+                    $this->_data = $data;
+                } else {
+                    $this->_view = new View("norights");
+                }
+            } else if (($this->_url) == "recipe_addingredient") {
+                $this->addIngredient(); // this is the method called by the fetch API with the recipe/addingredient ROOT.
+            } else if (($this->_url) == "recipe_deleteingredient") {
+                $this->deleteIngredient(); // this is the method called by the fetch API with the recipe/deleteingredient ROOT.
+            } else if (($this->_url) == "recipe_addpicture") {
+                $this->addPicture(); // this is the method called by the fetch API with the recipe/addpicture ROOT.
+            } else if (($this->_url) == "recipe_saveparagraph") {
+                $this->saveParagraph(); // this is the method called by the fetch API with the recipe/saveparagraph ROOT.
+            } else if (($this->_url) == "recipe_deleteparagraph") {
+                $this->deleteParagraph(); // this is the method called by the fetch API with the recipe/deleteparagraph ROOT.
+            } else if (($this->_url) == "recipe_editrecipe") {
+                $this->editRecipeDatabase(); // this is the method called by the fetch API with the recipe/editrecipe ROOT.
+            } else if (($this->_url) == "recipe_editpicture") {
+                $this->addPicture(); // this is the method called by the fetch API with the recipe/editpicture ROOT.
+            } else if (($this->_url) == "recipe_deletepicture") {
+                $this->deletePictureRecipe(); // this is the method called by the fetch API with the recipe/deletepicture ROOT.
+            } else if (($this->_url) == "recipe_editaddingredient") {
+                $this->addIngredient(); // this is the method called by the fetch API with the recipe/editaddingredient ROOT.
+            } else if (($this->_url) == "recipe_editdeleteingredient") {
+                $this->deleteIngredient(); // this is the method called by the fetch API with the recipe/editdeleteingredient ROOT.
+            } else if (($this->_url) == "recipe_delete") {
+                $this->deleteRecipe(); // this is the method called by the fetch API with the recipe/delete ROOT.
             }
-            $data = $this->addRecipeAllIngredients();
-        } else if (($this->_url) == "recipe_edit") {
-            $idRecipe = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
-            if (isset($idRecipe)) {
-                $data =  $this->getThisRecipe($idRecipe);
-            }
-        } else if (($this->_url) == "recipe_addingredient") {
-            $this->addIngredient(); // this is the method called by the fetch API with the recipe/addingredient ROOT.
-        } else if (($this->_url) == "recipe_deleteingredient") {
-            $this->deleteIngredient(); // this is the method called by the fetch API with the recipe/deleteingredient ROOT.
-        } else if (($this->_url) == "recipe_addpicture") {
-            $this->addPicture(); // this is the method called by the fetch API with the recipe/addpicture ROOT.
-        } else if (($this->_url) == "recipe_saveparagraph") {
-            $this->saveParagraph(); // this is the method called by the fetch API with the recipe/saveparagraph ROOT.
-        } else if (($this->_url) == "recipe_deleteparagraph") {
-            $this->deleteParagraph(); // this is the method called by the fetch API with the recipe/deleteparagraph ROOT.
-        } else if (($this->_url) == "recipe_editrecipe") {
-            $this->editRecipeDatabase(); // this is the method called by the fetch API with the recipe/editrecipe ROOT.
-        } else if (($this->_url) == "recipe_editpicture") {
-            $this->addPicture(); // this is the method called by the fetch API with the recipe/editpicture ROOT.
-        } else if (($this->_url) == "recipe_deletepicture") {
-            $this->deletePictureRecipe(); // this is the method called by the fetch API with the recipe/deletepicture ROOT.
-        } else if (($this->_url) == "recipe_editaddingredient") {
-            $this->addIngredient(); // this is the method called by the fetch API with the recipe/editaddingredient ROOT.
-        } else if (($this->_url) == "recipe_editdeleteingredient") {
-            $this->deleteIngredient(); // this is the method called by the fetch API with the recipe/editdeleteingredient ROOT.
-        } else if (($this->_url) == "recipe_delete") {
-            $this->deleteRecipe(); // this is the method called by the fetch API with the recipe/delete ROOT.
+        } else {
+            $this->_view = new View("norights");
         }
-        $data["title"] = "Recipes";
-        $data["url"] = $this->_url;
-        $this->_view = new View($this->_url);
-        $this->_data = $data;
     }
 
+    /**
+     * Get all recipes
+     */
     private function recipes()
     {
         $recipes = $this->recipeDAO->getRecipes();
@@ -57,7 +84,10 @@ class RecipeController extends BaseController
         return $data;
     }
 
-
+    /**
+     * Get the recipe according to its ID
+     * int $idRecipe
+     */
     private function getThisRecipe($idRecipe)
     {
         $recipe = $this->recipeDAO->getRecipe($idRecipe); // get the recipe
@@ -74,6 +104,9 @@ class RecipeController extends BaseController
         return $data;
     }
 
+    /**
+     * Get all the ingredients (for datalist)
+     */
     private function addRecipeAllIngredients()
     {
         $listAllIngredients = $this->recipeDAO->getAllIngredients();
@@ -457,7 +490,7 @@ class RecipeController extends BaseController
             $recipeEdit = $this->recipeDAO->getRecipe($idRecipe); // we get the recipe from the database
             $recipeEdit->setState("b"); // we change is state in local
             $this->recipeDAO->editRecipe($recipeEdit, "state"); // we change its state in the database
-            $data["state"]=$recipeEdit->getDisplayState();
+            $data["state"] = $recipeEdit->getDisplayState();
             $data['success'] = true;
         }
         echo json_encode($data);
