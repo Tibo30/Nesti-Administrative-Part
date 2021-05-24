@@ -3,6 +3,9 @@ class Rooter
 {
     private $_ctrl;
 
+    /**
+     * Router
+     */
     public function rootReq($urlString)
     {
         try {

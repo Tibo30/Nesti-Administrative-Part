@@ -5,6 +5,9 @@ class ConnectionController extends BaseController
 {
     private $connectionDAO;
 
+    /**
+     * initialize the controller
+     */
     public function initialize()
     {
         $this->connectionDAO = new ConnectionDAO();
@@ -21,6 +24,9 @@ class ConnectionController extends BaseController
         }
     }
 
+    /**
+     * method to check and connect the user
+     */
     function connectUser()
     {
         $data = [];
