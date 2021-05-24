@@ -1,7 +1,7 @@
 // hide the notification after a click
 var notifs = document.querySelectorAll(".notifications");
 notifs.forEach(element =>
-    element.addEventListener('click', (function(e) {
+    element.addEventListener('click', (function (e) {
         console.log(e.target);
         if (e.target.getAttribute("id") == "userPasswordResetSuccess") {
             if (e.detail === 3) {
@@ -17,7 +17,7 @@ notifs.forEach(element =>
 
 var formEditUser = document.querySelector("#editUserForm"); // get the form used to edit the user
 // Event listener on the form
-formEditUser.addEventListener('submit', (function(e) {
+formEditUser.addEventListener('submit', (function (e) {
     event.preventDefault(); // stop the default action of the form
     const idUser = document.querySelector('#idUser').value;
     console.log(document.querySelector("#admin").checked);
@@ -156,31 +156,33 @@ async function resetThePassword(idUser) {
 // -------------------------------- Display articles for an order --------------------------//  
 
 const myTable = document.querySelector("#allOrdersUserTable"); // get the table
-myTable.addEventListener('click', function() { // add event listener
-    var orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
-    getOrderLines(orderId).then((response) => {
-        if (response) {
-            const divList = document.querySelector("#listOrderLinesUser")
-            divList.innerHTML = "";
-            if (response.success) {
-                response['articles'].forEach(element => {
+if (myTable != null) {
+    myTable.addEventListener('click', function () { // add event listener
+        var orderId = event.target.parentNode.getAttribute('data-id'); // get the id of the parent node of the event target (td->tr)
+        getOrderLines(orderId).then((response) => {
+            if (response) {
+                const divList = document.querySelector("#listOrderLinesUser")
+                divList.innerHTML = "";
+                if (response.success) {
+                    response['articles'].forEach(element => {
+                        const div = document.createElement("div");
+                        div.innerHTML = element.all;
+                        divList.appendChild(div); // add the articles lines to the divList
+                    })
+                } else {
                     const div = document.createElement("div");
-                    div.innerHTML = element.all;
-                    divList.appendChild(div); // add the articles lines to the divList
-                })
-            } else {
-                const div = document.createElement("div");
-                div.innerHTML = "";
-                divList.appendChild(div); // if no response, empty the divList.
-            }
-            if (orderId == null) {
-                orderId = "";
-            }
-            document.querySelector("#idOrderUser").innerHTML = "N°: " + orderId;
+                    div.innerHTML = "";
+                    divList.appendChild(div); // if no response, empty the divList.
+                }
+                if (orderId == null) {
+                    orderId = "";
+                }
+                document.querySelector("#idOrderUser").innerHTML = "N°: " + orderId;
 
-        }
+            }
+        });
     });
-});
+}
 
 /**
  * Ajax Request to get the articles from the orderLines according to the order
