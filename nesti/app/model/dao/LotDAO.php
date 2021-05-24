@@ -2,6 +2,10 @@
 class LotDAO extends ModelDAO
 {
     
+    /**
+     * get all lots for an article
+     * int $idArticle
+     */
     public function getLots($idArticle){
         $var = [];
         $req = self::$_bdd->prepare('SELECT * FROM lots WHERE id_article=:id');
@@ -16,6 +20,10 @@ class LotDAO extends ModelDAO
         return $var;
     }
 
+    /**
+     * get lot for an article and an order
+     * int $idArticle, int $idOrder
+     */
     public function getLot($idArticle, $idOrder)
     {
         $req = self::$_bdd->prepare('SELECT * FROM lots WHERE id_article=:idArticle AND ref_order=:idOrder');
@@ -28,7 +36,10 @@ class LotDAO extends ModelDAO
         return $lot;
     }
 
-    // get all the lots by day
+    /**
+     * get all the lots by day
+     * String $day
+     */
     public function getLotsByDay($day)
     {
         $var = [];

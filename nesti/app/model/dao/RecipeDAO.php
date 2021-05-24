@@ -2,7 +2,9 @@
 class RecipeDAO extends ModelDAO
 {
 
-    //get all recipes
+    /**
+     * get all recipes
+     */
     public function getRecipes()
     {
         $var = [];
@@ -18,7 +20,10 @@ class RecipeDAO extends ModelDAO
         return $var;
     }
 
-    //get all recipes from a chief
+    /**
+     * get all recipes from a chief
+     * int $idUser
+     */
     public function getRecipesChief($idUser)
     {
         $var = [];
@@ -34,7 +39,10 @@ class RecipeDAO extends ModelDAO
         return $var;
     }
 
-    // get last recipe of a chief
+    /**
+     * get last recipe of a chief
+     * int $idUser
+     */
     public function getLastRecipe($idUser)
     {
         $req = self::$_bdd->prepare('SELECT * FROM recipes WHERE id_chief=:id ORDER BY creation_date DESC LIMIT 1');
@@ -47,7 +55,10 @@ class RecipeDAO extends ModelDAO
         return $lastRecipe;
     }
 
-    // check if a recipe name already exist
+    /**
+     * check if a recipe name already exist
+     * String $recipeName
+     */
     public function recipeDoesExist($recipeName)
     {
         $exist = false;
@@ -61,7 +72,10 @@ class RecipeDAO extends ModelDAO
         return $exist;
     }
 
-    // get recipe according to its id
+    /**
+     * get recipe according to its id
+     * int $idRecipe
+     */
     public function getRecipe($idRecipe)
     {
         $req = self::$_bdd->prepare('SELECT r.id_recipes,r.creation_date,r.recipe_name,r.difficulty,r.number_of_people,r.state,r.time,r.id_pictures,r.id_chief FROM recipes r WHERE r.id_recipes=:id');
@@ -74,7 +88,10 @@ class RecipeDAO extends ModelDAO
         return $itemRecipe;
     }
 
-    // get all paragraphs for a recipe
+    /**
+     * get all paragraphs for a recipe
+     * int $idRecipe
+     */
     public function getParagraphs($idRecipe)
     {
         $var = [];
@@ -90,7 +107,9 @@ class RecipeDAO extends ModelDAO
         return $var;
     }
 
-    // get all ingredients
+    /**
+     * get all ingredients
+     */
     public function getAllIngredients()
     {
         $var = [];
@@ -106,7 +125,10 @@ class RecipeDAO extends ModelDAO
         return $var;
     }
 
-    // add recipe to database
+    /**
+     * add recipe to database
+     * Recipe $recipeAdd
+     */
     public function addRecipe($recipeAdd)
     {
         $req = self::$_bdd->prepare('INSERT INTO recipes (creation_date, recipe_name, difficulty, number_of_people,state,time,id_chief) VALUES (CURRENT_TIMESTAMP, :name, :difficulty, :number, "a", :time, :chief) ');
@@ -116,7 +138,10 @@ class RecipeDAO extends ModelDAO
         return $last_id;
     }
 
-    // edit recipe in database
+    /**
+     * edit recipe in database
+     * Recipe $recipeEdit, String $change
+     */
     public function editRecipe($recipeEdit, $change)
     {
         switch ($change) {
@@ -149,7 +174,10 @@ class RecipeDAO extends ModelDAO
         }
     }
 
-    // create paragraph for a recipe
+    /**
+     * create paragraph for a recipe
+     * int $idRecipe, int $order, String $content
+     */
     public function createParagraph($idRecipe, $order, $content)
     {
         $req = self::$_bdd->prepare('INSERT INTO paragraph (content,order_paragraph,creation_date,id_recipes) VALUES (:content, :order, CURRENT_TIMESTAMP, :idRecipe) ');
@@ -159,7 +187,10 @@ class RecipeDAO extends ModelDAO
         return $last_id;
     }
 
-    // edit paragraph of a recipe
+    /**
+     * edit paragraph of a recipe
+     * int $idRecipe,int $idParagraph, int $order, String $content
+     */
     public function editParagraph($idRecipe, $idParagraph, $order, $content)
     {
         $req = self::$_bdd->prepare('UPDATE paragraph SET order_paragraph=:order, content=:content WHERE id_recipes=:idRecipe AND id_paragraph=:idParagraph ');
@@ -167,7 +198,10 @@ class RecipeDAO extends ModelDAO
         $req->closeCursor(); // release the server connection so it's possible to do other query
     }
 
-    // edit orrder paragraph of a recipe
+    /**
+     * edit order paragraph of a recipe
+     * int $idRecipe, int $order, int $newOrder
+     */
     public function editOrderParagraph($idRecipe, $order, $newOrder)
     {
         $req = self::$_bdd->prepare('UPDATE paragraph SET order_paragraph=:newOrder WHERE id_recipes=:idRecipe AND order_paragraph=:order ');
@@ -175,7 +209,10 @@ class RecipeDAO extends ModelDAO
         $req->closeCursor(); // release the server connection so it's possible to do other query
     }
 
-    // delete paragaph of a recipe
+    /**
+     * delete paragaph of a recipe
+     * int $idParagraph
+     */
     public function deleteParagraph($idParagraph)
     {
         $req = self::$_bdd->prepare('DELETE FROM paragraph WHERE id_paragraph=:idParagraph ');
@@ -183,8 +220,10 @@ class RecipeDAO extends ModelDAO
         $req->closeCursor(); // release the server connection so it's possible to do other query
     }
 
-    
-    // get all grades for a recipe
+    /**
+     * get all grades for a recipe
+     * int $idRecipe
+     */
     public function getGrades($idRecipe)
     {
         $var = [];

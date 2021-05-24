@@ -1,6 +1,10 @@
 <?php
 class UnitMeasureDAO extends ModelDAO
 {
+    /**
+     * get unit measure by id
+     * int $idUnit
+     */
     public function getUnitMeasure($idUnit)
     {
         $req = self::$_bdd->prepare('SELECT * FROM unit_measures WHERE id_unit_measures=:id');
@@ -13,6 +17,10 @@ class UnitMeasureDAO extends ModelDAO
         return $unitObject;
     }
 
+    /**
+     * get unit measure by name
+     * String $unitName
+     */
     public function getUnitMeasureByName($unitName)
     {
         $req = self::$_bdd->prepare('SELECT * FROM unit_measures WHERE name=:name');
@@ -25,6 +33,10 @@ class UnitMeasureDAO extends ModelDAO
         return $unitObject;
     }
 
+    /**
+     * create unit measure
+     * String $unitName
+     */
     public function createUnitMeasure($unitName)
     {
         $req = self::$_bdd->prepare('INSERT INTO unit_measures (name) VALUES (:name)');
@@ -34,6 +46,9 @@ class UnitMeasureDAO extends ModelDAO
         return $last_id;
     }
 
+    /**
+     * get all units
+     */
     public function getUnits()
     {
         $var = [];
@@ -49,5 +64,4 @@ class UnitMeasureDAO extends ModelDAO
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $var;
     }
-
 }

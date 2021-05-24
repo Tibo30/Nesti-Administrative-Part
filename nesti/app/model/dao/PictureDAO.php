@@ -1,6 +1,10 @@
 <?php
 class PictureDAO extends ModelDAO
 {
+    /**
+     * get picture
+     * int $idPicture
+     */
     public function getPicture($idPicture)
     {
         $req = self::$_bdd->prepare('SELECT * FROM pictures WHERE id_pictures=:id');
@@ -12,6 +16,10 @@ class PictureDAO extends ModelDAO
         return $pictureObject;
     }
 
+    /**
+     * check if a picture exists
+     * String $pictureName, String $pictureExtension
+     */
     public function doesPictureExist($pictureName, $pictureExtension)
     {
         $exist=false;
@@ -24,6 +32,10 @@ class PictureDAO extends ModelDAO
         return $exist;
     }
 
+    /**
+     * get picture by name
+     * String $pictureName, String $pictureExtension
+     */
     public function getPictureByName($pictureName, $pictureExtension)
     {
         $req = self::$_bdd->prepare('SELECT * FROM pictures WHERE name=:name AND extension=:extension');
@@ -36,6 +48,10 @@ class PictureDAO extends ModelDAO
         return $pictureObject;
     }
 
+    /**
+     * insert picture in database
+     * Picture $picture
+     */
     public function insertPicture($picture)
     {
 

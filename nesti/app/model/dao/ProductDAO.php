@@ -1,6 +1,10 @@
 <?php
 class ProductDAO extends ModelDAO
 {
+    /**
+     * get product
+     * int $idProduct
+     */
     public function getProduct($idProduct)
     {
         $req = self::$_bdd->prepare('SELECT * FROM products WHERE id_products=:id');
@@ -13,6 +17,10 @@ class ProductDAO extends ModelDAO
         return $productObject;
     }
 
+    /**
+     * get type of a product
+     * int $idProduct
+     */
     public function getType($idProduct)
     {
         $type="";

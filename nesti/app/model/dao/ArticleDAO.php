@@ -1,6 +1,9 @@
 <?php
 class ArticleDAO extends ModelDAO
 {
+    /**
+     * get all the articles
+     */
     public function getArticles()
     {
         $var = [];
@@ -17,6 +20,10 @@ class ArticleDAO extends ModelDAO
         return $var;
     }
 
+    /**
+     * get article according to its ID
+     * int $idArticle
+     */
     public function getArticle($idArticle){
         $req = self::$_bdd->prepare('SELECT * FROM articles a WHERE a.id_article=:id');
         $req->execute(array("id" => $idArticle));
@@ -28,6 +35,10 @@ class ArticleDAO extends ModelDAO
         return $article;
     }
 
+    /**
+     * edit article
+     * Article $articleEdit, String $change
+     */
     public function editArticle($articleEdit,$change){
         if ($change=="articleUserName"){
             $req = self::$_bdd->prepare('UPDATE articles SET user_article_name=:name, update_date=CURRENT_TIMESTAMP WHERE id_article=:id');
@@ -41,6 +52,9 @@ class ArticleDAO extends ModelDAO
         } 
     }
 
+    /**
+     * get all the articles imported
+     */
     public function getimportedArticles()
     {
         $var = [];

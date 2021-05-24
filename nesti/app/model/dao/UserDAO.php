@@ -1,6 +1,10 @@
 <?php
 class UserDAO extends ModelDAO
 {
+    /**
+     * add user to database
+     * User $userAdd
+     */
     public function addUser($userAdd)
     {
         $req = self::$_bdd->prepare('INSERT INTO users (lastname,firstname,username,email,password,state,creation_date,address1,address2,postcode,id_city) VALUES (:lastname, :firstname, :username, :email, :password, :state, CURRENT_TIMESTAMP, :address1, :address2, :postcode, :id_city) ');
@@ -10,6 +14,9 @@ class UserDAO extends ModelDAO
         return $last_id;
     }
 
+    /**
+     * get all users
+     */
     public function getUsers()
     {
         $var = [];
@@ -29,6 +36,10 @@ class UserDAO extends ModelDAO
         return $var;
     }
 
+    /**
+     * get log for a user
+     * int $idUser
+     */
     public function getLog($idUser)
     {
         $req = self::$_bdd->prepare('SELECT id_users, id_user_logs, connection_date FROM user_logs WHERE id_users=:id ORDER BY connection_date DESC LIMIT 1');
@@ -41,6 +52,10 @@ class UserDAO extends ModelDAO
         return $userLog;
     }
 
+    /**
+     * get role for a user
+     * int $idUser
+     */
     public function getRole($idUser)
     {
         $role = [];
@@ -83,6 +98,10 @@ class UserDAO extends ModelDAO
         return $role;
     }
 
+    /**
+     * get a user
+     * int $valueId
+     */
     public function getOneUser($valueId)
     {
 
@@ -98,6 +117,10 @@ class UserDAO extends ModelDAO
         return $user;
     }
 
+    /**
+     * check if an email or username is already in the database
+     * String $value
+     */
     public function isEmailOrUsernameTaken($value)
     {
         $exist = false;
@@ -110,6 +133,10 @@ class UserDAO extends ModelDAO
         return $exist;
     }
 
+    /**
+     * get chief
+     * int $idChief
+     */
     public function getChief($idChief)
     {
         $req = self::$_bdd->prepare('SELECT u.id_users, u.lastname, u.firstname, u.username, u.email, u.password, u.state, u.creation_date, u.address1, u.address2, u.postcode, u.id_city FROM users u JOIN chief ch ON u.id_users = ch.id_users WHERE ch.id_users=:id');
@@ -123,6 +150,10 @@ class UserDAO extends ModelDAO
         return $chiefUser;
     }
 
+    /**
+     * get city
+     * int $idCity
+     */
     public function getCity($idCity)
     {
         $req = self::$_bdd->prepare('SELECT id_city, city_name FROM city WHERE id_city=:id');
@@ -135,7 +166,10 @@ class UserDAO extends ModelDAO
         return $city;
     }
 
-    // edit user in database
+    /**
+     * edit user in database
+     * User $userEdit, String $change
+     */
     public function editUser($userEdit, $change)
     {
         switch ($change) {
@@ -176,6 +210,9 @@ class UserDAO extends ModelDAO
         }
     }
 
+    /**
+     * get all the chiefs
+     */
     public function getChiefs()
     {
         $var = [];

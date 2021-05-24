@@ -1,7 +1,10 @@
 <?php
 class IngredientDAO extends ModelDAO
 {
-    
+    /**
+     * get an ingredient according to its name
+     * String $nameIngredient
+     */
     public function getIngredientByName($nameIngredient){
         $req = self::$_bdd->prepare('SELECT p.id_products, p.product_name FROM products p JOIN ingredients i ON p.id_products=i.id_ingredients WHERE p.product_name=:name');
         $req->execute(array("name" => $nameIngredient));
@@ -13,6 +16,10 @@ class IngredientDAO extends ModelDAO
         return $productIngredient;
     }
 
+    /**
+     * create ingredient
+     * String $productName
+     */
     public function createProductIngredient($productName)
     {
         $req = self::$_bdd->prepare('INSERT INTO products (product_name) VALUES (:name)');

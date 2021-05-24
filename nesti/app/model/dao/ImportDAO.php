@@ -1,6 +1,10 @@
 <?php
 class ImportDAO extends ModelDAO
 {
+    /**
+     * get last import of an article
+     * int $idArticle
+     */
     public function getLastImport($idArticle)
     {
         $req = self::$_bdd->prepare('SELECT * FROM import WHERE id_article=:id ORDER BY import_date DESC LIMIT 1');
@@ -13,6 +17,10 @@ class ImportDAO extends ModelDAO
         return $importObject;
     }
 
+    /**
+     * get last import of a user
+     * int $idUser
+     */
     public function getLastImportUser($idUser)
     {
         $req = self::$_bdd->prepare('SELECT * FROM import WHERE id_admin=:id ORDER BY import_date DESC LIMIT 1');
@@ -25,6 +33,9 @@ class ImportDAO extends ModelDAO
         return $importObject;
     }
 
+    /**
+     * get all imports
+     */
     public function getImports()
     {
         $req = self::$_bdd->prepare('SELECT * FROM import');
@@ -40,9 +51,13 @@ class ImportDAO extends ModelDAO
         return $var;
     }
 
+    /**
+     * get all imports for a user
+     * int $idUser
+     */
     public function getImportsUser($idUser)
     {
-        $var=[];
+        $var = [];
         $req = self::$_bdd->prepare('SELECT * FROM import WHERE id_admin=:id ');
         $req->execute(array("id" => $idUser));
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {

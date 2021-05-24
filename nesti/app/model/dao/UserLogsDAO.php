@@ -1,6 +1,10 @@
 <?php
 class UserLogsDAO extends ModelDAO
 {
+    /**
+     * get last log for a user
+     * int $idUser
+     */
     public function getLog($idUser)
     {
         $req = self::$_bdd->prepare('SELECT * FROM user_logs WHERE id_users=:id ORDER BY connection_date DESC LIMIT 1');
@@ -13,6 +17,9 @@ class UserLogsDAO extends ModelDAO
         return $userlog;
     }
 
+    /**
+     * get all the logs
+     */
     public function getLogs(){
         $var = [];
         $req = self::$_bdd->prepare('SELECT * FROM user_logs');
@@ -28,6 +35,10 @@ class UserLogsDAO extends ModelDAO
         return $var;
     }
 
+    /**
+     * get all logs for a user
+     * int $idUser
+     */
     public function getLogsUser($idUser){
         $var = [];
         $req = self::$_bdd->prepare('SELECT * FROM user_logs WHERE id_users=:id');

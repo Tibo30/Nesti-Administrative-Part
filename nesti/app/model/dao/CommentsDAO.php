@@ -1,7 +1,11 @@
 <?php
 class CommentsDAO extends ModelDAO
 {
-    // get all comments for a moderator
+    
+    /**
+     * get all comments for a moderator
+     * int $idUser
+     */
     public function getCommentsModerator($idUser)
     {
         $var = [];
@@ -18,7 +22,10 @@ class CommentsDAO extends ModelDAO
         return $var;
     }
 
-    // get all comments for a user
+    /**
+     * get all comments for a user
+     * int $idUser
+     */
     public function getComments($idUser)
     {
         $var = [];
@@ -35,7 +42,10 @@ class CommentsDAO extends ModelDAO
         return $var;
     }
 
-    // get a comment according to its id
+    /**
+     * get a comment according to its id
+     * int $idComment
+     */
     public function getComment($idComment)
     {
         $req = self::$_bdd->prepare('SELECT * FROM comments WHERE id_comments=:id');
@@ -48,7 +58,10 @@ class CommentsDAO extends ModelDAO
         return $comment;
     }
 
-     // edit state comment
+     /**
+     * edit state comment
+     * int $idComment, String $state
+     */
      public function editComment($idComment, $state)
      {
          $req = self::$_bdd->prepare('UPDATE comments SET state=:state WHERE id_comments=:id');
