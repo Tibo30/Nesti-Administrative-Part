@@ -1,40 +1,48 @@
 <?php
-require_once(BASE_DIR.PATH_VIEW . 'View.php');
+require_once(BASE_DIR . PATH_VIEW . 'View.php');
 
 class ArticleController extends BaseController
 {
     private $articleDAO;
 
+    
+    /**
+     * initialize the controller
+     */
     public function initialize()
     {
-        $data[] = null;
-        $this->articleDAO = new ArticleDAO();
-        if (($this->_url) == "article") {
-            $data =  $this->articles();
-        } else if (($this->_url) == "article_import") {
-            $data =  $this->importedArticles();
-        } else if (($this->_url) == "article_edit") {
-            $idArticle = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
-            if (isset($idArticle)) {
-                $data =  $this->article($idArticle);
+        if (array_search("admin", $_SESSION["roles"]) === false) {
+            $this->_view = new View("norights");
+        } else {
+            $data[] = null;
+            $this->articleDAO = new ArticleDAO();
+            if (($this->_url) == "article") {
+                $data =  $this->articles();
+            } else if (($this->_url) == "article_import") {
+                $data =  $this->importedArticles();
+            } else if (($this->_url) == "article_edit") {
+                $idArticle = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
+                if (isset($idArticle)) {
+                    $data =  $this->article($idArticle);
+                }
+            } else if (($this->_url) == "article_editarticle") {
+                $this->editArticle(); // this is the method called by the fetch API with the article/editarticle ROOT.
+            } else if (($this->_url) == "article_picture") {
+                $this->editPicture(); // this is the method called by the fetch API with the article/picture ROOT.
+            } else if (($this->_url) == "article_delete") {
+                $this->deleteArticle(); // this is the method called by the fetch API with the article/delete ROOT.
+            } else if (($this->_url) == "article_deletepicture") {
+                $this->deletePictureArticle(); // this is the method called by the fetch API with the article/deletepicture ROOT.
+            } else if (($this->_url) == "article_orders") {
+                $data = $this->orders();
+            } else if (($this->_url) == "article_order") {
+                $this->order(); // this is the method called by the fetch API with the article/order ROOT.
             }
-        } else if (($this->_url) == "article_editarticle") {
-            $this->editArticle(); // this is the method called by the fetch API with the article/editarticle ROOT.
-        } else if (($this->_url) == "article_picture") {
-            $this->editPicture(); // this is the method called by the fetch API with the article/picture ROOT.
-        } else if (($this->_url) == "article_delete") {
-            $this->deleteArticle(); // this is the method called by the fetch API with the article/delete ROOT.
-        } else if (($this->_url) == "article_deletepicture") {
-            $this->deletePictureArticle(); // this is the method called by the fetch API with the article/deletepicture ROOT.
-        } else if (($this->_url) == "article_orders") {
-            $data = $this->orders();
-        } else if (($this->_url) == "article_order") {
-            $this->order(); // this is the method called by the fetch API with the article/order ROOT.
+            $data["title"] = "Articles";
+            $data["url"] = $this->_url;
+            $this->_view = new View($this->_url);
+            $this->_data = $data;
         }
-        $data["title"] = "Articles";
-        $data["url"] = $this->_url;
-        $this->_view = new View($this->_url);
-        $this->_data = $data;
     }
 
     /**
@@ -136,7 +144,7 @@ class ArticleController extends BaseController
             $articleEdit = $this->articleDAO->getArticle($idArticle); // we get the article from the database
             $articleEdit->setState("b"); // we change is state in local
             $this->articleDAO->editArticle($articleEdit, "state"); // we change is state in the database
-            $data["state"]=$articleEdit->getDisplayState();
+            $data["state"] = $articleEdit->getDisplayState();
             $data['success'] = true;
         }
         echo json_encode($data);
@@ -163,7 +171,7 @@ class ArticleController extends BaseController
                 // in this loop we prepare the return data from the fetch
                 foreach ($orderLines as $orderLine) { // we get all the articles of the orderLines
                     $article = $this->articleDAO->getArticle($orderLine->getIdArticle());
-                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . " x " . $orderLine->getQuantityOrdered() . '</div>' . '<a id="seeArticle" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
+                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . " x " . $orderLine->getQuantityOrdered() . '</div>' . '<a id="seeArticle" href="https://jolivet.needemand.com/realisations/nesti-client/public/article/'.$article->getIdArticle().'" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
                     $index++;
                 }
             }
