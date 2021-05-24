@@ -7,6 +7,9 @@ abstract class BaseController
     protected $_url;
     protected $_data = [];
 
+    /**
+     * Constructor
+     */
     public function __construct($url)
     {
 
@@ -21,7 +24,10 @@ abstract class BaseController
             $this->initialize();
         }
     }
-    // return a view from View class
+
+    /**
+     * return a view from View class
+     */
     public function getView(): View
     {
         if (isset($this->_view)) {
@@ -29,6 +35,9 @@ abstract class BaseController
         }
     }
 
+    /**
+     * get the data to extract
+     */
     public function getData()
     {
         if (isset($this->_data) && !empty($this->_data)) {
