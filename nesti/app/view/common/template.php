@@ -1,17 +1,17 @@
 <?php
 if (!isset($url)) {
-    $url="";
+    $url = "";
 }
 ?>
 
-<?php include(BASE_DIR.PATH_VIEW . 'common/head.php'); ?>
+<?php include(BASE_DIR . PATH_VIEW . 'common/head.php'); ?>
 
 <body>
     <?php
     //echo "template / ";
 
     if ($url != 'connection') {
-        include(BASE_DIR.PATH_VIEW . 'common/navigation.php');
+        include(BASE_DIR . PATH_VIEW . 'common/navigation.php');
     }
     if ($url == "recipe_edit" || $url == "recipe_add" || $url == "recipe_delete") {
         // echo "temp^late ";
@@ -19,7 +19,7 @@ if (!isset($url)) {
     //echo "template2 / ";
     if (isset($view)) {
         // echo " view la / ".$view->getFile()."/";
-       
+
         include($view->getFile());
         //echo "view OK : ";
     } else {
@@ -34,10 +34,18 @@ if (!isset($url)) {
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
-    <script src="<?php echo BASE_URL ?>public/js/script.js"></script>
-      <!-- Toast UI -->
+    <!-- Toast UI -->
     <script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
     <script src="<?php echo BASE_URL ?>public/js/tui-chart.js"></script>
+
+    <!-- JavaScript Files -->
+    <script src="<?php echo BASE_URL ?>public/js/script.js"></script>
+    <?php if ($url != 'connection_disconnect') { ?>
+        <script src="<?php echo BASE_URL ?>public/js/<?php echo $url ?>.js"></script>
+    <?php } else { ?>
+        <script src="<?php echo BASE_URL ?>public/js/connection.js"></script>
+    <?php } ?>
+
 
 </body>
 
