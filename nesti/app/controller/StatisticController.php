@@ -5,11 +5,21 @@ class StatisticController extends BaseController
 {
     private $statisticsDAO;
 
+    /**
+     * initialize the controller
+     */
     public function initialize()
     {
-        $this->statistic();
+        if (array_search("admin", $_SESSION["roles"]) === false){
+            $this->_view = new View("norights");
+        } else {
+            $this->statistic();
+        }
     }
 
+    /**
+     * Get all the datas for the statistic page
+     */
     private function statistic()
     {
         $this->statisticsDAO = new StatisticDAO();

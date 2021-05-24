@@ -5,37 +5,44 @@ class UserController extends BaseController
 {
     private $userDAO;
 
+    /**
+     * initialize the controller
+     */
     public function initialize()
     {
-        $data[] = null;
-        $this->userDAO = new UserDAO();
-
-        if ($this->_url == "user") {
-            $data = $this->users();
-        } else if ($this->_url == "user_edit") {
-            $idUser = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
-            if (isset($idUser)) {
-                $data = $this->modifyUser($idUser);
+        if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("admin", $_SESSION["roles"]) !== false){
+            $data[] = null;
+            $this->userDAO = new UserDAO();
+    
+            if ($this->_url == "user") {
+                $data = $this->users();
+            } else if ($this->_url == "user_edit") {
+                $idUser = filter_input(INPUT_GET, "id", FILTER_SANITIZE_STRING);
+                if (isset($idUser)) {
+                    $data = $this->modifyUser($idUser);
+                }
+            } else if ($this->_url == "user_add") {
+                if (!empty($_POST)) {
+                    $this->addUserDatabase(); // this is the method called by the fetch API with the user/add ROOT.
+                }
+            } else if (($this->_url) == "user_userorder") {
+                $this->order(); // this is the method called by the fetch API with the user/userorder ROOT.
+            } else if (($this->_url) == "user_usercomment") {
+                $this->changeStateComment(); // this is the method called by the fetch API with the user/usercomment ROOT.
+            } else if (($this->_url) == "user_edituser") {
+                $this->editUserDatabase(); // this is the method called by the fetch API with the user/edituser ROOT.
+            } else if (($this->_url) == "user_delete") {
+                $this->deleteUser(); // this is the method called by the fetch API with the user/delete ROOT.
+            } else if (($this->_url) == "user_resetpassword") {
+                $this->resetPassword(); // this is the method called by the fetch API with the user/resetpassword ROOT.
             }
-        } else if ($this->_url == "user_add") {
-            if (!empty($_POST)) {
-                $this->addUserDatabase(); // this is the method called by the fetch API with the user/add ROOT.
-            }
-        } else if (($this->_url) == "user_userorder") {
-            $this->order(); // this is the method called by the fetch API with the user/userorder ROOT.
-        } else if (($this->_url) == "user_usercomment") {
-            $this->changeStateComment(); // this is the method called by the fetch API with the user/usercomment ROOT.
-        } else if (($this->_url) == "user_edituser") {
-            $this->editUserDatabase(); // this is the method called by the fetch API with the user/edituser ROOT.
-        } else if (($this->_url) == "user_delete") {
-            $this->deleteUser(); // this is the method called by the fetch API with the user/delete ROOT.
-        } else if (($this->_url) == "user_resetpassword") {
-            $this->resetPassword(); // this is the method called by the fetch API with the user/resetpassword ROOT.
+            $data["title"] = "Users";
+            $data["url"] = $this->_url;
+            $this->_view = new View($this->_url);
+            $this->_data = $data;
+        } else {
+            $this->_view = new View("norights");
         }
-        $data["title"] = "Users";
-        $data["url"] = $this->_url;
-        $this->_view = new View($this->_url);
-        $this->_data = $data;
     }
 
     private function users()
@@ -171,7 +178,7 @@ class UserController extends BaseController
                 // in this loop we prepare the return data from the fetch
                 foreach ($orderLines as $orderLine) { // we get all the articles of the orderLines
                     $article = $articleDAO->getArticle($orderLine->getIdArticle());
-                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . " x " . $orderLine->getQuantityOrdered() . '</div>' . '<a id="seeArticle" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
+                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . " x " . $orderLine->getQuantityOrdered() . '</div>' . '<a id="seeArticle" href="https://jolivet.needemand.com/realisations/nesti-client/public/article/'.$article->getIdArticle().'" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
                     $index++;
                 }
             }
