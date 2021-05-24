@@ -38,7 +38,7 @@ class RecipeController extends BaseController
                     $data =  $this->getThisRecipe($idRecipe);
                 }
                 // Only administrator or the chief that wrote the recipe can edit it.
-                if (array_search("admin", $_SESSION["roles"]) !== false || ($data["recipe"]->getChief()->getLastname() == $_SESSION["lastname"] && $data["recipe"]->getChief()->getFirstname() == $_SESSION["firstname"])) {
+                if (array_search("admin", $_SESSION["roles"]) !== false || $data["recipe"]->getChief()->getIdUser() == $_SESSION["idUser"]) {
                     $data["title"] = "Recipes";
                     $data["url"] = $this->_url;
                     $this->_view = new View($this->_url);
