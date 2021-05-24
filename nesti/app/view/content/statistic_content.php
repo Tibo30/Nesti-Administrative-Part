@@ -1,11 +1,3 @@
-<?php if (array_search("admin", $_SESSION["roles"]) === false) {
-
-?>
-    <div class="container">
-        <h2 class="titleAccessForbidden">Access forbidden</h2>
-        <p class="textAccessForbidden">You don't have the rights to access this page</p>
-    </div>
-<?php } else { ?>
     <div id="statisticsPage" class="">
         <div class="d-flex flex-column">
             <h1>Stats</h1>
@@ -17,7 +9,7 @@
                     <p class="statistic_titles">Biggest orders</p>
                     <div id="biggestOrders" class="border p-3">
                         <?php foreach ($biggestOrders as $biggestOrder) {
-                            echo '<div class="d-flex flex-row justify-content-between mb-3"><div class="mr-2"> Commande n° ' . $biggestOrder->getIdOrder() . '</div><a class="btn-see-order" href="' . BASE_URL . 'article/orders' . '">see</a></div>';
+                            echo '<div class="d-flex flex-row justify-content-between mb-3"><div class="mr-2"> Order n° ' . $biggestOrder->getIdOrder() . '</div><a class="btn-see-order" href="' . BASE_URL . 'article/orders' . '">see</a></div>';
                         } ?>
                     </div>
                 </div>
@@ -70,7 +62,7 @@
 
                             <th>Quantity sold</th>
 
-                            <th>Benefits</th>
+                            <th>Benefits (€)</th>
 
                             <th>Action</th>
 
@@ -99,143 +91,15 @@
     </div>
 
     <script>
-        var screenwidth = window.screen.width;
         // ---------------------------- Orders -----------------------------//
-        const el = document.getElementById('toastOrders');
         var totalPurchasedPerDay = <?php echo json_encode($totalPurchasedPerDay) ?>;
         var totalSoldPerDay = <?php echo json_encode($totalSoldPerDay) ?>;
-
-        const data = {
-
-            categories: [
-                '0',
-                '1',
-                '2',
-                '3',
-                '4',
-                '5',
-                '6',
-                '7',
-                '8',
-                '9'
-            ],
-
-            series: [{
-                name: 'Cost',
-                data: totalPurchasedPerDay,
-            }, {
-                name: 'Sells',
-                data: totalSoldPerDay,
-            }],
-        };
-
-        const options = {
-            chart: {
-                title: '',
-                width: 600,
-                height: 300
-            },
-            legend: {
-                visible: (screenwidth > 600 ? true : false)
-            },
-            xAxis: {
-                pointOnColumn: false,
-                title: {
-                    text: ''
-                }
-            },
-            yAxis: {
-                title: ''
-            },
-        };
-
-        const chartLog = toastui.Chart.lineChart({
-            el,
-            data,
-            options
-        });
-
-
+        var screenwidth = window.screen.width;
         // ---------------------------- Website Consultation -----------------------------//
-        const el1 = document.getElementById('toastPieConnection');
         var connectionPerHour = <?php echo json_encode($connectionPerHour) ?>;
-        const dataConnectionLogPerHour = {
-            categories: ['Connection'],
-            series: connectionPerHour
-        }
-        const optionsConnectionLog = {
-            chart: {
-                title: '',
-                width: 500,
-                height: 400
-            },
-            legend: {
-                visible: false
-            },
-            series: {
-                dataLabels: {
-                    visible: true,
-                    anchor: 'outer',
-                    formatter: (value) => value,
-                    pieSeriesName: {
-                        visible: true,
-                    },
-                },
-                radiusRange: {
-                    inner: '60%',
-                    outer: '100%',
-                }
-            }
-
-        };
-        const chartConection = toastui.Chart.pieChart({
-            el: el1,
-            data: dataConnectionLogPerHour,
-            options: optionsConnectionLog
-        });
-
         // ---------------------------- Articles -----------------------------//
-        const el2 = document.getElementById('toastArticles');
         var articleSold = <?php echo json_encode($articleSold) ?>;
         var articleBought = <?php echo json_encode($articleBought) ?>;
         var articles = <?php echo json_encode($articles) ?>;
         var articleInStock = <?php echo json_encode($articleInStock) ?>;
-        var clésDenses = Object.keys(articles);
-
-        console.log(Object.keys(clésDenses));
-
-        const dataArticle = {
-            categories: clésDenses,
-            series: [{
-                    name: 'cost amount',
-                    data: articleBought,
-                },
-                {
-                    name: 'sold amount',
-                    data: articleSold,
-                }
-            ],
-        };
-        const optionsArticle = {
-            chart: {
-                title: "",
-                width: 600,
-                height: 300
-            },
-            legend: {
-                visible: (screenwidth > 600 ? true : false)
-            },
-            xAxis: {
-                visible:false
-            },
-
-        };
-
-        const chartArticle = toastui.Chart.columnChart({
-            el: el2,
-            data: dataArticle,
-            options: optionsArticle
-        });
     </script>
-
-<?php } ?>

@@ -1,12 +1,3 @@
-<?php if (array_search("admin", $_SESSION["roles"]) === false) {
-
-?>
-    <div class="container">
-        <h2 class="titleAccessForbidden">Access forbidden</h2>
-        <p class="textAccessForbidden">You don't have the rights to access this page</p>
-    </div>
-<?php } else { ?>
-
 <div class="container bg-white align-items-left" id="importArticlePage">
     <div class="d-flex flex-row underLink">
         <a href="<?= BASE_URL ?>article"><u>Articles</u>
@@ -43,5 +34,3 @@
     </div>
 
 </div>
-
-<?php } ?>
