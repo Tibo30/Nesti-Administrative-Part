@@ -273,9 +273,15 @@ class UserController extends BaseController
 
                 if ($formerUserLastname != $userLastname) { // if the lastname changed
                     $this->userDAO->editUser($userEdit, "lastname");
+                    if ($_SESSION['idUser']==($userEdit->getIdUser())){ // if the changes concern the connected user
+                        $_SESSION["lastname"] = $userEdit->getLastname();
+                    }
                 }
                 if ($formerUserFirstname != $userFirstname) { // if the firstname changed
                     $this->userDAO->editUser($userEdit, "firstname");
+                    if ($_SESSION['idUser']==($userEdit->getIdUser())){ // if the changes concern the connected user
+                        $_SESSION["lastname"] = $userEdit->getFirstname();
+                    }
                 }
                 if ($formerUserAddress1 != $userAddress1) { // if the address1 changed
                     $this->userDAO->editUser($userEdit, "address1");
@@ -311,6 +317,9 @@ class UserController extends BaseController
                                 $roleDAO->editRole($userEdit, $formerRole, "b");
                             }
                         }
+                    }
+                    if ($_SESSION['idUser']==($userEdit->getIdUser())){ // if the changes concern the connected user
+                        $_SESSION["roles"] = $userEdit->getRoles();
                     }
                 }
                 if ($formerUserState != $userState) { // if the states changed
