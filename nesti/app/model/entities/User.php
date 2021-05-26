@@ -299,7 +299,11 @@ class User
      */
     public function getPostCode()
     {
-        return $this->postcode;
+        $postcode2 = $this->postcode;
+        if ((int) $postcode2<9999){
+            $postcode2="0".$postcode2;
+        }
+        return $postcode2;
     }
 
     /**
