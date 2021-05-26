@@ -59,6 +59,17 @@ body {
     width: 35%;
 }
 
+@media only screen and (max-width: 1199px) {
+ 
+    #mainNav ul {
+        width: 100%;
+    }
+    #mainNav form {
+        width: 100%;
+    }
+}
+
+
 /*------------------------------------ common -------------------------------*/
 
 p {
@@ -1068,6 +1079,24 @@ button:hover {
     margin: auto;
 }
 
+#divOrder{
+    width: 605px;
+    height: 531px;
+}
+
+#divConsultation{
+    width: 500px;
+    height: 531px;
+}
+
+#divTopUser{
+    width: 301px;
+}
+
+#divTopChiefs {
+    margin-right: 2rem;
+}
+
 @media only screen and (max-width: 500px) {
     #statisticsPage {
         max-width: 100%;
@@ -1098,6 +1127,29 @@ button:hover {
         transform: translate(192px, 950px) !important;
     }
 }
+
+@media only screen and (max-width: 655px) {
+    #divTopChiefs {
+        margin: auto;
+    }
+
+    #divOrder{
+        width: 100%;
+    }
+    
+    #divConsultation{
+        width: 100%;
+    }
+    
+    #divTopUser{
+        width: 100%;
+    }
+
+    #toastArticles canvas, #toastOrders canvas, #toastPieConnection canvas {
+        width: 100% !important;
+    }
+}
+
 
 .btn-see-user {
     color: var(--colorButtonInformation);
