@@ -300,8 +300,8 @@ class User
     public function getPostCode()
     {
         $postcode2 = $this->postcode;
-        if ((int) $postcode2<9999){
-            $postcode2="0".$postcode2;
+        if ($postcode2 != null && (int) $postcode2 < 9999 && strlen($postcode2)<5) {
+            $postcode2 = "0" . $postcode2;
         }
         return $postcode2;
     }
@@ -547,8 +547,8 @@ class User
                 $count++;
             }
         }
-        $averageGrade=null;
-        if ($count>0){
+        $averageGrade = null;
+        if ($count > 0) {
             $averageGrade = $totalgradeChief / $count;
         }
         return $averageGrade;
