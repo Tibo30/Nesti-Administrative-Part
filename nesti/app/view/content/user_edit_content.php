@@ -113,6 +113,7 @@ if (!isset($user) || empty($user)) {
                             </div>
                         </div>
                     </div>
+                    <span class="text-danger" id="errorUserEditRoles"></span>
                     <input type="text" class="form-control" name="id_user" id="idUser" value="<?= $user->getIdUser() ?>" hidden>
                     <div class="row d-flex justify-content-around mt-2">
                         <button id="submitEditUser" class="btn" data-toggle="modal" type="button" data-target="#modalEditUser">Submit</button>
