@@ -1,5 +1,5 @@
 <?php
-require_once(BASE_DIR.PATH_VIEW . 'View.php');
+require_once(BASE_DIR . PATH_VIEW . 'View.php');
 
 class UserController extends BaseController
 {
@@ -10,10 +10,10 @@ class UserController extends BaseController
      */
     public function initialize()
     {
-        if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("admin", $_SESSION["roles"]) !== false){
+        if (array_search("moderator", $_SESSION["roles"]) !== false || array_search("admin", $_SESSION["roles"]) !== false) {
             $data[] = null;
             $this->userDAO = new UserDAO();
-    
+
             if ($this->_url == "user") {
                 $data = $this->users();
             } else if ($this->_url == "user_edit") {
@@ -77,7 +77,7 @@ class UserController extends BaseController
             $userCity = filter_input(INPUT_POST, "userCity", FILTER_SANITIZE_STRING);
             $userPostCode = filter_input(INPUT_POST, "userPostCode", FILTER_SANITIZE_STRING);
             $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-            $userRoles[]='user';
+            $userRoles[] = 'user';
             $userState = filter_input(INPUT_POST, "userState", FILTER_SANITIZE_STRING);
 
             // first we have to check if the city already exists, if not to create it
@@ -178,7 +178,7 @@ class UserController extends BaseController
                 // in this loop we prepare the return data from the fetch
                 foreach ($orderLines as $orderLine) { // we get all the articles of the orderLines
                     $article = $articleDAO->getArticle($orderLine->getIdArticle());
-                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . " x " . $orderLine->getQuantityOrdered() . '</div>' . '<a id="seeArticle" href="https://jolivet.needemand.com/realisations/nesti-client/public/article/'.$article->getIdArticle().'" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
+                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . " x " . $orderLine->getQuantityOrdered() . '</div>' . '<a id="seeArticle" href="https://jolivet.needemand.com/realisations/nesti-client/public/article/' . $article->getIdArticle() . '" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
                     $index++;
                 }
             }
@@ -228,7 +228,7 @@ class UserController extends BaseController
             $userCity = filter_input(INPUT_POST, "userCity", FILTER_SANITIZE_STRING);
             $userPostCode = filter_input(INPUT_POST, "userPostcode", FILTER_SANITIZE_STRING);
             $userRoles = filter_input(INPUT_POST, "userRoles", FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
-            $userRoles[]='user';
+            $userRoles[] = 'user';
             $userState = filter_input(INPUT_POST, "userState", FILTER_SANITIZE_STRING);
 
             // first we have to check if the city already exists, if not to create it
@@ -264,22 +264,27 @@ class UserController extends BaseController
             $userEdit->setState($userState);
             $userEdit->setRoles($userRoles);
 
-            $errorMessages = ['userLastname' => $userLastnameError, 'userFirstname' => $userFirstnameError, 'userAddress1' => $userAddress1Error, 'userAddress2' => $userAddress2Error, 'userPostcode' => $userPostCodeError, 'userCity' => $userCityError];
+            $userRoleError = "";
+            if ($_SESSION['idUser'] == ($userEdit->getIdUser()) && array_search("moderator", $_SESSION["roles"]) !== false && array_search("admin", $_SESSION["roles"]) == false && $formerUserRoles != $userRoles) {
+                $userRoleError = "You don't have the rights to change your roles";
+            }
+
+            $errorMessages = ['userLastname' => $userLastnameError, 'userFirstname' => $userFirstnameError, 'userAddress1' => $userAddress1Error, 'userAddress2' => $userAddress2Error, 'userPostcode' => $userPostCodeError, 'userCity' => $userCityError, 'userRoles' => $userRoleError];
             $data['errorMessages'] = $errorMessages;
 
             // if all the datas inputed are correct, we do the query
             // si bug, remettre null à la place de ""
-            if ($userLastnameError == "" && $userFirstnameError == ""  && $userAddress1Error == "" && $userAddress2Error == "" && $userPostCodeError == "" && $userCityError == "") {
+            if ($userLastnameError == "" && $userFirstnameError == ""  && $userAddress1Error == "" && $userAddress2Error == "" && $userPostCodeError == "" && $userCityError == "" && $userRoleError == "") {
 
                 if ($formerUserLastname != $userLastname) { // if the lastname changed
                     $this->userDAO->editUser($userEdit, "lastname");
-                    if ($_SESSION['idUser']==($userEdit->getIdUser())){ // if the changes concern the connected user
+                    if ($_SESSION['idUser'] == ($userEdit->getIdUser())) { // if the changes concern the connected user
                         $_SESSION["lastname"] = $userEdit->getLastname();
                     }
                 }
                 if ($formerUserFirstname != $userFirstname) { // if the firstname changed
                     $this->userDAO->editUser($userEdit, "firstname");
-                    if ($_SESSION['idUser']==($userEdit->getIdUser())){ // if the changes concern the connected user
+                    if ($_SESSION['idUser'] == ($userEdit->getIdUser())) { // if the changes concern the connected user
                         $_SESSION["lastname"] = $userEdit->getFirstname();
                     }
                 }
@@ -318,7 +323,7 @@ class UserController extends BaseController
                             }
                         }
                     }
-                    if ($_SESSION['idUser']==($userEdit->getIdUser())){ // if the changes concern the connected user
+                    if ($_SESSION['idUser'] == ($userEdit->getIdUser())) { // if the changes concern the connected user
                         $_SESSION["roles"] = $userEdit->getRoles();
                     }
                 }
