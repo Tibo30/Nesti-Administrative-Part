@@ -3,7 +3,7 @@
             <h1>Stats</h1>
 
             <div class="d-flex flex-row flex-wrap justify-content-lg-between justify-content-center">
-                <div class="d-flex flex-column col-12 col-lg-5">
+                <div id="divOrder" class="d-flex flex-column">
                     <h2>Orders</h2>
                     <div id="toastOrders"> </div>
                     <p class="statistic_titles">Biggest orders</p>
@@ -13,11 +13,11 @@
                         } ?>
                     </div>
                 </div>
-                <div class="d-flex flex-column mt-4 mt-lg-0">
+                <div id="divConsultation" class="d-flex flex-column mt-4 mt-lg-0">
                     <h2>Website Consultation</h2>
                     <div id="toastPieConnection"> </div>
                 </div>
-                <div class="d-flex flex-column ">
+                <div id="divTopUser" class="d-flex flex-column ">
                     <p class="statistic_titles">TOP 10 Users</p>
                     <div id="mostConnectedUsers" class="border p-3">
                         <?php foreach ($mostConnectedUsers as $mostConnectedUser) {
@@ -27,10 +27,10 @@
                 </div>
             </div>
             <div class="d-flex flex-row flex-wrap justify-content-lg-between justify-content-center mt-4 mt-lg-3">
-                <div class="d-flex flex-column col-12 col-lg-5">
+                <div class="d-flex flex-column">
                     <h2>Recipes</h2>
                     <div class="d-flex flex-row flex-wrap justify-content-lg-between justify-content-center">
-                        <div>
+                        <div id="divTopChiefs">
                             <p class="statistic_titles">TOP 10 Chiefs</p>
                             <div id="topChief" class="border p-3">
                                 <?php foreach ($topChiefs as $topChief) {
@@ -39,7 +39,7 @@
                             </div>
                         </div>
 
-                        <div class="mt-2 mt-lg-0">
+                        <div id="divTopRecipes" class="mt-2 mt-lg-0">
                             <p class="statistic_titles">TOP 10 Recipes</p>
                             <div id="topRecipe" class="border p-3">
                                 <?php foreach ($topRecipes as $recipe) {
