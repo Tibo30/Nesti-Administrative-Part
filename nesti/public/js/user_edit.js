@@ -65,7 +65,7 @@ formEditUser.addEventListener('submit', (function (e) {
                 document.querySelector("#errorUserEditAddress2").innerHTML = response.errorMessages['userAddress2'];
                 document.querySelector("#errorUserEditCity").innerHTML = response.errorMessages['userCity'];
                 document.querySelector("#errorUserEditPostcode").innerHTML = response.errorMessages['userPostcode'];
-
+                document.querySelector("#errorUserEditRoles").innerHTML = response.errorMessages['userRoles'];
                 console.log(response.errorMessages)
             }
         }
