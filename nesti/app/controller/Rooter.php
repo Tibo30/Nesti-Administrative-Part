@@ -1,4 +1,7 @@
 <?php
+/**
+ * This class is used to defined the right controller to use according to the url
+ */
 class Rooter
 {
     private $_ctrl;
