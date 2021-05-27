@@ -20,7 +20,7 @@ if (!isset($listAllUnits)) {
         <div class="d-flex flex-row underLink">
             <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>
             </a>
-            <p> &nbsp > Create</p>
+            <p> &nbsp; > Create</p>
         </div>
         <h2 class="mb-2 mt-2">Recipe Creation</h2>
 
@@ -80,10 +80,10 @@ if (!isset($listAllUnits)) {
                 <div class=" d-flex flex-row justify-content-between">
                     <p class="recipePictureAddName"></p>
                 </div>
-                <label class="form-label" for="customFile">Download a new picture</label>
+                <label class="form-label" for="InputFileAddRecipe">Download a new picture</label>
 
                 <div class="custom-file">
-                    <form id="formAddRecipeImage" action="" enctype="multipart/form-data" method="post">
+                    <form id="formAddRecipeImage" enctype="multipart/form-data" method="post">
                         <div class="d-flex flex-column">
                             <input type="file" class="custom-file-input" id="InputFileAddRecipe" name="image" accept="image/png, image/jpeg, image/jpg" onchange="updatePictureName()">
                             <div class="d-flex align-items-center justify-content-end">
@@ -125,7 +125,7 @@ if (!isset($listAllUnits)) {
                     <div id="paragraphsAddRecipe" class="d-flex flex-column"></div>
                     <div class="d-flex flex-column align-items-center">
                         <button id="addParagraphNewRecipe" class="btn" onclick="addParagraph()">
-                            <div class="fas fa-plus"></div>
+                            <i class="fas fa-plus"></i>
                         </button>
                         <button id="okParagraphAddRecipe" type="submit" class="btn">SAVE</button>
                     </div>

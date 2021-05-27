@@ -40,7 +40,7 @@ class Product{
     /**
      * Set the value of productName
      *
-     * @return  self
+     * @return  string
      */ 
     public function setProductName($productName)
     {

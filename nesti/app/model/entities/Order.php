@@ -146,7 +146,7 @@ class Order{
     // Display state for tables
     public function getDisplayState()
     {
-
+        $state = $this->state;
         if ($this->state == 'a') {
             $state = 'Paid';
         }

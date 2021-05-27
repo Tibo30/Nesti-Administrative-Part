@@ -32,6 +32,9 @@ abstract class BaseController
     {
         if (isset($this->_view)) {
             return $this->_view;
+        } else {
+            $view = new View("connection");
+            return $view;
         }
     }
 

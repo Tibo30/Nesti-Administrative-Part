@@ -219,8 +219,8 @@ class Recipe
         $time = (int) $this->getTime();
         $hour = intdiv($time, 60);
         $min = fmod($time, 60);
-        $hour = ltrim($hour, "0");
-        $min = ltrim($min, "0");
+        $hour = ltrim(strval($hour), "0");
+        $min = ltrim(strval($min), "0");
 
         $hour = $hour ? $hour . ' h ' : '';
         $min = $min ? $min . ' min ' : '';
@@ -240,18 +240,6 @@ class Recipe
     }
 
     /**
-     * Set the value of chief
-     *
-     * @return  self
-     */
-    public function setChief($chief)
-    {
-        $this->chief = $chief;
-
-        return $this;
-    }
-
-    /**
      * Get the value of picture
      */
     public function getPicture()
@@ -260,20 +248,6 @@ class Recipe
         $picture = $pictureDAO->getPicture($this->idPicture);
         return $picture;
     }
-
-    /**
-     * Set the value of picture
-     *
-     * @return  self
-     */
-    public function setPicture($picture)
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-
 
     /**
      * Get the value of idPicture
@@ -320,7 +294,7 @@ class Recipe
      */
     public function getParagraphs()
     {
-        $recipeDAO = new recipeDAO();
+        $recipeDAO = new RecipeDAO();
         $paragraphes = $recipeDAO->getParagraphs($this->idRecipe);
         return $paragraphes;
     }
@@ -328,7 +302,7 @@ class Recipe
     // Display state for tables
     public function getDisplayState()
     {
-
+        $state = $this->state;
         if ($this->state == 'a') {
             $state = 'Active';
         }

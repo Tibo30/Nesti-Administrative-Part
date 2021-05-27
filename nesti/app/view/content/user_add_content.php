@@ -2,7 +2,7 @@
         <div class="d-flex flex-row underLink">
             <a href="<?= BASE_URL ?>user"><u>Users</u>
             </a>
-            <p> &nbsp > Create</p>
+            <p> &nbsp; > Create</p>
         </div>
 
         <!-- div notif user created -->
@@ -103,7 +103,7 @@
 
                                 <div class="d-flex flex-column">
                                     <div>
-                                        <label for="inputUserRole">Role(s)</label>
+                                        <label>Role(s)</label>
                                     </div>
                                     <div>
                                         <input type="checkbox" id="admin" name="userRoles[]" value="admin">
@@ -121,7 +121,7 @@
 
                                 <div class="d-flex flex-column">
                                     <div>
-                                        <label for="inputUserState">State</label>
+                                        <label for="userState">State</label>
                                     </div>
                                     <div>
                                         <select name="userState" id="userState">

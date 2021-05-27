@@ -1,5 +1,6 @@
 <?php
-class Comments{
+class Comments
+{
     private $idComment;
     private $commentTitle;
     private $commentContent;
@@ -8,7 +9,7 @@ class Comments{
     private $idRecipe;
     private $idModerator;
     private $idUser;
-    
+
     public function hydration($data)
     {
         $this->idComment = $data['id_comments'];
@@ -19,13 +20,13 @@ class Comments{
         $this->idRecipe = $data['id_recipes'];
         $this->idModerator = $data['id_moderator'];
         $this->idUser = $data['id_users'];
-       
+
         return $this;
     }
 
     /**
      * Get the value of commentTitle
-     */ 
+     */
     public function getCommentTitle()
     {
         return $this->commentTitle;
@@ -35,7 +36,7 @@ class Comments{
      * Set the value of commentTitle
      *
      * @return  self
-     */ 
+     */
     public function setCommentTitle($commentTitle)
     {
         $this->commentTitle = $commentTitle;
@@ -45,7 +46,7 @@ class Comments{
 
     /**
      * Get the value of commentContent
-     */ 
+     */
     public function getCommentContent()
     {
         return $this->commentContent;
@@ -55,7 +56,7 @@ class Comments{
      * Set the value of commentContent
      *
      * @return  self
-     */ 
+     */
     public function setCommentContent($commentContent)
     {
         $this->commentContent = $commentContent;
@@ -65,13 +66,13 @@ class Comments{
 
     /**
      * Get the value of creationDate
-     */ 
+     */
     public function getCreationDate()
     {
         return $this->creationDate;
     }
 
-    
+
     /**
      * Get the display date
      */
@@ -79,9 +80,9 @@ class Comments{
     {
         $date = new DateTime($this->creationDate);
         $displayDate = "";
-        if ($this->creationDate!=null){
-            $displayDate= $date->format('j F Y \a\t H\hi');
-        } 
+        if ($this->creationDate != null) {
+            $displayDate = $date->format('j F Y \a\t H\hi');
+        }
         return $displayDate;
     }
 
@@ -89,7 +90,7 @@ class Comments{
      * Set the value of creationDate
      *
      * @return  self
-     */ 
+     */
     public function setCreationDate($creationDate)
     {
         $this->creationDate = $creationDate;
@@ -99,7 +100,7 @@ class Comments{
 
     /**
      * Get the value of state
-     */ 
+     */
     public function getState()
     {
         return $this->state;
@@ -109,7 +110,7 @@ class Comments{
      * Set the value of state
      *
      * @return  self
-     */ 
+     */
     public function setState($state)
     {
         $this->state = $state;
@@ -119,7 +120,7 @@ class Comments{
 
     /**
      * Get the value of idRecipe
-     */ 
+     */
     public function getIdRecipe()
     {
         return $this->idRecipe;
@@ -129,7 +130,7 @@ class Comments{
      * Set the value of idRecipe
      *
      * @return  self
-     */ 
+     */
     public function setIdRecipe($idRecipe)
     {
         $this->idRecipe = $idRecipe;
@@ -139,7 +140,7 @@ class Comments{
 
     /**
      * Get the value of idModerator
-     */ 
+     */
     public function getIdModerator()
     {
         return $this->idModerator;
@@ -149,7 +150,7 @@ class Comments{
      * Set the value of idModerator
      *
      * @return  self
-     */ 
+     */
     public function setIdModerator($idModerator)
     {
         $this->idModerator = $idModerator;
@@ -159,7 +160,7 @@ class Comments{
 
     /**
      * Get the value of idUser
-     */ 
+     */
     public function getIdUser()
     {
         return $this->idUser;
@@ -169,7 +170,7 @@ class Comments{
      * Set the value of idUser
      *
      * @return  self
-     */ 
+     */
     public function setIdUser($idUser)
     {
         $this->idUser = $idUser;
@@ -180,7 +181,7 @@ class Comments{
 
     /**
      * Get the value of idComment
-     */ 
+     */
     public function getIdComment()
     {
         return $this->idComment;
@@ -190,7 +191,7 @@ class Comments{
      * Set the value of idComment
      *
      * @return  self
-     */ 
+     */
     public function setIdComment($idComment)
     {
         $this->idComment = $idComment;
@@ -200,27 +201,27 @@ class Comments{
 
     /**
      * Get the recipe
-     */ 
+     */
     public function getRecipe()
     {
         $recipeDAO = new RecipeDAO();
-        $recipe=$recipeDAO->getRecipe($this->idRecipe);
+        $recipe = $recipeDAO->getRecipe($this->idRecipe);
         return $recipe;
     }
 
-     // Display state for tables
-     public function getDisplayState()
-     {
- 
-         if ($this->state == 'a') {
-             $state = 'Active';
-         }
-         if ($this->state == 'b') {
-             $state = 'Blocked';
-         }
-         if ($this->state == 'w') {
-             $state = 'Waiting';
-         }
-         return $state;
-     }
+    // Display state for tables
+    public function getDisplayState()
+    {
+        $state = $this->state;
+        if ($this->state == 'a') {
+            $state = 'Active';
+        }
+        if ($this->state == 'b') {
+            $state = 'Blocked';
+        }
+        if ($this->state == 'w') {
+            $state = 'Waiting';
+        }
+        return $state;
+    }
 }

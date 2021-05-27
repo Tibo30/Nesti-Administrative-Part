@@ -166,7 +166,7 @@ class RecipeController extends BaseController
         $data = [];
         $data['success'] = false;
 
-        if (isset($_POST) && !empty($_POST)) {
+        if (!empty($_POST)) {
             $idRecipe = filter_input(INPUT_POST, "id_recipe", FILTER_SANITIZE_STRING); // first we get the id of the recipe
             $recipe = $this->recipeDAO->getRecipe($idRecipe);
 
@@ -245,7 +245,7 @@ class RecipeController extends BaseController
         $data = [];
         $data['success'] = false;
 
-        if (isset($_POST) && !empty($_POST)) {
+        if (!empty($_POST)) {
             $idRecipe = filter_input(INPUT_POST, "id_recipe", FILTER_SANITIZE_STRING); // first we get the id of the recipe
             $idIngredient = filter_input(INPUT_POST, "id_ingredient", FILTER_SANITIZE_STRING); // then we get the id of the ingredient
             $order = filter_input(INPUT_POST, "order", FILTER_SANITIZE_STRING); // then we get the order of the ingredient
@@ -280,7 +280,7 @@ class RecipeController extends BaseController
     {
         $data = [];
 
-        if (isset($_FILES) && !empty($_FILES)) {
+        if (!empty($_FILES)) {
             $data = [];
             $data['success'] = false;
 
@@ -306,7 +306,7 @@ class RecipeController extends BaseController
                 if (($pictureDAO->doesPictureExist($picture->getName(), $picture->getExtension())) == false) { // check if the picture/name is not already in the table
                     if (move_uploaded_file($tmp, $path)) { // move the file form temporary folder to right folder (according to path)
                         $data['success'] = true;
-                        $idPicture = $pictureDAO->insertPicture($picture, $iD); // insert the picture in the DAO et get the ID back
+                        $idPicture = $pictureDAO->insertPicture($picture); // insert the picture in the DAO and get the ID back
                         $picture->setIdPicture($idPicture);
                         $recipe = $this->recipeDAO->getRecipe($iD); // get the article from the DAO
                         $recipe->setIdPicture($idPicture); // set the idPicture to the object
@@ -339,7 +339,7 @@ class RecipeController extends BaseController
         $data = [];
         $data['success'] = false;
 
-        if (isset($_POST) && !empty($_POST)) {
+        if (!empty($_POST)) {
             $idRecipe = $_POST["id_recipe"]; // first we get the id of the recipe
             $recipe = $this->recipeDAO->getRecipe($idRecipe); // then we get the object recipe from the database.
             $recipe->setIdPicture(null);

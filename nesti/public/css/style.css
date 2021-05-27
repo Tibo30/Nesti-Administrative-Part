@@ -189,8 +189,8 @@ button:hover {
     z-index: 100;
 }
 
-#confirm-delete-article {
-    background-color: var( --colorButtonValidate);
+.confirm-delete-article {
+    background-color: var( --colorButtonValidate) !important;
 }
 
 @media only screen and (max-width: 1199px) {
@@ -393,8 +393,8 @@ button:hover {
     z-index: 100;
 }
 
-#confirm-delete-recipe {
-    background-color: var( --colorButtonValidate);
+.confirm-delete-recipe {
+    background-color: var( --colorButtonValidate) !important;
 }
 
 @media only screen and (max-width: 1199px) {
@@ -440,7 +440,7 @@ button:hover {
     border: 1px dashed rgb(184, 183, 183);
 }
 
-#addParagraphNewRecipe>div {
+#addParagraphNewRecipe>i {
     color: var(--primaryLightColor);
     font-size: 50px;
 }
@@ -596,7 +596,7 @@ button:hover {
     color: var(--classicColorWhite);
 }
 
-#addParagraphEditRecipe>div {
+#addParagraphEditRecipe>i {
     color: var(--primaryLightColor);
     font-size: 50px;
 }
@@ -786,8 +786,8 @@ button:hover {
     padding: 0 5px;
 }
 
-#confirm-delete-user {
-    background-color: var( --colorButtonValidate);
+.confirm-delete-user {
+    background-color: var( --colorButtonValidate) !important;
 }
 
 @media only screen and (max-width: 1199px) {
@@ -951,8 +951,8 @@ button:hover {
     background-color: var(--secondaryLightColor);
 }
 
-#submitEditUser, #confirm-approve, #confirm-block, #confirm-edit, #confirm-reset-password {
-    background-color: var( --colorButtonValidate);
+#submitEditUser, .confirm-approve, .confirm-block, #confirm-edit, #confirm-reset-password {
+    background-color: var( --colorButtonValidate) !important;
 }
 
 @media only screen and (max-width: 991px) {

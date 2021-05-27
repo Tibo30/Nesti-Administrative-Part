@@ -28,7 +28,7 @@ class RecipeIngredients
     /**
      * Set the value of quantity
      *
-     * @return  self
+     * @return  string
      */
     public function setQuantity($quantity) // only int ? or decimals allowed ?????
     {

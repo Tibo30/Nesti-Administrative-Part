@@ -35,9 +35,10 @@ if (!isset($url)) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
     <!-- Toast UI -->
-    <script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
-    <script src="<?php echo BASE_URL ?>public/js/tui-chart.js"></script>
-
+    <?php if ($url == 'statistic') { ?>
+        <script src="https://uicdn.toast.com/chart/latest/toastui-chart.min.js"></script>
+        <script src="<?php echo BASE_URL ?>public/js/tui-chart.js"></script>
+    <?php } ?>
     <!-- JavaScript Files -->
     <script src="<?php echo BASE_URL ?>public/js/script.js"></script>
     <?php if ($url != 'connection_disconnect') { ?>

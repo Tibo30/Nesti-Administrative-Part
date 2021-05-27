@@ -38,6 +38,7 @@ class ImportDAO extends ModelDAO
      */
     public function getImports()
     {
+        $var = [];
         $req = self::$_bdd->prepare('SELECT * FROM import');
         $req->execute();
         if ($data = $req->fetchAll(PDO::FETCH_ASSOC)) {

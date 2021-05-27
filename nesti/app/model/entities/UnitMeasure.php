@@ -42,7 +42,7 @@ class UnitMeasure{
     /**
      * Set the value of name
      *
-     * @return  self
+     * @return  string
      */ 
     public function setName($name)
     {

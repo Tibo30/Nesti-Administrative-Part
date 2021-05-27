@@ -8,7 +8,7 @@ if (!isset($user) || empty($user)) {
     <div class="d-flex flex-row underLink">
         <a href="<?= BASE_URL ?>user"><u>Users</u>
         </a>
-        <p> &nbsp > Edit</p>
+        <p> &nbsp; > Edit</p>
     </div>
     <!-- div notif user edit -->
     <div id="userEditSuccess" class="notifications" hidden>
@@ -64,7 +64,7 @@ if (!isset($user) || empty($user)) {
 
                         <div class="d-flex flex-column">
                             <div>
-                                <label for="inputUserEditRole">Role(s) *</label>
+                                <label>Role(s) *</label>
                             </div>
                             <div>
                                 <input type="checkbox" id="admin" name="userRoles[]" value="admin" <?php foreach ($user->getRoles() as $role) {
@@ -96,7 +96,7 @@ if (!isset($user) || empty($user)) {
 
                         <div class="d-flex flex-column">
                             <div>
-                                <label for="inputUserEditState">State *</label>
+                                <label for="userEditState">State *</label>
                             </div>
                             <div>
                                 <select name="userState" id="userEditState">
@@ -117,11 +117,11 @@ if (!isset($user) || empty($user)) {
                     <input type="text" class="form-control" name="id_user" id="idUser" value="<?= $user->getIdUser() ?>" hidden>
                     <div class="row d-flex justify-content-around mt-2">
                         <button id="submitEditUser" class="btn" data-toggle="modal" type="button" data-target="#modalEditUser">Submit</button>
-                        <div class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                        <div class="modal fade" id="modalEditUser" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitleUpdateUser" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">Do you really want to update this user's information ?</h5>
+                                        <h5 class="modal-title" id="ModalCenterTitleUpdateUser">Do you really want to update this user's information ?</h5>
                                         <button type="button" class="close" id="closeModalEdit" data-dismiss="modal" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
@@ -196,11 +196,11 @@ if (!isset($user) || empty($user)) {
                     Reset Password
                 </button>
             </div>
-            <div class="modal fade" id="modalResetPassword" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+            <div class="modal fade" id="modalResetPassword" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitleResetPassword" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Reset Password</h5>
+                            <h5 class="modal-title" id="ModalCenterTitleResetPassword">Reset Password</h5>
                             <button type="button" class="close" id="closeModalResetPassword" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -242,20 +242,21 @@ if (!isset($user) || empty($user)) {
                                 </nav>
 
                             </div>
-                            <table class="table-borderless table-striped" rowEvents="" id="allOrdersUserTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchOrderUser" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
+                            <table class="table-borderless table-striped" id="allOrdersUserTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchOrderUser" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
                                 <thead>
-                                    <th>ID</th>
+                                    <tr>
+                                        <th>ID</th>
 
-                                    <th>User</th>
+                                        <th>User</th>
 
-                                    <th>Amount</th>
+                                        <th>Amount</th>
 
-                                    <th>Number of articles</th>
+                                        <th>Number of articles</th>
 
-                                    <th>Date</th>
+                                        <th>Date</th>
 
-                                    <th>State</th>
-
+                                        <th>State</th>
+                                    </tr>
                                 </thead>
                                 <tbody id="allOrdersTbody">
                                     <?php
@@ -271,7 +272,6 @@ if (!isset($user) || empty($user)) {
                                         echo '</tr>';
                                     } ?>
                                 </tbody>
-                                </tbody>
                             </table>
                         </div>
                     </div>
@@ -281,7 +281,7 @@ if (!isset($user) || empty($user)) {
                     <div class="d-flex justify-content-between px-xl-3 align-items-end">
                         <h2>Details</h2>
                         <div id="userOrderId" class="d-flex justify-content-center align-items-center orderId">
-                            <h4 id="idOrderUser" className="mr-5">N°:</h4>
+                            <h4 id="idOrderUser">N°:</h4>
                         </div>
 
                     </div>
@@ -317,15 +317,17 @@ if (!isset($user) || empty($user)) {
                     </nav>
 
                 </div>
-                <table class="table-borderless table-striped" rowEvents="" id="allCommentsUserTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchCommentUser" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
+                <table class="table-borderless table-striped" id="allCommentsUserTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchCommentUser" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
                     <thead>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Recipe</th>
-                        <th>Content</th>
-                        <th>Date</th>
-                        <th>State</th>
-                        <th>Action</th>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Recipe</th>
+                            <th>Content</th>
+                            <th>Date</th>
+                            <th>State</th>
+                            <th>Action</th>
+                        </tr>
                     </thead>
                     <tbody id="allCommentsTbody">
                         <?php
@@ -355,38 +357,38 @@ if (!isset($user) || empty($user)) {
                                     <a class="btn-approve-comment" data-toggle="modal" data-target="#modalApproveComment<?= $comment->getIdComment() ?>">
                                         Approve
                                     </a>
-                                    <div class="modal fade" id="modalApproveComment<?= $comment->getIdComment() ?>" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                    <div class="modal fade" id="modalApproveComment<?= $comment->getIdComment() ?>" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitleApproveComment<?= $comment->getIdComment() ?>" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Do you want to approve this comment ?</h5>
+                                                    <h5 class="modal-title" id="ModalCenterTitleApproveComment<?= $comment->getIdComment() ?>">Do you want to approve this comment ?</h5>
                                                     <button type="button" class="close" id="closeModalApprove<?= $comment->getIdComment() ?>" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button id="confirm-approve" type="button" class="btn" data-id="<?= $comment->getIdComment() ?>" onclick='changeState("a")'>Confirm</button>
+                                                    <button type="button" class="btn confirm-approve" data-id="<?= $comment->getIdComment() ?>" onclick='changeState("a")'>Confirm</button>
                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
-                                    </br>
+                                    <br>
                                     <a class="btn-block-comment" data-toggle="modal" data-target="#modalBlockComment<?= $comment->getIdComment() ?>">
                                         Block
                                     </a>
-                                    <div class="modal fade" id="modalBlockComment<?= $comment->getIdComment() ?>" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                                    <div class="modal fade" id="modalBlockComment<?= $comment->getIdComment() ?>" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitleBlockComment<?= $comment->getIdComment() ?>" aria-hidden="true">
                                         <div class="modal-dialog modal-dialog-centered" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
-                                                    <h5 class="modal-title" id="exampleModalLongTitle">Do you want to block this comment ?</h5>
+                                                    <h5 class="modal-title" id="ModalCenterTitleBlockComment<?= $comment->getIdComment() ?>">Do you want to block this comment ?</h5>
                                                     <button type="button" class="close" id="closeModalBlock<?= $comment->getIdComment() ?>" data-dismiss="modal" aria-label="Close">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button id="confirm-block" type="button" class="btn" data-id="<?= $comment->getIdComment() ?>" onclick='changeState("b")'>Confirm</button>
+                                                    <button type="button" class="btn confirm-block" data-id="<?= $comment->getIdComment() ?>" onclick='changeState("b")'>Confirm</button>
                                                     <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                                                 </div>
                                             </div>

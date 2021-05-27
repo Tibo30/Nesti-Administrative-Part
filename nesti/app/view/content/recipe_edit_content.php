@@ -40,7 +40,7 @@ if (!isset($listAllUnits)) {
         <div class="d-flex flex-row underLink">
             <a href="<?= BASE_URL ?>recipe"><u>Recipes</u>
             </a>
-            <p> &nbsp > Edit</p>
+            <p> &nbsp; > Edit</p>
         </div>
 
         <!-- div notif recipe edit -->
@@ -85,7 +85,7 @@ if (!isset($listAllUnits)) {
                     </div>
                     <span class="text-danger" id="errorEditTime"></span>
                     <div class="mx-0 p-0 form-group row justify-content-between">
-                        <label for="inputUserEditState">State</label> <br>
+                        <label for="recipeEditState">State</label> <br>
                         <select class="col-3 p-0" name="recipeState" id="recipeEditState">
                             <option value="a" <?php if ($recipe->getState() == 'a') {
                                                     echo 'selected';
@@ -102,11 +102,11 @@ if (!isset($listAllUnits)) {
                         <button id="submitEditRecipe" data-toggle="modal" type="button" data-target="#modalEditRecipe" class="btn mr-5">Submit</button>
                         <button id="cancelEditRecipe" type="reset" class="btn">Cancel</button>
                     </div>
-                    <div class="modal fade" id="modalEditRecipe" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="modalEditRecipe" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitleEditRecipe" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Do you really want to update this recipe information ?</h5>
+                                    <h5 class="modal-title" id="ModalCenterTitleEditRecipe">Do you really want to update this recipe information ?</h5>
                                     <button type="button" class="close" id="closeModalEditRecipe" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -127,11 +127,11 @@ if (!isset($listAllUnits)) {
                 <div class=" d-flex flex-row justify-content-between">
                     <p class="recipePictureEditName"><?= $recipe->getIdPicture() != null ? ($recipe->getPicture()->getName() . "." . $recipe->getPicture()->getExtension()) : "" ?></p>
                     <div class="recipePictureBin" data-toggle="modal" data-target="#modalDeletePictureRecipe"><img src=" <?php echo BASE_URL . PATH_ICONS ?>delete-svg.svg" alt="svg bin"></div>
-                    <div class="modal fade" id="modalDeletePictureRecipe" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="modalDeletePictureRecipe" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitleDeletePicture" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Do you really want to delete this recipe picture ?</h5>
+                                    <h5 class="modal-title" id="ModalCenterTitleDeletePicture">Do you really want to delete this recipe picture ?</h5>
                                     <button type="button" class="close" id="closeModalDeletePictureRecipe" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -144,9 +144,9 @@ if (!isset($listAllUnits)) {
                         </div>
                     </div>
                 </div>
-                <label class="form-label" for="customFile">Download a new picture</label>
+                <label class="form-label" for="InputFileEditRecipe">Download a new picture</label>
                 <div class="custom-file">
-                    <form id="formEditRecipeImage" action="" enctype="multipart/form-data" method="post">
+                    <form id="formEditRecipeImage" enctype="multipart/form-data" method="post">
                         <div class="d-flex flex-column">
                             <input type="file" class="custom-file-input" id="InputFileEditRecipe" name="image" onchange="updatePictureName()">
                             <div class = "d-flex align-items-center justify-content-end">
@@ -155,7 +155,7 @@ if (!isset($listAllUnits)) {
                             </div>
                         </div>
                         <label class="custom-file-label" for="InputFileEditRecipe" data-browse="Browse"></label>
-                        <div class="modal fade" id="modalEditPictureRecipe" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                        <div class="modal fade" id="modalEditPictureRecipe" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -211,24 +211,24 @@ if (!isset($listAllUnits)) {
                         $index = 0;
                         $paragraphs = $recipe->getParagraphs();
                         foreach ($paragraphs as $paragraph) {
-                            echo '<div class="paragraphEditRecipeLine d-flex flex-row flex-wrap justify-content-between" order="' . $paragraph->getOrder() . '" data-id="' . $paragraph->getIdParagraph() . '">';
+                            echo '<div class="paragraphEditRecipeLine d-flex flex-row flex-wrap justify-content-between" data-order="' . $paragraph->getOrder() . '" data-id="' . $paragraph->getIdParagraph() . '">';
                             if ($index == 0) { // if this is the first paragraph
                                 if (count($paragraphs) > 1) { // if there is more than 1 paragraph
                                     echo '<div class="paragraphIcons"><img class="downSvg" src="' . BASE_URL . PATH_ICONS . 'down-svg.png" alt="arrow down icon" ><img onclick="createModal(' . ($index + 1) . ',' . $paragraph->getIdParagraph() . ')" class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
-                        <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" max-length="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
+                        <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" maxlength="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
                         ';
                                 } else { // if there is only 1 paragraph
                                     echo '                        <div class="paragraphIcons"><img onclick="createModal(' . ($index + 1) . ',' . $paragraph->getIdParagraph() . ')" class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
-                        <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" max-length="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
+                        <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" maxlength="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
                         ';
                                 }
                             } else if ($index == count($paragraphs) - 1 && count($paragraphs) > 1) { // if this is the last paragraph and there is more than one
                                 echo '                        <div class="paragraphIcons"><img class="upSvg" src="' . BASE_URL . PATH_ICONS . 'up-svg.png" alt="arrow up icon" ><img onclick="createModal(' . ($index + 1) . ',' . $paragraph->getIdParagraph() . ')" class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
-                        <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" max-length="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
+                        <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" maxlength="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
                         ';
                             } else {
                                 echo '                        <div class="paragraphIcons"><img class="upSvg" src="' . BASE_URL . PATH_ICONS . 'up-svg.png" alt="arrow up icon" ><img class="downSvg" src="' . BASE_URL . PATH_ICONS . 'down-svg.png" alt="arrow down icon" ><img onclick="createModal(' . ($index + 1) . ',' . $paragraph->getIdParagraph() . ')" class="deleteSvg" src="' . BASE_URL . PATH_ICONS . 'delete-svg.png" alt="delete icon" ></div>
-                            <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" max-length="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
+                            <textarea class="form-control mb-2 paragraphEditRecipe" rows="5" maxlength="255" style="resize: none;">' . $paragraph->getContent() . '</textarea>
                             ';
                             }
 
@@ -244,7 +244,7 @@ if (!isset($listAllUnits)) {
                     </div>
                     <div class="d-flex flex-column align-items-center">
                         <button id="addParagraphEditRecipe" class="btn" onclick="addParagraph()">
-                            <div class="fas fa-plus"></div>
+                            <i class="fas fa-plus"></i>
                         </button>
                         <button id="okParagraphEditRecipe" type="submit" class="btn mt-2">SAVE</button>
                     </div>

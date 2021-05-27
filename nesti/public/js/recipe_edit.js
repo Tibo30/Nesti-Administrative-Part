@@ -83,7 +83,7 @@ function createModal(order, id) {
             var paragraphLines = document.querySelectorAll(".paragraphEditRecipeLine"); // get the list of the remain paragraphs
 
             paragraphLines.forEach(function(element, index) { // we change the attribute order
-                element.setAttribute('order', index + 1)
+                element.setAttribute('data-order', index + 1)
             });
             addButtons(); // we do again the addButtons function
         })
@@ -427,7 +427,7 @@ function createEntitiesParagraph() {
     paragraphs = document.querySelectorAll(".paragraphEditRecipeLine")
     order = 0;
     if (paragraphs.length > 0) {
-        order = paragraphs[paragraphs.length - 1].getAttribute('order');
+        order = paragraphs[paragraphs.length - 1].getAttribute('data-order');
     }
     order++;
     // get the paragraphes area
@@ -436,7 +436,7 @@ function createEntitiesParagraph() {
     // create a paragraphLine element
     var paragraphLine = document.createElement('div');
     paragraphLine.className = "paragraphEditRecipeLine d-flex flex-row flex-wrap justify-content-between"
-    paragraphLine.setAttribute('order', order)
+    paragraphLine.setAttribute('data-order', order)
 
     // create the textarea element
     var textLine = document.createElement('textarea');
@@ -463,11 +463,11 @@ function addListenerButtons() {
                 var currentParagraph = event.target.parentNode.parentNode;
                 console.log(currentParagraph);
 
-                var currentOrder = Number(currentParagraph.getAttribute('order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
-                currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
+                var currentOrder = Number(currentParagraph.getAttribute('data-order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
+                currentParagraph.setAttribute('data-order', Number(currentParagraph.getAttribute('data-order')) + 1);
                 var nextParagraph = event.target.parentNode.parentNode.nextElementSibling;
 
-                nextParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) - 1);
+                nextParagraph.setAttribute('data-order', Number(currentParagraph.getAttribute('data-order')) - 1);
 
                 var paragraphLines = document.querySelectorAll(".paragraphEditRecipeLine"); // get the list of paragraphs
 
@@ -486,11 +486,11 @@ function addListenerButtons() {
 
                 var currentParagraph = event.target.parentNode.parentNode;
 
-                var currentOrder = Number(currentParagraph.getAttribute('order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
-                currentParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) - 1);
+                var currentOrder = Number(currentParagraph.getAttribute('data-order')) - 1; // get the attribute to know its position in the list of paragraphs(order-1)
+                currentParagraph.setAttribute('data-order', Number(currentParagraph.getAttribute('data-order')) - 1);
 
                 var previousParagraph = event.target.parentNode.parentNode.previousElementSibling;
-                previousParagraph.setAttribute('order', Number(currentParagraph.getAttribute('order')) + 1);
+                previousParagraph.setAttribute('data-order', Number(currentParagraph.getAttribute('data-order')) + 1);
 
                 var paragraphLines = document.querySelectorAll(".paragraphEditRecipeLine"); // get the list of paragraphs
 
@@ -635,7 +635,7 @@ okParagraphEditRecipe.addEventListener('click', (function(e) {
  */
 async function saveParagraph(idRecipe, element) {
     var myHeaders = new Headers();
-    order = element.getAttribute("order");
+    order = element.getAttribute("data-order");
     idParagraph = element.getAttribute("data-id");
     content = element.children[1].value;
 

@@ -8,7 +8,7 @@ if (!isset($article) || empty($article)) {
         <div class="d-flex flex-row underLink">
             <a href="<?= BASE_URL ?>article"><u>Articles</u>
             </a>
-            <p> &nbsp > Edit</p>
+            <p> &nbsp; > Edit</p>
         </div>
         <h2 class="mb-2 mt-2">Article Edit</h2>
         <!-- div notif article edit -->
@@ -28,7 +28,7 @@ if (!isset($article) || empty($article)) {
         </div>
         <div class="d-flex flex-row justify-content-around flex-wrap">
             <div class="d-flex flex-column">
-                <form method="post" action="" id="editArticleForm">
+                <form method="post" id="editArticleForm">
                     <div class="form-group">
                         <label for="articleFactoryName">Article factory name</label>
                         <input type="text" class="form-control p-0" name="articleFactoryName" id="articleFactoryName" value="<?= $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " of " .  $article->getProduct()->getProductName() ?>" disabled>
@@ -51,7 +51,7 @@ if (!isset($article) || empty($article)) {
                         <div class="col-3 p-0"><input type="text" class="form-control" name="stock" id="stock" value="<?= $article->getStock() ?>" disabled></div>
                     </div>
                     <div class="mx-0 p-0 form-group row justify-content-between">
-                        <label for="inputArticleEditState">State</label> <br>
+                        <label for="articleEditState">State</label> <br>
                         <select class="col-4 p-0" name="articleState" id="articleEditState">
                             <option value="a" <?php if ($article->getState() == 'a') {
                                                     echo 'selected';
@@ -68,11 +68,11 @@ if (!isset($article) || empty($article)) {
                         <button id="submitEditArticle" data-toggle="modal" type="button" data-target="#modalEditArticle" class="btn mr-5">Submit</button>
                         <button id="cancelEditArticle" class="btn" type="reset">Cancel</button>
                     </div>
-                    <div class="modal fade" id="modalEditArticle" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="modalEditArticle" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitleEditArticle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Do you really want to update this article information ?</h5>
+                                    <h5 class="modal-title" id="ModalCenterTitleEditArticle">Do you really want to update this article information ?</h5>
                                     <button type="button" class="close" id="closeModalEditArticle" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -94,11 +94,11 @@ if (!isset($article) || empty($article)) {
 
                     <div class="articlePictureBin" data-toggle="modal" data-target="#modalDeletePictureArticle"><img src="<?php echo BASE_URL . PATH_ICONS ?>delete-svg.svg" alt="svg bin"></div>
 
-                    <div class="modal fade" id="modalDeletePictureArticle" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" id="modalDeletePictureArticle" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitleDeletePicture" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Do you really want to delete this article picture ?</h5>
+                                    <h5 class="modal-title" id="ModalCenterTitleDeletePicture">Do you really want to delete this article picture ?</h5>
                                     <button type="button" class="close" id="closeModalDeletePictureArticle" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -111,10 +111,10 @@ if (!isset($article) || empty($article)) {
                         </div>
                     </div>
                 </div>
-                <label class="form-label" for="customFile">Download a new picture</label>
+                <label class="form-label" for="InputFileEditArticle">Download a new picture</label>
 
                 <div class="custom-file">
-                    <form id="formEditArticleImage" action="" enctype="multipart/form-data" method="post">
+                    <form id="formEditArticleImage" enctype="multipart/form-data" method="post">
                         <div class="d-flex flex-column">
                             <input type="file" class="custom-file-input" id="InputFileEditArticle" name="image" onchange="updatePictureName()">
                             <div class="d-flex align-items-center justify-content-end">
@@ -124,7 +124,7 @@ if (!isset($article) || empty($article)) {
                         </div>
                         <label class="custom-file-label" for="InputFileEditArticle" data-browse="Browse"></label>
                         <input type="text" class="form-control" name="idArticlePicture" id="idArticlePicture" value="<?= $article->getIdArticle() ?>" hidden>
-                        <div class="modal fade" id="modalEditPictureArticle" tabindex="-1" role="dialog" aria-labelledby="ModalCenterTitle" aria-hidden="true">
+                        <div class="modal fade" id="modalEditPictureArticle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">

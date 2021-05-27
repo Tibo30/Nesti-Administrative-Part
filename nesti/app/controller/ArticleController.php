@@ -3,13 +3,13 @@ require_once(BASE_DIR . PATH_VIEW . 'View.php');
 
 class ArticleController extends BaseController
 {
-    private $articleDAO;
+    private ArticleDAO $articleDAO;
 
-    
+
     /**
      * initialize the controller
      */
-    public function initialize()
+    public function initialize(): void
     {
         if (array_search("admin", $_SESSION["roles"]) === false) {
             $this->_view = new View("norights");
@@ -171,7 +171,7 @@ class ArticleController extends BaseController
                 // in this loop we prepare the return data from the fetch
                 foreach ($orderLines as $orderLine) { // we get all the articles of the orderLines
                     $article = $this->articleDAO->getArticle($orderLine->getIdArticle());
-                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . " x " . $orderLine->getQuantityOrdered() . '</div>' . '<a id="seeArticle" href="https://jolivet.needemand.com/realisations/nesti-client/public/article/'.$article->getIdArticle().'" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
+                    $data['articles'][$index]['all'] = '<div class="d-flex flex-row justify-content-between"><div>' . $article->getQuantityPerUnit() . " " . $article->getUnitMeasure()->getName() . " " . $article->getProduct()->getProductName() . " x " . $orderLine->getQuantityOrdered() . '</div>' . '<a id="seeArticle" href="https://jolivet.needemand.com/realisations/nesti-client/public/article/' . $article->getIdArticle() . '" class="btn-see-article" onclick="" data-id=' . $article->getIdArticle() . '>See</a></div>';
                     $index++;
                 }
             }
@@ -187,7 +187,7 @@ class ArticleController extends BaseController
     {
         $data = [];
 
-        if (isset($_FILES) && !empty($_FILES)) {
+        if (!empty($_FILES)) {
             $data = [];
             $data['success'] = false;
 
@@ -213,7 +213,7 @@ class ArticleController extends BaseController
                 if (($pictureDAO->doesPictureExist($picture->getName(), $picture->getExtension())) == false) { // check if the picture/name is not already in the table
                     if (move_uploaded_file($tmp, $path)) { // move the file form temporary folder to right folder (according to path)
                         $data['success'] = true;
-                        $idPicture = $pictureDAO->insertPicture($picture, $iD); // insert the picture in the DAO et get the ID back
+                        $idPicture = $pictureDAO->insertPicture($picture); // insert the picture in the DAO and get the ID back
                         $picture->setIdPicture($idPicture);
                         $article = $this->articleDAO->getArticle($iD); // get the article from the DAO
                         $article->setIDPicture($idPicture); // set the idPicture to the object
@@ -246,7 +246,7 @@ class ArticleController extends BaseController
         $data = [];
         $data['success'] = false;
 
-        if (isset($_POST) && !empty($_POST)) {
+        if (!empty($_POST)) {
             $idArticle = $_POST["id_article"]; // first we get the id of the article
             $article = $this->articleDAO->getArticle($idArticle); // then we get the object article from the database.
             $article->setIDPicture(null);

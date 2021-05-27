@@ -33,13 +33,15 @@ class StatisticController extends BaseController
 
         $userLogDAO = new UserLogsDAO();
         $allLogs = $userLogDAO->getLogs(); // get all the logs
+        $hoursLog=[];
 
         foreach ($allLogs as $log) {
             $format = 'Y-m-d H:i:s';
             $logDate = DateTime::createFromFormat($format, $log->getConnectionDate()); // format each connection date
             $hoursLog[$logDate->format('H')][] = $log; // sort the list of the logs by hours (hour is the key of the array $hoursLog)
         }
-
+        
+        $connectionPerHour=[];
         foreach ($hoursLog as $key => $logs) {
             $connectionPerHour[] = (object) array('name' => $key, 'data' => count($logs)); // count the number of logs for a given hour
         }

@@ -13,13 +13,13 @@ if (!isset($orders)) {
     <div class="d-flex flex-row underLink">
         <a href="<?= BASE_URL ?>article"><u>Articles</u>
         </a>
-        <p> &nbsp > Orders</p>
+        <p> &nbsp; > Orders</p>
     </div>
     <h2 class="mb-5 mt-5">Orders</h2>
 
 
     <div class="d-flex flex-row justify-content-center justify-content-lg-between flex-wrap">
-        <div class = "col-12 col-lg-8">
+        <div class="col-12 col-lg-8">
             <div class="d-flex flex-row justify-content-between">
                 <nav class="navbar navbar-white bg-white pl-0">
                     <form class="form-inline">
@@ -29,18 +29,19 @@ if (!isset($orders)) {
                 </nav>
 
             </div>
-            <table class="table-borderless table-striped" rowEvents="" id="allOrdersTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchOrder" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
+            <table class="table-borderless table-striped" id="allOrdersTable" data-toggle="table" data-sortable="true" data-pagination="true" data-pagination-pre-text="Previous" data-pagination-next-text="Next" data-search="true" data-search-align="left" data-search-selector="#customSearchOrder" data-locale="eu-EU" data-toolbar="#toolbar" data-toolbar-align="left">
                 <thead>
-                    <th>ID</th>
+                    <tr>
+                        <th>ID</th>
 
-                    <th>User</th>
+                        <th>User</th>
 
-                    <th>Amount</th>
+                        <th>Amount</th>
 
-                    <th>Date</th>
+                        <th>Date</th>
 
-                    <th>State</th>
-
+                        <th>State</th>
+                    </tr>
                 </thead>
                 <tbody id="allOrdersTbody">
                     <?php
@@ -54,7 +55,6 @@ if (!isset($orders)) {
                         echo '</tr>';
                     } ?>
                 </tbody>
-                </tbody>
             </table>
         </div>
 
@@ -62,7 +62,7 @@ if (!isset($orders)) {
             <div class="d-flex flex-row flex-wrap justify-content-between">
                 <h3>Details</h3>
                 <div id="articleOrderId" class="d-flex justify-content-center align-items-center orderId">
-                    <h4 id="idOrder" className="mr-5">N°:</h4>
+                    <h4 id="idOrder">N°:</h4>
                 </div>
 
             </div>

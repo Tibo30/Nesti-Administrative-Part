@@ -86,11 +86,11 @@ class Article
         return $this;
     }
 
-    
+
     // Display state for tables
     public function getDisplayState()
     {
-
+        $state = $this->state;
         if ($this->state == 'a') {
             $state = 'Active';
         }
@@ -267,7 +267,7 @@ class Article
     /**
      * Set the value of userArticleName
      *
-     * @return  self
+     * @return  string
      */
     public function setUserArticleName($userArticleName)
     {
@@ -295,14 +295,14 @@ class Article
         $orderLines = $orderDAO->getOrderLinesArticle($this->idArticle); // get all the order lines for an article
         $lots = $lotDAO->getLots($this->idArticle); // get all the lots for an article
         $quantityOrdered = 0;
-        $quantityBought=0;
+        $quantityBought = 0;
         foreach ($orderLines as $orderLine) {
             $quantityOrdered += $orderLine->getQuantityOrdered();
         }
-        foreach($lots as $lot){
+        foreach ($lots as $lot) {
             $quantityBought += $lot->getBoughtQuantity();
         }
-        $stock=$quantityBought-$quantityOrdered;
+        $stock = $quantityBought - $quantityOrdered;
         return $stock;
     }
 
@@ -310,8 +310,8 @@ class Article
     {
         $lotDAO = new LotDAO();
         $lots = $lotDAO->getLots($this->idArticle); // get all the lots for an article
-        $quantityBought=0;
-        foreach($lots as $lot){
+        $quantityBought = 0;
+        foreach ($lots as $lot) {
             $quantityBought += $lot->getBoughtQuantity();
         }
         return $quantityBought;
@@ -321,7 +321,7 @@ class Article
     {
         $orderDAO = new OrderDAO();
         $orderLines = $orderDAO->getOrderLinesArticle($this->idArticle); // get all the order lines for an article
-        $quantitySold= 0;
+        $quantitySold = 0;
         foreach ($orderLines as $orderLine) {
             $quantitySold += $orderLine->getQuantityOrdered();
         }
@@ -332,7 +332,7 @@ class Article
     {
         $orderDAO = new OrderDAO();
         $orderLines = $orderDAO->getOrderLinesArticle($this->idArticle); // get all the order lines for an article
-        $totalSales= 0;
+        $totalSales = 0;
         foreach ($orderLines as $orderLine) {
             $totalSales += $orderLine->getQuantityOrdered() * $this->getPrice()->getPrice();
         }
@@ -343,17 +343,16 @@ class Article
     {
         $lotDAO = new LotDAO();
         $lots = $lotDAO->getLots($this->idArticle); // get all the lots for an article
-        $totalBought=0;
-        foreach($lots as $lot){
+        $totalBought = 0;
+        foreach ($lots as $lot) {
             $totalBought += $lot->getBoughtQuantity() * $lot->getUnitCost();
         }
         return $totalBought;
     }
 
-    public function getBenefits(){
+    public function getBenefits()
+    {
         $benefits = $this->getTotalSales() - $this->getTotalBought();
         return $benefits;
     }
-
- 
 }
