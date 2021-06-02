@@ -132,7 +132,7 @@ class RecipeDAO extends ModelDAO
     public function addRecipe($recipeAdd)
     {
         $req = self::$_bdd->prepare('INSERT INTO recipes (creation_date, recipe_name, difficulty, number_of_people,state,time,id_chief) VALUES (CURRENT_TIMESTAMP, :name, :difficulty, :number, "a", :time, :chief) ');
-        $req->execute(array("name" => $recipeAdd->getRecipeName(), "difficulty" => $recipeAdd->getDifficulty(), "number" => $recipeAdd->getNumberOfPeople(), "time" => $recipeAdd->getTimeDatabase(), "chief" => $_SESSION["idUser"]));
+        $req->execute(array("name" => $recipeAdd->getRecipeName(), "difficulty" => $recipeAdd->getDifficulty(), "number" => $recipeAdd->getNumberOfPeople(), "time" => $recipeAdd->getTimeDatabase(), "chief" => $recipeAdd->getIdChief()));
         $last_id = self::$_bdd->lastInsertId();
         $req->closeCursor(); // release the server connection so it's possible to do other query
         return $last_id;

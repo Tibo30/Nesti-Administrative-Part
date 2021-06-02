@@ -134,15 +134,20 @@ class RecipeController extends BaseController
             $DifficultyError = $recipeAdd->setDifficulty($difficulty);
             $NumberOfPeopleError = $recipeAdd->setNumberOfPeople($numberOfPeople);
             $PreparationTimeError =  $recipeAdd->setTime($preparationTime);
+            $recipeAdd->setIdChief($_SESSION["idUser"]);
+            $ChiefError = "";
+            if ($_SESSION["idUser"] == 0 || $_SESSION["idUser"] == null) {
+                $ChiefError = "Error with ID chief";
+            }
 
             if ($this->recipeDAO->recipeDoesExist($recipeName) == true) { // if the name of the recipe is already taken
                 $RecipeNameError = "this recipe name already exists. Please choose another one";
             }
 
-            $errorMessages = ['recipeName' => $RecipeNameError, 'difficulty' => $DifficultyError, 'numberOfPeople' => $NumberOfPeopleError, 'preparationTime' => $PreparationTimeError];
+            $errorMessages = ['recipeName' => $RecipeNameError, 'difficulty' => $DifficultyError, 'numberOfPeople' => $NumberOfPeopleError, 'preparationTime' => $PreparationTimeError, 'chief' => $ChiefError];
             $data['errorMessages'] = $errorMessages;
             // if all the datas inputed are correct, we do the query
-            if ($RecipeNameError == "" && $DifficultyError == "" && $NumberOfPeopleError == "" && $PreparationTimeError == "") {
+            if ($RecipeNameError == "" && $DifficultyError == "" && $NumberOfPeopleError == "" && $PreparationTimeError == "" && $ChiefError == "") {
                 $idRecipe = $this->recipeDAO->addRecipe($recipeAdd);
                 $recipeAdd->setIdRecipe($idRecipe);
                 $data['recipeAdd'] = $recipeAdd;
