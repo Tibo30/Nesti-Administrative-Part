@@ -711,7 +711,7 @@ button:hover {
     background-color: var(--colorButtonAlert);
 }
 
-#confirm-edit-picture-recipe, #confirm-edit-recipe, #confirm-delete-picture-recipe, #confirm-edit-recipe-delete-paragraph, #confirm-edit-recipe-delete-ingredient, #confirm-add-recipe-delete-ingredient {
+#confirm-edit-picture-recipe, #confirm-edit-recipe, #confirm-delete-picture-recipe, #confirm-edit-recipe-delete-paragraph, #confirm-edit-recipe-delete-ingredient, #confirm-edit-recipe-delete-paragraph, #confirm-add-recipe-delete-ingredient {
     background-color: var( --colorButtonValidate);
 }
 
