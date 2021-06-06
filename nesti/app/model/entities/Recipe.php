@@ -86,6 +86,8 @@ class Recipe
         $RecipeNameError = "";
         if (empty($recipeName)) {
             $RecipeNameError = 'Please enter a Recipe Name';
+        } else if (!preg_match("/^[a-zA-ZÀ-ÿ ,.'-]{3,50}+$/i", $recipeName)) {
+            $RecipeNameError = "The recipe name is incorrect";
         } else {
             $this->recipeName = $recipeName;
         }
