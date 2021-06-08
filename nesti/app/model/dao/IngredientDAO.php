@@ -22,15 +22,13 @@ class IngredientDAO extends ModelDAO
      */
     public function createProductIngredient($productName)
     {
-        $req = self::$_bdd->prepare('INSERT INTO products (product_name) VALUES (:name)');
+        $req = self::$_bdd->prepare('CALL add_ingredient (:name)');
         $req->execute(array("name" => $productName));
         $req->closeCursor(); // release the server connection so it's possible to do other query
-        $last_id = self::$_bdd->lastInsertId();
-        $req2 = self::$_bdd->prepare('INSERT INTO ingredients (id_ingredients) VALUES (:id)');
-        $req2->execute(array("id" => $last_id));
-        $req2->closeCursor(); // release the server connection so it's possible to do other query
-        $last_id2 = self::$_bdd->lastInsertId();
-        return $last_id2;
+        $req2 = self::$_bdd->query("SELECT LAST_INSERT_ID();"); 
+        $req2->execute();
+        $last_id=$req2->fetch()[0];
+        return $last_id;
     }
     
 }
