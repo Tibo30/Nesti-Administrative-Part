@@ -16,7 +16,7 @@ class ConnectionDAO extends ModelDAO
      * get user according to email/username
      * String $email
      */
-    public function getPassword($email)
+    public function getUser($email)
     {
         $user = new User();
         $req = self::$_bdd->prepare('SELECT * FROM users WHERE email=:email OR username=:username');

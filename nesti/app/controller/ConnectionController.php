@@ -36,7 +36,7 @@ class ConnectionController extends BaseController
         $email = filter_input(INPUT_POST, "emailUsername", FILTER_SANITIZE_STRING);
         $password = filter_input(INPUT_POST, "password", FILTER_SANITIZE_STRING); // mettre sanitize encoded après ?
 
-        $activUser =  $this->connectionDAO->getPassword($email);
+        $activUser =  $this->connectionDAO->getUser($email);
         $activeUserId = $activUser->getIdUser();
         $isVerified = password_verify($password, $activUser->getPassword());
         if ($isVerified && $activeUserId != 0) {
