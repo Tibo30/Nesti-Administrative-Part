@@ -265,8 +265,13 @@ class UserController extends BaseController
             $userEdit->setRoles($userRoles);
 
             $userRoleError = "";
+
             if ($_SESSION['idUser'] == ($userEdit->getIdUser()) && array_search("moderator", $_SESSION["roles"]) !== false && array_search("admin", $_SESSION["roles"]) == false && $formerUserRoles != $userRoles) {
-                $userRoleError = "You don't have the rights to change your roles";
+                foreach($userRoles as $userRole){
+                    if (array_search($userRole, $formerUserRoles)==false){
+                        $userRoleError = "You don't have the rights to change your roles";
+                    }
+                }
             }
 
             $errorMessages = ['userLastname' => $userLastnameError, 'userFirstname' => $userFirstnameError, 'userAddress1' => $userAddress1Error, 'userAddress2' => $userAddress2Error, 'userPostcode' => $userPostCodeError, 'userCity' => $userCityError, 'userRoles' => $userRoleError];
