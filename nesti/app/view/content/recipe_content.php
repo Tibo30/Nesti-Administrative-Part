@@ -10,7 +10,7 @@ if (!isset($recipes) || empty($recipes)) {
 
 ?>
 <div class="container bg-white d-flex flex-column align-items-left position-relative" id="allRecipePage">
-    <h2 class="mb-2 mt-3">Recettes</h2>
+    <h2 class="mb-2 mt-3">Recipes</h2>
     <!-- div notif recipe delete -->
     <div id="recipeDeletedSuccess" class="notifications" hidden>
         <p>The recipe has been deleted (blocked)</p>

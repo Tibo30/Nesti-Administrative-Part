@@ -6,7 +6,7 @@ if (!isset($articles)) {
 }
 ?>
 <div class="container d-flex flex-column align-items-left position-relative" id="allArticlesPage">
-    <h2 class="mb-2 mt-3">Article</h2>
+    <h2 class="mb-2 mt-3">Articles</h2>
     <!-- div notif article delete -->
     <div id="articleDeletedSuccess" class="notifications" hidden>
         <p>The article has been deleted (blocked)</p>
