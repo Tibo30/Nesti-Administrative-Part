@@ -79,7 +79,7 @@ class User
         $userLastnameError = "";
         if (empty($lastname)) {
             $userLastnameError = "Please enter a lastname";
-        } else if (!preg_match("/^[a-zA-ZÀ-ÿ ,.'-]{3,20}+$/i", $lastname)) {
+        } else if (!preg_match("/^[a-zA-ZÀ-ÿ ,.'-]{2,20}+$/i", $lastname)) {
             $userLastnameError = "The lastname is incorrect";
         } else {
             $this->lastname = $lastname;
@@ -105,7 +105,7 @@ class User
         $userFirstnameError = "";
         if (empty($firstname)) {
             $userFirstnameError = "Please enter a firstname";
-        } else if (!preg_match("/^[a-zA-ZÀ-ÿ ,.'-]{3,20}+$/i", $firstname)) {
+        } else if (!preg_match("/^[a-zA-ZÀ-ÿ ,.'-]{2,20}+$/i", $firstname)) {
             $userFirstnameError = "The firstname is incorrect";
         } else {
             $this->firstname = $firstname;
