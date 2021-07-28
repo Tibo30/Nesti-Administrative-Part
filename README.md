@@ -21,13 +21,17 @@ There are 3 different roles for the users : Administrator, Chef and Moderator.
 <p>
 Each of the role allows the user to do different tasks :
 </p>
+
 <p>
-Chef :
-- Add recipe,  
+  
+Chef :  
+* Add recipe,  
 * Modify his recipe.
-Moderator :
+  
+Moderator :  
 * Create a user,  
-* Modify a user. 
+* Modify a user.
+
 Administrator :
 * Modify a recipe,  
 * Import an article,
@@ -36,4 +40,14 @@ Administrator :
 * Create a user,  
 * Modify a user,
 * See the statistics.
-</p>
+ </p>
+ 
+ ## <b>Software and Tools</b>
+* IDE : Visual Studio Code,
+* Libraries :
+  * Bootstrap,
+  * Bootstrap Table,
+  * Toast UI (statistics).
+* Database : MySQL.
+ 
+ 
