@@ -1,7 +1,7 @@
 <h1 align="center"> Nesti - Administrative Part</h1>
 
 <p>
-  <a href="https://jolivet.needemand.com/realisations/nesti-admin/" rel="nofollow" target="_blank">Project link</a>
+  <a href="https://jolivet.needemand.com/realisations/nesti-admin/" rel="nofollow">Project link</a>
 </p>
 
 ## <b>Screenshot</b>
