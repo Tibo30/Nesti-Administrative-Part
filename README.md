@@ -49,6 +49,7 @@ Administrator :
  
  ## <b>Software and Tools</b>
 * IDE : Visual Studio Code,
+* Language : PHP,
 * Libraries :
   * Bootstrap,
   * Bootstrap Table,
