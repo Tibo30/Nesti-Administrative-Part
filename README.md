@@ -4,23 +4,36 @@
 <img src="https://github.com/Tibo30/Nesti-Administrative-Part/blob/master/nesti/public/pictures/pictures/Screenshot%202021-07-28%20at%2018-44-28%20Recipes.png">
 </p>
 
+## <b>CONTEXT</b>
 <p>
-The aim of the project is to create, for a fictional company named Nesti, a Connection form for a Java application.
-  
-They are four main parts for this app :  
-* Registration,  
-* Connection,  
-* Display of the user's information,  
-* Modification of the user's information,  
-  
-Several requirements had to be respected:  
-* The user can use either his email or his nickname to connect,  
-* Firstname, Lastname and city can be registered but are not mandatory,
-* The password must be strong enough (medium or strong),
-* After being connected, a new windows open and the user sees his information that he can modify, 
-* The user can't modify his email adress.
+Nesti, a fictional company and a reference in the pastry world, wants to diversify and increase its activity. To do so, for a training programme, the company called on my service in order to develop several applications required for the growth of the company.
+</p>
 
-To use this connection form, you have to copy all the files :
-* 22 java files,
-* 4 pictures (not the LogInPage picture).
- </p>
+## <b>GOAL</b>
+<p>
+This app had to allow the user to add recipes, import articles, moderate the client part application (third part) and visualize the important statistics linked to the activity of the company.
+</p>
+
+## <b>Functional specifications</b>
+<p>
+There are 3 different roles for the users : Administrator, Chef and Moderator.
+</p>
+<p>
+Each of the role allows the user to do different tasks :
+</p>
+<p>
+Chef :
+- Add recipe,  
+* Modify his recipe.
+Moderator :
+* Create a user,  
+* Modify a user. 
+Administrator :
+* Modify a recipe,  
+* Import an article,
+* Modify an article,  
+* See the orders,
+* Create a user,  
+* Modify a user,
+* See the statistics.
+</p>
