@@ -4,12 +4,12 @@
 <img src="https://github.com/Tibo30/Nesti-Administrative-Part/blob/master/nesti/public/pictures/pictures/Screenshot%202021-07-28%20at%2018-44-28%20Recipes.png">
 </p>
 
-## <b>CONTEXT</b>
+## <b>Context</b>
 <p>
 Nesti, a fictional company and a reference in the pastry world, wants to diversify and increase its activity. To do so, for a training programme, the company called on my service in order to develop several applications required for the growth of the company.
 </p>
 
-## <b>GOAL</b>
+## <b>Goal</b>
 <p>
 This app had to allow the user to add recipes, import articles, moderate the client part application (third part) and visualize the important statistics linked to the activity of the company.
 </p>
