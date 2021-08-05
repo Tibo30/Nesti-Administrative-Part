@@ -4,11 +4,6 @@
   <a href="https://jolivet.needemand.com/realisations/nesti-admin/" rel="nofollow">Project link</a>
 </p>
 
-## <b>Screenshot</b>
-<p align="center">
-<img src="https://github.com/Tibo30/Nesti-Administrative-Part/blob/master/nesti/public/pictures/pictures/Screenshot%202021-07-28%20at%2018-44-28%20Recipes.png">
-</p>
-
 ## <b>Context</b>
 <p>
 Nesti, a fictional company and a reference in the pastry world, wants to diversify and increase its activity. To do so, for a training programme, the company called on my service in order to develop several applications required for the growth of the company.
@@ -46,6 +41,11 @@ Administrator :
 * Modify a user,
 * See the statistics.
  </p>
+ 
+ ## <b>Screenshot</b>
+<p align="center">
+<img src="https://github.com/Tibo30/Nesti-Administrative-Part/blob/master/nesti/public/pictures/pictures/Screenshot%202021-07-28%20at%2018-44-28%20Recipes.png">
+</p>
  
  ## <b>Software and Tools</b>
 * IDE : Visual Studio Code,
